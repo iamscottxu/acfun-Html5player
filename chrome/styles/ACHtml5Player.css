@@ -1,0 +1,495 @@
+section.player #player .ACHtml5Player {
+    width:1161px;
+    height:730px;
+}
+section.player #player.small .ACHtml5Player {
+    width:260px !important;
+    height:146px !important;
+    border:1px solid #eee;
+    border-radius:0 0 3px 3px;
+    position:absolute;
+    bottom:0;
+}
+@media screen and (max-width:1440px) {
+    section.player #player .ACHtml5Player {
+        height: 628px;
+        width: 1028px;
+    }
+}
+.ACHtml5Player {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    border: 1px solid #EEEEEE;
+    background: #FFFFFF;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    outline:none;
+}
+.ACHtml5Player-right {
+    position: relative;
+    float: right;
+    height: 100%;
+    width: 279px;
+}
+.fold .ACHtml5Player-right {
+    display: none;
+}
+.ACHtml5Player-left {
+    position: relative;
+    float:left;
+    height: 100%;
+    width: calc(100% - 280px);
+    border-right: 1px solid #EEEEEE;
+}
+.fold .ACHtml5Player-left {
+    float:left;
+    height: 100%;
+    width: 100%;
+    border-right: 1px solid #EEEEEE;
+}
+.ACHtml5Player-main {
+    width: 100%;
+    height: calc(100% - 75px);
+    background: #000000;
+    position: relative;
+}
+.ACHtml5Player-controlBars {
+    width: 100%;
+}
+.ACHtml5Player-controlBar{
+    border-top: 1px solid #EEEEEE;
+}
+.ACHtml5Player-controlBar.small{
+    height: 34px;
+}
+.ACHtml5Player-controlBar.big{
+    height: 39px;
+}
+.ACHtml5Player-main-el {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+.ACHtml5Player-rightTop {
+    width: 100%;
+    border-bottom: 1px solid #EEEEEE;
+    height: 19px;
+    padding: 10px 5px;
+}
+.ACHtml5Player-rightTopText {
+    display: inline;
+    margin: 0 0 0 15px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333333;
+}
+.ACHtml5Player-table {
+    margin: 1px;
+    color: #999999;
+    width: 100%;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: left;
+    table-layout: fixed;
+}
+.ACHtml5Player-table tr:hover {
+    background: #F5F5F5;
+}
+.ACHtml5Player-table th, .ACHtml5Player-table td {
+    padding: 5px 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ACHtml5Player-tableTitle {
+    font-weight: 500;
+    background: #F5F5F5;
+    border: 1px solid #EEEEEE;
+    border-right: none;
+}
+.ACHtml5Player-tableTitle th {
+    background: #F5F5F5;
+    border-right: 1px solid #EEEEEE;
+}
+.ACHtml5Player-scrolly {
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 100%;
+}
+.ACHtml5Player_acfunPlayPauseAnimate {
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+    width: 233px;
+    height: 50px;
+    background-repeat:no-repeat;
+    background-size:100% 100%;
+    cursor: pointer;
+    display: none;
+}
+.ACHtml5Player-bulletCommentsEmpty {
+    position: absolute;
+    top:70px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 12px;
+    color:#999999;
+    padding: 270px 0;
+    font-weight: 400;
+    text-align: center;
+}
+.ACHtml5Player-barButton {
+    position: relative;
+    height: 20px;
+    width: 40px;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: #999999;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+    background-origin: border-box;
+}
+.ACHtml5Player-barButton:hover {
+    background-color: #F5F5F5;
+}
+.ACHtml5Player-barText {
+    height: 20px;
+    font-size: 12px;
+    color: #999999;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.small > .ACHtml5Player-barText, .small > .ACHtml5Player-barButton {
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+.big > .ACHtml5Player-barText, .big > .ACHtml5Player-barButton {
+    padding-top: 9.5px;
+    padding-bottom: 9.5px;
+}
+.ACHtml5Player-barleft {
+    float: left;
+}
+.ACHtml5Player-barright {
+    float: right;
+}
+.ACHtml5Player-progressBar {
+    -webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+	-o-transition: all 0.5s;
+	transition: all 0.5s;
+    position: absolute;
+    cursor: pointer;
+    height: 3px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(133, 133, 133, 0.5);
+}
+.ACHtml5Player-progressBar:hover {
+    height: 6px;
+}
+.ACHtml5Player-progressBarBuffer {
+    background: rgba(153,153,153,0.7) !important;
+}
+.ACHtml5Player-slideBarFill {
+    position: absolute;
+    background: #FD4C5B;
+}
+.vertical .ACHtml5Player-slideBarFill {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 0%;
+}
+.horizontal .ACHtml5Player-slideBarFill {
+    left: 0;
+    bottom: 0;
+    top: 0;
+    width: 0%;
+}
+.ACHtml5Player-progressBarHandShank {
+    -webkit-transition: all 0.2s;
+	-moz-transition: all 0.2s;
+	-o-transition: all 0.2s;
+    transition: all 0.2s;
+    opacity: 0;
+}
+.ACHtml5Player-slideBarHandShank {
+    cursor: pointer;
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #FFFFFF;
+    border: 1px solid #FD4C5B;
+    border-radius: 12px;
+    -moz-border-radius: 12px; /* 老的 Firefox */
+}
+.vertical .ACHtml5Player-slideBarHandShank {
+    top: -7px;
+    right: calc(100% / 2 - 7px);
+}
+.horizontal .ACHtml5Player-slideBarHandShank {
+    right: -7px;
+    top: calc(100% / 2 - 7px);
+}
+.ACHtml5Player-progressBar:hover .ACHtml5Player-progressBarHandShank {
+    opacity: 1;
+}
+.ACHtml5Player-bulletCommentsScrolly {
+    height: calc(100% - 73px);
+}
+.ACHtml5Player-progressBarTip {
+    display: none;
+    padding: 2px;
+    position: absolute;
+    font-size: 12px;
+    color: #FFFFFF;
+    line-height: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    top: -25px;
+    border-radius: 2px;
+}
+.ACHtml5Player-progressBar:hover .ACHtml5Player-progressBarTip {
+    display: block;
+    opacity: 1;
+}
+.ACHtml5Player-popupBox {
+    position: absolute;
+    background: #FFFFFF;
+    -moz-box-shadow: 0 0 2px #000000; /* 老的 Firefox */
+    box-shadow: 0 0 1px #000000;
+    border-radius: 2px;
+    bottom: 34px;
+    display: none;
+    cursor: default;
+}
+.ACHtml5Player-barButton:hover .ACHtml5Player-popupBox {
+    display: block;
+}
+.ACHtml5Player-popupBoxVolume {
+    left: -1px;
+    right: -1px;
+    height: 120px;
+}
+.ACHtml5Player-popupBoxVolume {
+    left: -1px;
+    right: -1px;
+    height: 120px;
+}
+.ACHtml5Player-popupBulletComments {
+    left: -90px;
+    right: -90px;
+    height: 175px;
+}
+.ACHtml5Player-popupFullScreen {
+    right: 0;
+    left: -80px;
+    height: 42px;
+    padding: 9px 8px;
+}
+.ACHtml5Player-popupBoxQuality {
+    left: -20px;
+    right: -20px;
+    min-height: 30px;
+    overflow: hidden;
+}
+.ACHtml5Player-popupBoxQuality > ul {
+    list-style-type:none;
+    width: 100%;
+}
+.ACHtml5Player-popupBoxQuality > ul > li {
+    font-size: 12px;
+    font-weight: normal;
+    color: #000000;
+    line-height: 12px;
+    width: 100%;
+    padding: 9px 0;
+    text-align: center;
+    cursor: pointer;
+}
+.ACHtml5Player-popupBoxQuality > ul > li:hover{
+    background: #F5F5F5;
+}
+.ACHtml5Player-popupBoxQuality > ul > li.select{
+    color: #FD4C5B;
+}
+.ACHtml5Player-popupFullScreen .ACHtml5Player-checkBox {
+    color: #000000 !important;
+}
+.ACHtml5Player-slideBar {
+    position: relative;
+    background: #DDDDDD;
+}
+.ACHtml5Player-slideBar.small.vertical {
+    border-radius: 3px;
+    -moz-border-radius: 3px; /* 老的 Firefox */
+    height: 3px;
+    width: 100%;
+}
+.ACHtml5Player-slideBar.big.vertical {
+    border-radius: 6px;
+    -moz-border-radius: 6px; /* 老的 Firefox */
+    width: 6px;
+    height: 100%;
+}
+.ACHtml5Player-slideBar.small.horizontal {
+    border-radius: 3px;
+    -moz-border-radius: 3px; /* 老的 Firefox */
+    height: 3px;
+    width: 100%;
+}
+.ACHtml5Player-slideBar.big.horizontal {
+    border-radius: 6px;
+    -moz-border-radius: 6px; /* 老的 Firefox */
+    height: 6px;
+    width: 100%;
+}
+.big .ACHtml5Player-slideBarFill {
+    border-radius: 6px;
+}
+.small .ACHtml5Player-slideBarFill {
+    border-radius: 3px;
+}
+.ACHtml5Player-volumeNumber {
+    width: 100%;
+    font-size: 12px;
+    line-height: 12px;
+    padding: 8px 0 0 0;
+    color: #999999;
+    text-align: center;
+}
+.ACHtml5Player-volumeSlideBarBox {
+    height: 80px;
+    width: 6px;
+    padding: 10px 18px;
+}
+.ACHtml5Player-checkBox {
+    margin: 6px;
+    height: 13px;
+    line-height: 13px;
+    padding-left: 20px;
+    background-position: center left;
+    background-repeat: no-repeat;
+    color: #999999;
+    font-size: 12px;
+    font-weight: normal;
+}
+.ACHtml5Player-fullScreen {
+    overflow: hidden;
+}
+.ACHtml5Player-fullScreen .header, .ACHtml5Player-fullScreen .toolbar{
+    display: none;
+}
+.ACHtml5Player-fullScreen .ACHtml5Player-left {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    z-index: 10000;
+    background: #FFFFFF;
+    width: 100%;
+    height: 100%;
+}
+.ACHtml5Player-fullScreen .ACHtml5Player-main {
+    height: calc(100% - 35px);
+}
+.ACHtml5Player-fullScreen .ACHtml5Player-controlBar.big {
+    display: none;
+}
+.ACHtml5Player-fullScreen-desktop .ACHtml5Player-main {
+    height: 100%;
+}
+.ACHtml5Player-fullScreen-desktop .ACHtml5Player-controlBars {
+    -webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+	-o-transition: all 0.5s;
+    transition: all 0.5s;
+    position: absolute;
+    bottom: 0px;
+    background: #FFFFFF;
+}
+.ACHtml5Player-fullScreen-desktop .ACHtml5Player-controlBars:hover {
+    opacity: 1 !important;
+    cursor: auto !important;
+}
+.ACHtml5Player-fullScreen-desktop .ACHtml5Player-progressBar {
+    bottom: 35px !important;
+    z-index: 10001;
+}
+.ACHtml5Player-fullScreen-desktop .ACHtml5Player-popupBox {
+    z-index: 10002;
+}
+.ACHtml5Player-fullScreen-desktop .ACHtml5Player_acfunPlayPauseAnimate{
+    margin-bottom: 35px;
+}
+.ACHtml5Player-loadingShade{
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: #000000;
+    overflow: hidden;
+    z-index: 30000;
+}
+.ACHtml5Player-loadingCover {
+    position: absolute; 
+    left: -20px;
+    top: -20px;
+    bottom: -20px;
+    right: -20px;
+    -webkit-filter: blur(20px);
+    -moz-filter: blur(20px);
+    -o-filter: blur(20px);
+    -ms-filter: blur(20px);
+    filter: blur(20px);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.ACHtml5Player-foldBar {
+    -webkit-transition: opacity 0.5s;
+	-moz-transition: opacity 0.5s;
+	-o-transition: opacity 0.5s;
+    transition: opacity 0.5s;
+    transition-delay: 1s;
+    -moz-transition-delay: 1s; /* Firefox 4 */
+    -webkit-transition-delay: 1s; /* Safari 和 Chrome */
+    -o-transition-delay: 1s; /* Opera */
+    cursor: pointer;
+    width: 13px;
+    height: 238px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    right: -12px;
+    top: calc((100% - 238px) / 2);
+    opacity: 1;
+    z-index: 20000;
+}
+.ACHtml5Player-fullScreen .ACHtml5Player-foldBar {
+    display: none;
+}
+.fold .ACHtml5Player-foldBar {
+    transform: rotateY(180deg);
+    opacity: 0;
+    right: 0;
+}
+.fold .ACHtml5Player-foldBar:hover {
+    transition-delay: 0s;
+    -moz-transition-delay: 0s; /* Firefox 4 */
+    -webkit-transition-delay: 0s; /* Safari 和 Chrome */
+    -o-transition-delay: 0s; /* Opera */
+    opacity: 1;
+}
