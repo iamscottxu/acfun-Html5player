@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>弹幕测试</title>
+    <script type="module">
+        import BulletComments from "./bulletComments.js"
+        let bulletComment;
+        window.onload = function(){
+            window.bulletComments = new BulletComments(document.getElementById('bulletCommentsDiv'), null, 'css3');
+            loadData(window.bulletComments);
+            setInterval(showDebugInfo, 500);
+        }
+        function loadData(bulletComments){
+            let _startTime = 5000;
+            for (let i = 0; i < 10000; i++){
+                if (Math.random() > 0.8)
+                    bulletComments.addBulletComment({
+                        text: "这是一个长长长长长长长长长长长长长长长长长长长长长长长长的测试(^_^)",
+                        speed: 0.20 + Math.random() / 90,
+                        size: 22,
+                        color: 'white',
+                        //borderColor: 'black',
+                        type: Math.random() > 0.1 ? 0 : 1,
+                        startTime: _startTime
+                    });
+                else
+                    bulletComments.addBulletComment({
+                        text: "橘里橘气",
+                        speed: 0.18 + Math.random() / 90,
+                        size: 24,
+                        color: '#FFCC66',
+                        borderColor: '#FF9933',
+                        type: Math.random() > 0.1 ? 0 : 1,
+                        startTime: _startTime
+                    });
+                if (Math.random() > 0.7)
+                    bulletComments.addBulletComment({
+                        text: "测试测试",
+                        boxColor: '#0066CC',
+                        size: 23,
+                        color: '#FFCC66',
+                        borderColor: '#FF9933',
+                        type: Math.random() > 0.4 ? 2 : 3,
+                        startTime: _startTime
+                    });
+                _startTime += parseInt(Math.random() * 1000);
+            }
+        }
+        function showDebugInfo() {
+            let debugInfo = bulletComments.getDebugInfo();
+            document.getElementById("time").innerText = debugInfo.time.toString();
+            document.getElementById("delay").innerText = debugInfo.delay.toString();
+            document.getElementById("bulletCommentsOnScreenCount").innerText = debugInfo.bulletCommentsOnScreenCount.toString();
+            document.getElementById("bulletCommentsCount").innerText = debugInfo.bulletCommentsCount.toString();
+            document.getElementById("delayBulletCommentsCount").innerText = debugInfo.delayBulletCommentsCount.toString();
+            document.getElementById("fps").innerText = debugInfo.fps.toString();
+        }
+    </script>
+</head>
+
+<body>
+    <div style="width:800px;height:450px;">
+        <div style="width:100%;height:100%;background-color: #33CC33;"></div>
+        <div id="bulletCommentsDiv" style="width:800px;height:450px;position:relative;left:0;top:-450px;z-index:1000;"></div>
+    </div>
+    <p>时间：<b id="time"></b> fps：<b id="fps">0</b></p>
+    <p>实时弹幕条数：<b id="bulletCommentsOnScreenCount"></b> 剩余弹幕条数：<b id="bulletCommentsCount"></b></p>
+    <p>延迟：<b id="delay"></b>ms 延迟丢弃丢弃弹幕数：<b id="delayBulletCommentsCount"></b></p>
+    <a href="#" onclick="bulletComments.play();">开始</a>&nbsp;<a href="#" onclick="bulletComments.pause();">暂停</a>&nbsp;
+    <a href="#" onclick="bulletComments.option.playSpeed = 1;">1倍速</a>&nbsp;<a href="#" onclick="bulletComments.option.playSpeed = 1.5;">1.5倍数</a>&nbsp;
+    <a href="#" onclick="bulletComments.option.playSpeed = 2;">2倍速</a>&nbsp;<a href="#" onclick="bulletComments.option.playSpeed = 2.5;">2.5倍数</a>&nbsp;
+    <a href="#" onclick="bulletComments.option.scaling = 1;">1倍缩放</a>&nbsp;<a href="#" onclick="bulletComments.option.scaling = 1.5;">1.5倍缩放</a>&nbsp;
+    <a href="#" onclick="bulletComments.option.scaling = 2;">2倍缩放</a>&nbsp;<a href="#" onclick="bulletComments.option.scaling = 2.5;">2.5倍缩放</a>&nbsp;
+</body>
+</html>

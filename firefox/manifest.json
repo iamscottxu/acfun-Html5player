@@ -1,0 +1,45 @@
+{
+
+    "manifest_version": 2,
+    "name": "acfun-html5player",
+    "version": "1.0",
+  
+    "description": "为Acfun替换Html5播放器。",
+  
+    "icons": {
+      "48": "icons/acfun-48.png"
+    },
+
+    "permissions": [
+        "webRequest",
+        "webRequestBlocking",
+        "http://*.acfun.cn/*",
+        "http://*.aixifan.com/*",
+        "http://*.hapame.com/*"
+    ],
+  
+    "content_scripts": [
+      {
+        "matches": [
+            "http://www.acfun.cn/v/*",
+            "http://www.aixifan.com/v/*",
+            "http://v.hapame.com/video/*"
+        ],
+        "js": [
+            "content_scripts/jquery-3.3.1.min.js",
+            "content_scripts/init.js"
+        ]
+      }
+    ],
+
+    "background": {
+        "scripts": ["background_scripts/webRequest.js"]
+    },
+
+    "applications": {
+        "gecko": {
+          "id": "xyc0714@aliyun.com"
+        }
+      }
+  
+  }
