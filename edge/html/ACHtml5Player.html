@@ -1,0 +1,89 @@
+<div id="ACHtml5Player" class="ACHtml5Player" tabindex = "0">
+    <div class="ACHtml5Player-left">
+        <div id="ACHtml5Player_main" class="ACHtml5Player-main">
+            <div id="ACHtml5Player_player" class="ACHtml5Player-main-el"></div>
+            <div id="ACHtml5Player_bulletComments" class="ACHtml5Player-main-el"></div>
+            <div id="ACHtml5Player_acfunPlayPauseAnimate" class="ACHtml5Player_acfunPlayPauseAnimate ACHtml5Player-resource-acfunPlay"></div>
+            <div id="ACHtml5Player_progressBar" class="ACHtml5Player-progressBar horizontal">
+                <div id="ACHtml5Player_progressBarTip" class="ACHtml5Player-progressBarTip">00:00</div>
+                <div id="ACHtml5Player_progressBarBuffer" class="ACHtml5Player-progressBarBuffer ACHtml5Player-slideBarFill"></div>
+                <div id="ACHtml5Player_progressBarComplete" class="ACHtml5Player-slideBarFill">
+                    <div id="ACHtml5Player_progressBarHandShank" class="ACHtml5Player-progressBarHandShank ACHtml5Player-slideBarHandShank"></div>
+                </div>
+            </div>
+        </div>
+        <div id="ACHtml5Player_controlBars" class="ACHtml5Player-controlBars">
+            <div class="ACHtml5Player-controlBar ACHtml5Player-barSmallPadding small">
+                <div id="ACHtml5Player_btnPlayPause" class="ACHtml5Player-barButton ACHtml5Player-barleft ACHtml5Player-resource-play"></div>
+                <div id="ACHtml5Player_textTime" class="ACHtml5Player-barText ACHtml5Player-barleft">00:00/00:00</div>
+
+                <div id="ACHtml5Player_btnFullScreen" class="ACHtml5Player-barButton ACHtml5Player-barright ACHtml5Player-resource-fullScreen">
+                    <div class="ACHtml5Player-popupBox ACHtml5Player-popupFullScreen">
+                        <div id="ACHtml5Player_checkBoxFullScreenPage" class="ACHtml5Player-checkBox ACHtml5Player-resource-checkBox">网页全屏模式</div>
+                        <div id="ACHtml5Player_checkBoxFullScreenDesktop" class="ACHtml5Player-checkBox ACHtml5Player-resource-checkBox">桌面全屏模式</div>
+                    </div>
+                </div>
+                <div id="ACHtml5Player_btnSettings" class="ACHtml5Player-barButton ACHtml5Player-barright ACHtml5Player-resource-settings"></div>
+                <div id="ACHtml5Player_btnLoop" class="ACHtml5Player-barButton ACHtml5Player-barright ACHtml5Player-resource-loopOff"></div>
+                <div id="ACHtml5Player_btnBulletComments" class="ACHtml5Player-barButton ACHtml5Player-barright ACHtml5Player-resource-bulletCommentsOn">
+                    <div class="ACHtml5Player-popupBox ACHtml5Player-popupBulletComments"></div>
+                </div>
+                <div id="ACHtml5Player_btnVolume" class="ACHtml5Player-barButton ACHtml5Player-barright ACHtml5Player-resource-volume">
+                    <div class="ACHtml5Player-popupBox ACHtml5Player-popupBoxVolume">
+                        <div id="ACHtml5Player_volumeNumber" class="ACHtml5Player-volumeNumber">0</div>
+                            <div class="ACHtml5Player-volumeSlideBarBox">
+                                <div id="ACHtml5Player_volumeSlideBar" class="ACHtml5Player-slideBar big vertical">
+                                    <div id="ACHtml5Player_volumeSlideBarFill" class="ACHtml5Player-slideBarFill">
+                                        <div class="ACHtml5Player-slideBarHandShank">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="ACHtml5Player_btnQuality" class="ACHtml5Player-barButton ACHtml5Player-barright"><span>未知</span>
+                    <div class="ACHtml5Player-popupBox ACHtml5Player-popupBoxQuality">
+                        <ul id="ACHtml5Player_qualityList">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="ACHtml5Player-controlBar big">
+                <div class="ACHtml5Player-barButton ACHtml5Player-barleft ACHtml5Player-resource-bulletCommentsSettings">
+                    <div class="ACHtml5Player-clickPopupBox ACHtml5Player-clickPopupBoxBulletCommentsSettings">
+                    </div>
+                </div>
+                <div class="ACHtml5Player-barButton ACHtml5Player-barleft ACHtml5Player-resource-emoticons">
+                    <div class="ACHtml5Player-clickPopupBox ACHtml5Player-clickPopupBoxEmoticons">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ACHtml5Player_foldBar" class="ACHtml5Player-foldBar ACHtml5Player-resource-foldBar"></div>
+    </div>
+    <div class="ACHtml5Player-right">
+        <div class="ACHtml5Player-rightTop">
+            <div class="ACHtml5Player-rightTopText">
+                <span>弹幕</span>
+                <span id="ACHtml5Player_bulletCommentsCount">...</span>
+            </div>
+            <div class="ACHtml5Player-rightTopText">
+                <span>在线</span>
+                <span id="ACHtml5Player_onlineUsersCount">...</span>
+            </div>
+        </div>
+        <table class="ACHtml5Player-table">
+            <tr class="ACHtml5Player-tableTitle">
+                <th style="width: 45px;text-align: center;">时间</th>
+                <th>弹幕内容</th>
+            </tr>
+        </table>
+        <div id="ACHtml5Player_bulletCommentsEmpty" class="ACHtml5Player-bulletCommentsEmpty">弹幕池空空的，好寂寞呀。(˙ー˙)</div>
+        <div class="ACHtml5Player-scrolly ACHtml5Player-bulletCommentsScrolly">
+            <table id="ACHtml5Player_bulletCommentsList" class="ACHtml5Player-table"></table>
+        </div>
+    </div>
+    <div id="ACHtml5Player_loadingShade" class="ACHtml5Player-loadingShade">
+        <div id="ACHtml5Player_loadingCover" class="ACHtml5Player-loadingCover"></div>
+    </div>
+</div>
