@@ -1,14 +1,15 @@
 function rewriteAllowOrignHeader(e) {
     for (var header of e.responseHeaders) {
         if (header.name.toLowerCase() == "access-control-allow-origin") {
-            header.value = e.initiator;
+            //header.value = '*';
             break;
         }
     }
+    console.log(e.responseHeaders);
     return {responseHeaders: e.responseHeaders};
 }
 
-msBrowser.webRequest.onHeadersReceived.addListener(
+browser.webRequest.onHeadersReceived.addListener(
     rewriteAllowOrignHeader,
     {urls: [
         "http://player.acfun.cn/*",

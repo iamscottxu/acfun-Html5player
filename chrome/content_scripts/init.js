@@ -1,6 +1,8 @@
 $(function () {
     let acfunH5Url = 'http://aplay-vod.cn-beijing.aliyuncs.com/acfun/h5.js';
 
+    $('#player > .noflash-alert').hide();
+
     let loadScript_acvideo = function(){
         loadScript('acvideo');
     }

@@ -3,6 +3,7 @@
     "manifest_version": 2,
     "name": "acfun-html5player",
     "version": "1.0",
+    "author": "scottxu",
   
     "description": "为Acfun替换Html5播放器。",
   
@@ -49,6 +50,7 @@
     ],
 
     "background": {
+        "persistent": false,
         "scripts": ["background_scripts/webRequest.js"]
     }
   }

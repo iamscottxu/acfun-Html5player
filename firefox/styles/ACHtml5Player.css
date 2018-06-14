@@ -28,6 +28,7 @@ section.player #player.small .ACHtml5Player {
     -moz-user-select: none;
     -ms-user-select: none;
     outline:none;
+    cursor: default;
 }
 .ACHtml5Player-right {
     position: relative;
