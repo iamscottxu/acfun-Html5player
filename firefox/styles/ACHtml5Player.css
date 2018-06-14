@@ -265,6 +265,37 @@ section.player #player.small .ACHtml5Player {
     display: block;
     opacity: 1;
 }
+.ACHtml5Player-clickPopupBox {
+    position: absolute;
+    background: #FFFFFF;
+    -moz-box-shadow: 0 0 2px #000000; /* 老的 Firefox */
+    box-shadow: 0 0 1px #000000;
+    border-radius: 2px;
+    display: none;
+    cursor: default;
+    bottom: 74px;
+}
+.center .ACHtml5Player-clickPopupBox {
+    bottom: 34px !important;
+}
+.ACHtml5Player-clickPopupBoxBulletCommentsSettings {
+    left: 0;
+    right: -250px;
+    height: 275px;
+}
+.center .ACHtml5Player-clickPopupBoxBulletCommentsSettings {
+    left: -125px !important;
+    right: -125px !important;
+}
+.ACHtml5Player-clickPopupBoxEmoticons {
+    left: -40px;
+    right: -240px;
+    height: 190px;
+}
+.center .ACHtml5Player-clickPopupBoxEmoticons {
+    left: -140px !important;
+    right: -140px !important;
+}
 .ACHtml5Player-popupBox {
     position: absolute;
     background: #FFFFFF;

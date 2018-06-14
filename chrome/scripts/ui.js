@@ -40,13 +40,13 @@ $(function () {
 
             oncheckboxchange: null
         },
-        setloadingCoverImg: function(url) {
+        setloadingCoverImg: function (url) {
             window.ACHtml5Player.ui.elements.loadingCoverDiv.css('background-image', 'url(' + url + ')');
         },
-        hideLoadingShade: function() {
+        hideLoadingShade: function () {
             window.ACHtml5Player.ui.elements.loadingShadeDiv.css('display', 'none');
         },
-        getQualityNameByQuality: function(quality) {
+        getQualityNameByQuality: function (quality) {
             let qualityName = '未知';
             switch (quality) {
                 case 'flv':
@@ -70,7 +70,7 @@ $(function () {
         },
         addQualityToList: function (qualitys, selectQuality) {
             window.ACHtml5Player.ui.elements.qualityListDiv.html('');
-            for(quality of qualitys) {
+            for (quality of qualitys) {
                 let li = $('<li></li>');
                 li.text(window.ACHtml5Player.ui.getQualityNameByQuality(quality));
                 li.attr('data-name', quality);
@@ -79,21 +79,21 @@ $(function () {
             }
         },
         setSlideBarValue: function (elements, progress) {
-            if (elements.parent().hasClass('horizontal')){
+            if (elements.parent().hasClass('horizontal')) {
                 elements.css('width', progress * 100 + '%');
             } else if (elements.parent().hasClass('vertical')) {
                 elements.css('height', progress * 100 + '%');
             }
         },
         getSlideBarValue: function (elements) {
-            if (elements.parent().hasClass('horizontal')){
+            if (elements.parent().hasClass('horizontal')) {
                 return elements.width() / elements.parent().width();
             } else if (elements.parent().hasClass('vertical')) {
                 return elements.height() / elements.parent().height();
             }
         },
         setCheckBox: function (elements, check) {
-            if (check){
+            if (check) {
                 elements.removeClass('ACHtml5Player-resource-checkBox');
                 elements.addClass('ACHtml5Player-resource-checkBoxChecked');
             } else {
@@ -106,18 +106,18 @@ $(function () {
         },
         setVolumeNumber: function (number) {
             ACHtml5Player.ui.setSlideBarValue(
-                ACHtml5Player.ui.elements.volumeSlideBarFillDiv, 
+                ACHtml5Player.ui.elements.volumeSlideBarFillDiv,
                 number
             );
         },
-        getVolumeNumber: function() {
+        getVolumeNumber: function () {
             return ACHtml5Player.ui.getSlideBarValue(
                 ACHtml5Player.ui.elements.volumeSlideBarFillDiv
             );
         },
         setProgressComplete: function (progress) {
             ACHtml5Player.ui.setSlideBarValue(
-                ACHtml5Player.ui.elements.progressBarCompleteDiv, 
+                ACHtml5Player.ui.elements.progressBarCompleteDiv,
                 progress
             );
         },
@@ -128,18 +128,18 @@ $(function () {
         },
         setProgressBuffer: function (progress) {
             ACHtml5Player.ui.setSlideBarValue(
-                ACHtml5Player.ui.elements.progressBarBufferDiv, 
+                ACHtml5Player.ui.elements.progressBarBufferDiv,
                 progress
             );
         },
-        setFullScreen: function(fullScreen) {
+        setFullScreen: function (fullScreen) {
             if (fullScreen) {
                 $('body').addClass('ACHtml5Player-fullScreen');
             } else {
                 $('body').removeClass('ACHtml5Player-fullScreen');
             }
         },
-        setFullScreenDesktop: function(fullScreen) {
+        setFullScreenDesktop: function (fullScreen) {
             if (fullScreen) {
                 ACHtml5Player.ui.elements.progressBarDiv.prependTo(ACHtml5Player.ui.elements.controlBarsDiv);
                 $('body').addClass('ACHtml5Player-fullScreen-desktop');
@@ -148,13 +148,13 @@ $(function () {
                 $('body').removeClass('ACHtml5Player-fullScreen-desktop');
             }
         },
-        getFullScreen: function() {
+        getFullScreen: function () {
             return $('body').hasClass('ACHtml5Player-fullScreen');
         },
-        getFullScreenDesktop: function() {
+        getFullScreenDesktop: function () {
             return $('body').hasClass('ACHtml5Player-fullScreen-desktop');
         },
-        changeControlBarsVisibility: function(visibility) {
+        changeControlBarsVisibility: function (visibility) {
             if (visibility) {
                 $('body').css('cursor', 'auto');
                 ACHtml5Player.ui.elements.controlBarsDiv.css('opacity', '1');
@@ -229,7 +229,7 @@ $(function () {
     };
 
     ACHtml5Player.ui.drag = null;
-    $('.ACHtml5Player-slideBar').click(function(e) {
+    $('.ACHtml5Player-slideBar').click(function (e) {
         if ($(e.target).hasClass('ACHtml5Player-slideBarHandShank')) return;
         let number;
         if ($(this).hasClass('horizontal')) {
@@ -245,13 +245,13 @@ $(function () {
             ACHtml5Player.ui.event.onslidebarclick($(this), number);
     })
     $('.ACHtml5Player-slideBar .ACHtml5Player-slideBarHandShank').on({
-        mousedown: function(e) {
+        mousedown: function (e) {
             let slideBarDiv = $(this).parents('.ACHtml5Player-slideBar');
             ACHtml5Player.ui.drag = slideBarDiv[0];
-            if (ACHtml5Player.ui.event.onslidebarmousedown != null) 
+            if (ACHtml5Player.ui.event.onslidebarmousedown != null)
                 ACHtml5Player.ui.event.onslidebarmousedown(slideBarDiv);
         },
-        mousemove: function(e) {
+        mousemove: function (e) {
             let slideBarDiv = $(this).parents('.ACHtml5Player-slideBar');
             if (ACHtml5Player.ui.drag != slideBarDiv[0]) return;
             let number;
@@ -260,7 +260,7 @@ $(function () {
                 let x = e.pageX - slideBarDiv.offset().left;
                 if (x < 0 || x > width) return;
                 number = x / width;
-            } else if (slideBarDiv.hasClass('vertical')){
+            } else if (slideBarDiv.hasClass('vertical')) {
                 let height = slideBarDiv.height();
                 let y = e.pageY - slideBarDiv.offset().top;
                 if (y < 0 || y > height) return;
@@ -271,14 +271,14 @@ $(function () {
                 ACHtml5Player.ui.event.onslidebarmousemove(slideBarDiv, number);
         }
     });
-    $(window).on('mouseup', function() {
+    $(window).on('mouseup', function () {
         if (ACHtml5Player.ui.drag == null) return;
         if (ACHtml5Player.ui.event.onmouseup != null)
             ACHtml5Player.ui.event.onmouseup($(ACHtml5Player.ui.drag));
         ACHtml5Player.ui.drag = null;
     });
 
-    $('.ACHtml5Player-checkBox').click(function(){
+    $('.ACHtml5Player-checkBox').click(function () {
         let checked = !window.ACHtml5Player.ui.getCheckBox($(this));
         let cancel = false;
         if (window.ACHtml5Player.ui.event.oncheckboxchange != null)
@@ -287,7 +287,26 @@ $(function () {
         window.ACHtml5Player.ui.setCheckBox($(this), checked);
     });
 
-    $('.ACHtml5Player-foldBar').click(function(){
+    $('.ACHtml5Player-foldBar').click(function () {
         window.ACHtml5Player.ui.changeFold($(this));
+    });
+
+    $('.ACHtml5Player-barButton').click(function (e) {
+        if (e.target != this) return;
+        let clickPopupBoxDiv = $(this).find('.ACHtml5Player-clickPopupBox');
+        if (clickPopupBoxDiv.length != 1) return;
+        if (clickPopupBoxDiv.css('display') == 'none') {
+            $('.ACHtml5Player-clickPopupBox').hide(0);
+            clickPopupBoxDiv.show();
+        } else clickPopupBoxDiv.hide(0);
+    });
+
+    $('.ACHtml5Player-clickPopupBox').mouseout(function (e) {
+        if (e.target != this) return;
+        $(this).delay(500).hide(0);
+    });
+
+    $('.ACHtml5Player-clickPopupBox').mouseenter(function (e) {
+        $(this).clearQueue();
     });
 });

@@ -7,7 +7,9 @@
     "description": "为Acfun替换Html5播放器。",
   
     "icons": {
-      "48": "icons/acfun-48.png"
+        "48": "icons/acfun-48.png",
+        "96": "icons/acfun-96.png",
+        "128": "icons/acfun-128.png"
     },
 
     "permissions": [
