@@ -44,7 +44,7 @@ $(function () {
     loadHtml_ACHtml5Player();
 
     function loadScript(scriptName, success) {
-        let url = browser.extension.getURL('scripts/' + scriptName + '.js');
+        let url = chrome.extension.getURL('scripts/' + scriptName + '.js');
         $.get(url, function (result) {
             $('head').append('<script>' + result + '</script>');
             if (success) success();
@@ -52,7 +52,7 @@ $(function () {
     }
 
     function loadStyle(styleName, success) {
-        let url = browser.extension.getURL('styles/' + styleName + '.css');
+        let url = chrome.extension.getURL('styles/' + styleName + '.css');
         $.get(url, function (result) {
             $('head').append('<style>' + result + '</style>');
             if (success) success();
@@ -60,7 +60,7 @@ $(function () {
     }
 
     function loadHtml(htmlName, success) {
-        let url = browser.extension.getURL('html/' + htmlName + '.html');
+        let url = chrome.extension.getURL('html/' + htmlName + '.html');
         $.get(url, function (result) {
             if (success) success($(result));
         }, 'html');
