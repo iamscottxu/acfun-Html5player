@@ -156,10 +156,10 @@ $(function () {
         },
         changeControlBarsVisibility: function (visibility) {
             if (visibility) {
-                $('body').css('cursor', 'auto');
+                ACHtml5Player.ui.elements.ACHtml5PlayerDiv.css('cursor', 'default');
                 ACHtml5Player.ui.elements.controlBarsDiv.css('opacity', '1');
             } else {
-                $('body').css('cursor', 'none');
+                ACHtml5Player.ui.elements.ACHtml5PlayerDiv.css('cursor', 'none');
                 ACHtml5Player.ui.elements.controlBarsDiv.css('opacity', '0');
             }
         },
