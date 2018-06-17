@@ -2,7 +2,7 @@
 
     "manifest_version": 2,
     "name": "acfun-html5player",
-    "version": "1.0",
+    "version": "1.1",
     "author": "scottxu",
   
     "description": "为Acfun替换Html5播放器。",
