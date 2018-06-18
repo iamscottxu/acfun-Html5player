@@ -1,11 +1,11 @@
 {
 
     "manifest_version": 2,
-    "name": "acfun-html5player",
-    "version": "1.1",
+    "name": "AcFun HTML5 Player",
+    "version": "1.2",
     "author": "scottxu",
   
-    "description": "为Acfun替换Html5播放器。",
+    "description": "为Acfun替换一个和官方Flash播放器界面高度相仿的HTML5播放器。",
   
     "icons": {
         "48": "icons/acfun-48.png",
