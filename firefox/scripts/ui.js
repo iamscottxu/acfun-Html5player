@@ -53,10 +53,10 @@ $(function () {
                     qualityName = '流畅';
                     break;
                 case 'mp4':
-                    qualityName = '高清';
+                    qualityName = '超清';
                     break;
                 case 'hd2':
-                    qualityName = '超清';
+                    qualityName = '高清';
                     break;
                 case 'hd3':
                     qualityName = '原画';
