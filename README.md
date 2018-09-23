@@ -6,4 +6,5 @@ acfun-html5player是一个为AcFun设计的全新Html5第三方播放器，完�
 这个项目是一个开源项目，遵循MIT开源协议。要联系作者请发邮件至 xyc0714@aliyun.com 。
 
 Firefox Add-ons: https://addons.mozilla.org/zh-CN/firefox/addon/acfun-html5player/
+
 Chrome Add-ons: https://chrome.google.com/webstore/detail/acfun-html5-player/oodpfboapdbeeefjdlilcmoohdhnieen
