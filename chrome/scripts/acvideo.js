@@ -1,6 +1,7 @@
 $(function () {
     let webSocketClient; //ACFun弹幕服务器
     let aliplayer; //阿里巴巴播放器
+    let bullectCommentsCount;
     ACHtml5Player.ui.setloadingCoverImg(pageInfo.coverImage);
     //弹幕引擎
     let bulletComments = new BulletComments(ACHtml5Player.ui.elements.bulletCommentsDiv[0], {
@@ -14,6 +15,7 @@ $(function () {
 
     //屏蔽整个播放器的右键菜单
     ACHtml5Player.ui.elements.ACHtml5PlayerDiv.on('contextmenu', function (e) {
+        if (e.target.id == 'ACHtml5Player_bulletCommentInput') return true;
         return false;
     });
 
@@ -54,6 +56,9 @@ $(function () {
 
     //播放/暂停按钮
     ACHtml5Player.ui.elements.btnPlayPauseDiv.click(changeState);
+    
+    //发送弹幕按钮
+    ACHtml5Player.ui.elements.btnBulletCommentSendDiv.click(sendBulletComment);
 
     //播放进度条
     ACHtml5Player.ui.elements.progressBarDiv.click(function (e) {
@@ -159,6 +164,7 @@ $(function () {
 
     //键盘事件
     ACHtml5Player.ui.elements.ACHtml5PlayerDiv.keypress(function (e) {
+        if (e.target.id == 'ACHtml5Player_bulletCommentInput') return true;
         switch (e.which) {
             case 32: //空格 暂停
                 changeState();
@@ -188,6 +194,10 @@ $(function () {
     });
 
     ACHtml5Player.ui.elements.ACHtml5PlayerDiv.keyup(function (e) {
+        if (e.target.id == 'ACHtml5Player_bulletCommentInput') {
+            if (e.which == 13) sendBulletComment();
+            return true;
+        }
         switch (e.which) {
             case 38: //上方向键 增大音量
                 turnUpDownVolume(true);
@@ -233,10 +243,8 @@ $(function () {
     $.getJSON(
         'http://danmu.aixifan.com/size/' + pageInfo.videoId,
         function (result) {
-            let count = result[0] + result[1] + result[2];
-            let countText = ACHtml5Player.tools.format_number(count);
-            $('.danmu .sp2').text(countText);
-            $('#ACHtml5Player_bulletCommentsCount').text(countText);
+            bullectCommentsCount = result[0] + result[1] + result[2];
+            displayBullectCommentsCount(bullectCommentsCount);
         }
     );
 
@@ -283,7 +291,7 @@ $(function () {
                     ACHtml5Player.ui.elements.acfunPlayPauseAnimateDiv.css('display', 'block');
                     settextTime();
                     loadVolume();
-                    console.log(aliplayer);
+                    //console.log(aliplayer);
                     loadQuality();
                     ACHtml5Player.ui.changeBtnLoopIcon(aliplayer.getOptions().rePlay);
                     ACHtml5Player.ui.hideLoadingShade();
@@ -394,6 +402,13 @@ $(function () {
         }
     }
 
+    //设置弹幕数
+    function displayBullectCommentsCount(bullectCommentsCount) {
+        let countText = ACHtml5Player.tools.format_number(bullectCommentsCount);
+            $('.danmu .sp2').text(countText);
+            $('#ACHtml5Player_bulletCommentsCount').text(countText);
+    }
+
     //加载弹幕到弹幕列表
     function loadBulletCommentsToList(bulletCommentsList) {
         ACHtml5Player.ui.elements.bulletCommentsListTable.find('.row').remove();
@@ -403,7 +418,13 @@ $(function () {
         }
         ACHtml5Player.ui.elements.bulletCommentsEmptyDiv.css('display', 'none');
         for (let bulletComment of bulletCommentsList) {
-            let info = bulletComment.c.split(',');
+            loadBulletCommentToList(bulletComment)
+        }
+    }
+
+    //追加弹幕
+    function loadBulletCommentToList(bulletComment) {
+        let info = bulletComment.c.split(',');
             let text = bulletComment.m;
             let tr = $('<tr class="row"></tr>');
             tr.attr('data-uuid', info[6]);
@@ -424,7 +445,6 @@ $(function () {
                 //跳转到弹幕发出时间
                 videoSeek(parseInt($(this).data('starttime')));
             });
-        }
     }
 
     //设置视频位置
@@ -445,43 +465,49 @@ $(function () {
     function loadBulletComments(bulletCommentsList, bulletComments, loadStartTime) {
         if (bulletCommentsList == null) return;
         for (let bulletComment of bulletCommentsList) {
-            //传输格式：开始时间（相对于视频,秒）,颜色（16进制RGB值的十进制表示）,
-            //类型,字号（像素）,发送用户的编号,发送日期,弹幕编号（早期视频为编号，新视频为UUID）
-            let info = bulletComment.c.split(',');
-            if (Number(info[0]) < loadStartTime) continue; //当前弹幕开始时间小于加载开始时间
-            let text = bulletComment.m;
-            let type = 0;
-            let speed = 0.10 + bulletComment.m.length / 200; //弹幕越长，速度越快
-            if (speed > 0.20) speed = 0.20;
-            switch (Number(info[2])) {
-                case 1:
-                    type = 0; //流弹幕
-                    break;
-                case 2:
-                    type = 1; //逆向弹幕 猜测
-                    break;
-                case 3:
-                    type = 0; //游客弹幕 猜测
-                    break;
-                case 4:
-                    type = 3; //顶部弹幕
-                    break;
-                case 5:
-                    type = 2; //底部弹幕
-                    break;
-            }
-            bulletComments.addBulletComment({
-                uuid: info[6], //uuid
-                userid: info[4], //用户编号
-                text: text, //文本
-                type: type, //类型
-                speed: speed, //速度
-                color: '#' + Number(info[1]).toString(16), //颜色
-                size: Number(info[3]), //字号
-                startTime: Number(info[0]) * 1000 //开始时间
-            });
+            loadBulletComment(bulletComment, bulletComments, loadStartTime);
         }
     }
+
+    //追加弹幕
+    function loadBulletComment(bulletComment, bulletComments, loadStartTime, newBulletComment = false) {
+        //传输格式：开始时间（相对于视频,秒）,颜色（16进制RGB值的十进制表示）,
+        //类型,字号（像素）,发送用户的编号,发送日期,弹幕编号（早期视频为编号，新视频为UUID）
+        let info = bulletComment.c.split(',');
+        if (Number(info[0]) < loadStartTime) return; //当前弹幕开始时间小于加载开始时间
+        let text = bulletComment.m;
+        let type = 0;
+        let speed = 0.10 + bulletComment.m.length / 200; //弹幕越长，速度越快
+        if (speed > 0.20) speed = 0.20;
+        switch (Number(info[2])) {
+            case 1:
+                type = 0; //流弹幕
+                break;
+            case 2:
+                type = 1; //逆向弹幕 猜测
+                break;
+            case 3:
+                type = 0; //游客弹幕 猜测
+                break;
+            case 4:
+                type = 3; //顶部弹幕
+                break;
+            case 5:
+                type = 2; //底部弹幕
+                break;
+        }
+        bulletComments.addBulletComment({
+            uuid: info[6], //uuid
+            userid: info[4], //用户编号
+            text: text, //文本
+            type: type, //类型
+            speed: speed, //速度
+            color: '#' + Number(info[1]).toString(16), //颜色
+            boxColor: newBulletComment ? '#6EFFFE': null, //边框颜色
+            size: Number(info[3]), //字号
+            startTime: Number(info[0]) * 1000 //开始时间
+        });
+    };
 
     //ACFun弹幕服务器
     function loadWebSocketClient() {
@@ -493,7 +519,8 @@ $(function () {
             pageInfo.videoId,
             parseInt(totleTime),
             $.cookie('auth_key'),
-            $.cookie('auth_key_ac_sha1')
+            $.cookie('auth_key_ac_sha1'),
+            $.cookie('_did')
         )
         webSocketClient.onConnected = function () {
             refresh();
@@ -640,4 +667,31 @@ $(function () {
         else aliplayer.mute();
         loadVolume();
     }
+
+    //发送弹幕
+    function sendBulletComment() {
+        if (status == 'init') return;
+        let text = ACHtml5Player.ui.elements.bulletCommentInput.val();
+        if (text == '') return;
+        if (!ACHtml5Player.ui.disabeBulletCommentSendBtn()) return;
+        ACHtml5Player.ui.elements.bulletCommentInput.val('');
+        let fontSize = 25;
+        let textColor = 16777215;
+        let bulletCommentType = 1;
+        let totleTime = aliplayer.getDuration();
+        let currentTime = aliplayer.getCurrentTime();
+        let dateTime = new Date().getTime();
+        let bulletComment = {
+            c: (currentTime + 0.5 > totleTime ? totleTime : currentTime) + ',' + textColor + ',' + bulletCommentType + ',' + fontSize + ',' + $.cookie('auth_key') + ',' + dateTime + ',0',
+            m: text
+        }
+        loadBulletComment(bulletComment, bulletComments, currentTime, true);
+        loadBulletCommentToList(bulletComment);
+        displayBullectCommentsCount(++bullectCommentsCount);
+        bulletCommentsList.push(bulletComment);
+        webSocketClient.sendbulletComment(currentTime, bulletCommentType, dateTime, textColor, text, fontSize);
+    }
+
+    //接收弹幕
+
 });

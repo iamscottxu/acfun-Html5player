@@ -30,7 +30,9 @@ $(function () {
             checkBoxFullScreenPageDiv: $('#ACHtml5Player_checkBoxFullScreenPage'),
             checkBoxFullScreenDesktopDiv: $('#ACHtml5Player_checkBoxFullScreenDesktop'),
             controlBarsDiv: $('#ACHtml5Player_controlBars'),
-            foldBarDiv: $('#ACHtml5Player_foldBar')
+            foldBarDiv: $('#ACHtml5Player_foldBar'),
+            bulletCommentInput: $('#ACHtml5Player_bulletCommentInput'),
+            btnBulletCommentSendDiv: $('#ACHtml5Player_btnBulletCommentSend')
         },
         event: {
             onmouseup: null,
@@ -225,6 +227,26 @@ $(function () {
                     opacity: '1'
                 }, 620, 'linear');
             }
+        },
+        disabeBulletCommentSendBtn: function() {
+            let btnBulletCommentSendDiv = ACHtml5Player.ui.elements.btnBulletCommentSendDiv;
+            if (typeof(btnBulletCommentSendDiv[0].countdown) === 'undefined') btnBulletCommentSendDiv[0].countdown = 4;
+            if (btnBulletCommentSendDiv[0].countdown < 4) return false;
+            btnBulletCommentSendDiv[0].countdown = 3;
+            btnBulletCommentSendDiv.addClass('disable');            
+            let enableBulletCommentSendBtn = function() {
+                if (btnBulletCommentSendDiv[0].countdown > 0){
+                    btnBulletCommentSendDiv.text('发送(' + btnBulletCommentSendDiv[0].countdown + ')');
+                    btnBulletCommentSendDiv[0].countdown--;
+                    setTimeout(enableBulletCommentSendBtn, 1000);
+                } else {
+                    btnBulletCommentSendDiv[0].countdown = 4;
+                    btnBulletCommentSendDiv.text('发送');
+                    btnBulletCommentSendDiv.removeClass('disable');
+                }
+            }
+            enableBulletCommentSendBtn();
+            return true;
         }
     };
 
