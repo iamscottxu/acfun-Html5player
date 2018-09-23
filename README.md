@@ -14,7 +14,8 @@ acfun-html5player是一个为AcFun设计的全新Html5第三方播放器，完�
 * Chrome Add-ons [`https://chrome.google.com/webstore/detail/acfun-html5-player/oodpfboapdbeeefjdlilcmoohdhnieen`](https://chrome.google.com/webstore/detail/acfun-html5-player/oodpfboapdbeeefjdlilcmoohdhnieen)
 
 >### 提示
->####Chrome浏览器crx扩展包的具体安装方法<br>
+>#### Chrome浏览器crx扩展包的具体安装方法
+>
 >[`https://jingyan.baidu.com/article/e4511cf35c2df92b845eafb3.html`](https://jingyan.baidu.com/article/e4511cf35c2df92b845eafb3.html)
 >
 >下载后crx包后，按照以上页面中“扩展程序的安装方法一”进行安装。
