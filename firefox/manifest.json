@@ -2,7 +2,7 @@
 
     "manifest_version": 2,
     "name": "AcFun HTML5 Player",
-    "version": "1.2",
+    "version": "2.0",
     "author": "scottxu",
   
     "description": "为Acfun替换一个和官方Flash播放器界面高度相仿的HTML5播放器。",
