@@ -18,6 +18,8 @@ acfun-html5player是一个为AcFun设计的全新Html5第三方播放器，完�
 
 * Firefox Add-ons [`https://addons.mozilla.org/zh-CN/firefox/addon/acfun-html5player/`](https://addons.mozilla.org/zh-CN/firefox/addon/acfun-html5player/)
 
+* Edge 版本插件存在一些未解决的问题，尚未发布
+
 >### 提示
 >#### Chrome浏览器crx扩展包的具体安装方法
 >
