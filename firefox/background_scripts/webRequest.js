@@ -1,9 +1,17 @@
 function rewriteAllowOrignHeader(e) {
+    let hasHeader = false;
     for (var header of e.responseHeaders) {
         if (header.name.toLowerCase() == "access-control-allow-origin") {
             header.value = getOrigin(e.originUrl);
+            hasHeader = true;
             break;
         }
+    }
+    if (!hasHeader) {
+        e.responseHeaders.push({
+            name: "Access-Control-Allow-Origin",
+            value: getOrigin(e.originUrl)
+        });
     }
     return {responseHeaders: e.responseHeaders};
 }
