@@ -2,7 +2,7 @@
 
     "manifest_version": 2,
     "name": "AcFun HTML5 Player",
-    "version": "2.1",
+    "version": "2.2",
     "author": "scottxu",
   
     "description": "为Acfun替换一个和官方Flash播放器界面高度相仿的HTML5播放器。",
@@ -31,6 +31,7 @@
         "scripts/jquery.cookie.js",
         "scripts/tools.js",
         "scripts/ui.js",
+        "scripts/reloadPlayer.js",
         "styles/ACHtml5Player.css",
         "styles/resource.css"
     ],
@@ -40,7 +41,8 @@
         "matches": [
             "http://www.acfun.cn/v/*",
             "http://www.aixifan.com/v/*",
-            "http://v.hapame.com/video/*"
+            "http://v.hapame.com/video/*",
+            "http://www.acfun.cn/bangumi/*"
         ],
         "js": [
             "content_scripts/jquery-3.3.1.min.js",

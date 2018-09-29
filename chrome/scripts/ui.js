@@ -48,37 +48,42 @@ $(function () {
         hideLoadingShade: function () {
             window.ACHtml5Player.ui.elements.loadingShadeDiv.css('display', 'none');
         },
-        getQualityNameByQuality: function (quality) {
+        getQualityNameByQuality: function (index) {
             let qualityName = '未知';
-            switch (quality) {
-                case 'flv':
+            switch (index) {
+                case '0':
                     qualityName = '流畅';
                     break;
-                case 'mp4':
-                    qualityName = '超清';
-                    break;
-                case 'hd2':
+                case '1':
                     qualityName = '高清';
                     break;
-                case 'hd3':
+                case '2':
+                    qualityName = '超清';
+                    break;
+                case '3':
                     qualityName = '原画';
                     break;
             }
             return qualityName;
         },
-        setQualityText: function (quality) {
-            let qualityName = ACHtml5Player.ui.getQualityNameByQuality(quality);
+        setQualityText: function (selectQuality) {
+            let qualityDivs = window.ACHtml5Player.ui.elements.qualityListDiv.children();
+            qualityDivs.removeClass('select');
+            let selectQualityDiv = qualityDivs.filter("[data-name='" + selectQuality + "']");
+            selectQualityDiv.addClass('select');
+            let qualityName = ACHtml5Player.ui.getQualityNameByQuality(selectQualityDiv.data('index') + '');
             ACHtml5Player.ui.elements.btnQualityDiv.find('span').text(qualityName);
         },
         addQualityToList: function (qualitys, selectQuality) {
             window.ACHtml5Player.ui.elements.qualityListDiv.html('');
-            for (quality of qualitys) {
+            for (let index in qualitys) {
                 let li = $('<li></li>');
-                li.text(window.ACHtml5Player.ui.getQualityNameByQuality(quality));
-                li.attr('data-name', quality);
-                if (quality == selectQuality) li.addClass('select');
+                li.text(window.ACHtml5Player.ui.getQualityNameByQuality(index));
+                li.attr('data-name', qualitys[index]);
+                li.attr('data-index', index);
                 window.ACHtml5Player.ui.elements.qualityListDiv.prepend(li);
             }
+            window.ACHtml5Player.ui.setQualityText(selectQuality);
         },
         setSlideBarValue: function (elements, progress) {
             if (elements.parent().hasClass('horizontal')) {

@@ -1,8 +1,12 @@
 $(function () {
     let webSocketClient; //ACFun弹幕服务器
     let aliplayer; //阿里巴巴播放器
+    let videoInfo = {
+        videoId: pageInfo.videoId ? pageInfo.videoId : (bgmInfo.videoId ? bgmInfo.videoId : pageInfo.video.videos[0].videoId),
+        coverImage: pageInfo.coverImage ? pageInfo.coverImage : (bgmInfo.image ? bgmInfo.image : pageInfo.video.videos[0].image)
+    } //视频基本信息
     let bullectCommentsCount;
-    ACHtml5Player.ui.setloadingCoverImg(pageInfo.coverImage);
+    ACHtml5Player.ui.setloadingCoverImg(videoInfo.coverImage);
     //弹幕引擎
     let bulletComments = new BulletComments(ACHtml5Player.ui.elements.bulletCommentsDiv[0], {
         clock: function () {
@@ -233,7 +237,7 @@ $(function () {
 
     //弹幕服务器认证？
     $.getJSON(
-        'http://danmu.aixifan.com/auth/' + pageInfo.videoId,
+        'http://danmu.aixifan.com/auth/' + videoInfo.videoId,
         function (result) {
 
         }
@@ -241,7 +245,7 @@ $(function () {
 
     //获取弹幕数
     $.getJSON(
-        'http://danmu.aixifan.com/size/' + pageInfo.videoId,
+        'http://danmu.aixifan.com/size/' + videoInfo.videoId,
         function (result) {
             bullectCommentsCount = result[0] + result[1] + result[2];
             displayBullectCommentsCount(bullectCommentsCount);
@@ -251,7 +255,7 @@ $(function () {
     //加载弹幕
     $.ajax({
         type: "GET",
-        url: 'http://danmu.aixifan.com/V4/' + pageInfo.videoId + '/4073558400000/2000?order=-1',
+        url: 'http://danmu.aixifan.com/V4/' + videoInfo.videoId + '/4073558400000/2000?order=-1',
         dataType: "json",
         success: function (result) {
             bulletCommentsList = result[2];
@@ -265,7 +269,7 @@ $(function () {
     function loadVideo() {
         $.ajax({
             type: "GET",
-            url: "http://api.aixifan.com/plays/youku/" + pageInfo.videoId,
+            url: "http://api.aixifan.com/plays/youku/" + videoInfo.videoId,
             dataType: "json",
             headers: {
                 deviceType: 2
@@ -274,7 +278,7 @@ $(function () {
                 aliplayer = window.ykv(ACHtml5Player.ui.elements.playerDiv[0], {
                     autoplay: false,
                     vid: data.data.sourceId,
-                    quality: "mp4",
+                    quality: "hd3",
                     //client_id: "908a519d032263f8",
                     embsig: data.data.embsig,
                     //events: {
@@ -291,8 +295,8 @@ $(function () {
                     ACHtml5Player.ui.elements.acfunPlayPauseAnimateDiv.css('display', 'block');
                     settextTime();
                     loadVolume();
-                    //console.log(aliplayer);
-                    loadQuality();
+                    console.log(aliplayer);
+                    window.ACHtml5Player.ui.addQualityToList(aliplayer.currentLang.qualitys, aliplayer.currentType.quality);
                     ACHtml5Player.ui.changeBtnLoopIcon(aliplayer.getOptions().rePlay);
                     ACHtml5Player.ui.hideLoadingShade();
                     status = 'ready';
@@ -516,7 +520,7 @@ $(function () {
             webSocketClient.refreshOnlineUsersCount();
         }
         webSocketClient = new ACHtml5Player.webSocketClient(
-            pageInfo.videoId,
+            videoInfo.videoId,
             parseInt(totleTime),
             $.cookie('auth_key'),
             $.cookie('auth_key_ac_sha1'),
@@ -633,13 +637,7 @@ $(function () {
         aliplayer.currentType = aliplayer.currentLang.types[qualityId];
         aliplayer.loadByUrl(m3u8Url, aliplayer.getCurrentTime(), !aliplayer.paused());
         status = 'reload_' + status;
-        loadQuality();
-    }
-
-    //加载清晰度
-    function loadQuality() {
         window.ACHtml5Player.ui.setQualityText(aliplayer.currentType.quality);
-        window.ACHtml5Player.ui.addQualityToList(aliplayer.currentLang.qualitys, aliplayer.currentType.quality);
     }
 
     //显示/隐藏弹幕
@@ -694,4 +692,9 @@ $(function () {
 
     //接收弹幕
 
+    //销毁
+    window.ACHtml5Player.dispose = function() {
+        aliplayer.dispose();
+        delete window.ACHtml5Player;
+    }
 });

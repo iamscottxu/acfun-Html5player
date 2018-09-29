@@ -1,16 +1,27 @@
 function rewriteAllowOrignHeader(e) {
-    let hasHeader = false;
+    let hasOriginHeader = false;
+    let hasCredentialsHeader = false;
     for (var header of e.responseHeaders) {
         if (header.name.toLowerCase() == "access-control-allow-origin") {
             header.value = getOrigin(e.originUrl);
-            hasHeader = true;
+            hasOriginHeader = true;
+            break;
+        } else if (header.name.toLowerCase() == "access-control-allow-credentials") {
+            header.value = "true";
+            hasCredentialsHeader = true;
             break;
         }
     }
-    if (!hasHeader) {
+    if (!hasOriginHeader) {
         e.responseHeaders.push({
             name: "Access-Control-Allow-Origin",
             value: getOrigin(e.originUrl)
+        });
+    }
+    if (!hasCredentialsHeader) {
+        e.responseHeaders.push({
+            name: "Access-Control-Allow-Credentials",
+            value: "true"
         });
     }
     return {responseHeaders: e.responseHeaders};

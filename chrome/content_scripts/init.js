@@ -3,8 +3,11 @@ $(function () {
 
     $('#player > .noflash-alert').hide();
 
+    let loadScript_reloadPlayer = function() {
+        loadScript('reloadPlayer');
+    }
     let loadScript_acvideo = function(){
-        loadScript('acvideo');
+        loadScript('acvideo', loadScript_reloadPlayer);
     }
     let loadScript_ui = function(){
         loadScript('ui', loadScript_acvideo);
@@ -33,8 +36,11 @@ $(function () {
 
     let loadHtml_ACHtml5Player = function(){
         loadHtml('ACHtml5Player', function(element){
-            $('#ACFlashPlayer').after(element); //添加Html播放器容器
+            $('#ACFlashPlayer').after('<div id="ACHtml5Player" class="ACHtml5Player" tabindex = "0">'); //添加Html播放器容器
+            $('body').after('<div id="ACHtml5Player_template" style="display:none;">'); //添加Html播放器容器
             $('#ACFlashPlayer').remove();  //删除flash播放器
+            $('#ACHtml5Player').html(element);(
+            $('#ACHtml5Player_template').text(element));
             getScript_acfunH5();
         });
     };
@@ -46,7 +52,8 @@ $(function () {
     function loadScript(scriptName, success) {
         let url = chrome.extension.getURL('scripts/' + scriptName + '.js');
         $.get(url, function (result) {
-            $('head').append('<script>' + result + '</script>');
+            let id = scriptName.replace(/\//g, '-').replace(/\./g, '_');
+            $('head').append('<script id="ACFunHtml5Player_script_' + id + '">' + result + '</script>');
             if (success) success();
         }, 'text');
     }
@@ -62,7 +69,7 @@ $(function () {
     function loadHtml(htmlName, success) {
         let url = chrome.extension.getURL('html/' + htmlName + '.html');
         $.get(url, function (result) {
-            if (success) success($(result));
+            if (success) success(result);
         }, 'html');
     }
 });
