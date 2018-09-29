@@ -1,5 +1,5 @@
 # acfun-Html5player
-[![Version 2.2](https://img.shields.io/badge/version-2.2-brightgreen.svg)](#)
+[![Version 2.2](https://img.shields.io/badge/version-2.2-brightgreen.svg)](https://github.com/iamscottxu/acfun-Html5player/releases)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/oodpfboapdbeeefjdlilcmoohdhnieen.svg)](https://chrome.google.com/webstore/detail/acfun-html5-player/oodpfboapdbeeefjdlilcmoohdhnieen)
 [![Firefox Add-ons](https://img.shields.io/amo/stars/acfun-html5player.svg)](https://addons.mozilla.org/zh-CN/firefox/addon/acfun-html5player/)
 [![MIT](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/iamscottxu/acfun-Html5player/blob/master/LICENSE)
