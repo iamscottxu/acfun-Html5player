@@ -60,7 +60,7 @@ $(function () {
 
     //播放/暂停按钮
     ACHtml5Player.ui.elements.btnPlayPauseDiv.click(changeState);
-    
+
     //发送弹幕按钮
     ACHtml5Player.ui.elements.btnBulletCommentSendDiv.click(sendBulletComment);
 
@@ -260,7 +260,7 @@ $(function () {
         success: function (result) {
             bulletCommentsList = result[2];
             loadBulletCommentsToList(bulletCommentsList);
-            loadBulletComments(bulletCommentsList, bulletComments, 0);
+            loadBulletComments(bulletCommentsList, bulletComments);
         },
         complete: loadVideo
     });
@@ -409,8 +409,8 @@ $(function () {
     //设置弹幕数
     function displayBullectCommentsCount(bullectCommentsCount) {
         let countText = ACHtml5Player.tools.format_number(bullectCommentsCount);
-            $('.danmu .sp2').text(countText);
-            $('#ACHtml5Player_bulletCommentsCount').text(countText);
+        $('.danmu .sp2').text(countText);
+        $('#ACHtml5Player_bulletCommentsCount').text(countText);
     }
 
     //加载弹幕到弹幕列表
@@ -429,26 +429,26 @@ $(function () {
     //追加弹幕
     function loadBulletCommentToList(bulletComment) {
         let info = bulletComment.c.split(',');
-            let text = bulletComment.m;
-            let tr = $('<tr class="row"></tr>');
-            tr.attr('data-uuid', info[6]);
-            tr.attr('data-userid', info[4]);
-            tr.attr('data-starttime', info[0]);
-            let tdTime = $('<td style="width: 45px;text-align: center;"></td>');
-            let time = parseInt(info[0]);
-            let minute = parseInt(time / 60);
-            let second = time % 60;
-            tdTime.text(ACHtml5Player.tools.PrefixInteger(minute, 2) + ':' + ACHtml5Player.tools.PrefixInteger(second, 2));
-            tr.append(tdTime);
-            let tdText = $('<td></td>');
-            tdText.text(text);
-            tr.append(tdText);
-            ACHtml5Player.ui.elements.bulletCommentsListTable.prepend(tr);
-            //弹幕列表项点击事件
-            tr.click(function () {
-                //跳转到弹幕发出时间
-                videoSeek(parseInt($(this).data('starttime')));
-            });
+        let text = bulletComment.m;
+        let tr = $('<tr class="row"></tr>');
+        tr.attr('data-uuid', info[6]);
+        tr.attr('data-userid', info[4]);
+        tr.attr('data-starttime', info[0]);
+        let tdTime = $('<td style="width: 45px;text-align: center;"></td>');
+        let time = parseInt(info[0]);
+        let minute = parseInt(time / 60);
+        let second = time % 60;
+        tdTime.text(ACHtml5Player.tools.PrefixInteger(minute, 2) + ':' + ACHtml5Player.tools.PrefixInteger(second, 2));
+        tr.append(tdTime);
+        let tdText = $('<td></td>');
+        tdText.text(text);
+        tr.append(tdText);
+        ACHtml5Player.ui.elements.bulletCommentsListTable.prepend(tr);
+        //弹幕列表项点击事件
+        tr.click(function () {
+            //跳转到弹幕发出时间
+            videoSeek(parseInt($(this).data('starttime')));
+        });
     }
 
     //设置视频位置
@@ -466,7 +466,7 @@ $(function () {
     }
 
     //加载弹幕
-    function loadBulletComments(bulletCommentsList, bulletComments, loadStartTime) {
+    function loadBulletComments(bulletCommentsList, bulletComments, loadStartTime = 0) {
         if (bulletCommentsList == null) return;
         for (let bulletComment of bulletCommentsList) {
             loadBulletComment(bulletComment, bulletComments, loadStartTime);
@@ -507,7 +507,7 @@ $(function () {
             type: type, //类型
             speed: speed, //速度
             color: '#' + Number(info[1]).toString(16), //颜色
-            boxColor: newBulletComment ? '#6EFFFE': null, //边框颜色
+            boxColor: newBulletComment ? '#6EFFFE' : null, //边框颜色
             size: Number(info[3]), //字号
             startTime: Number(info[0]) * 1000 //开始时间
         });
@@ -693,7 +693,7 @@ $(function () {
     //接收弹幕
 
     //销毁
-    window.ACHtml5Player.dispose = function() {
+    window.ACHtml5Player.dispose = function () {
         aliplayer.dispose();
         delete window.ACHtml5Player;
     }
