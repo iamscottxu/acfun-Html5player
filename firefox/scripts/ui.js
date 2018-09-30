@@ -32,7 +32,9 @@ $(function () {
             controlBarsDiv: $('#ACHtml5Player_controlBars'),
             foldBarDiv: $('#ACHtml5Player_foldBar'),
             bulletCommentInput: $('#ACHtml5Player_bulletCommentInput'),
-            btnBulletCommentSendDiv: $('#ACHtml5Player_btnBulletCommentSend')
+            btnBulletCommentSendDiv: $('#ACHtml5Player_btnBulletCommentSend'),
+            btnEmoticonsDivs: $('.ACHtml5Player-btnEmoticons'),
+            clickPopupBoxEmoticons: $('#ACHtml5Player_clickPopupBoxEmoticons')
         },
         event: {
             onmouseup: null,

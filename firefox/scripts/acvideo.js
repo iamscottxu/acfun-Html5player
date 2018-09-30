@@ -10,7 +10,7 @@ $(function () {
     //弹幕引擎
     let bulletComments = new BulletComments(ACHtml5Player.ui.elements.bulletCommentsDiv[0], {
         clock: function () {
-            if (aliplayer == null) return 0;
+            if (aliplayer == null || status == 'ended') return 0;
             return aliplayer.getCurrentTime() * 1000; //替换时间基准为播放器时间
         }
     }, 'css3');
@@ -63,6 +63,13 @@ $(function () {
 
     //发送弹幕按钮
     ACHtml5Player.ui.elements.btnBulletCommentSendDiv.click(sendBulletComment);
+
+    //颜文字
+    ACHtml5Player.ui.elements.btnEmoticonsDivs.click(function(e){
+        ACHtml5Player.ui.elements.clickPopupBoxEmoticons.hide();
+        let text = ACHtml5Player.ui.elements.bulletCommentInput.val();
+        ACHtml5Player.ui.elements.bulletCommentInput.val(text + $(this).text());
+    });
 
     //播放进度条
     ACHtml5Player.ui.elements.progressBarDiv.click(function (e) {
@@ -295,7 +302,7 @@ $(function () {
                     ACHtml5Player.ui.elements.acfunPlayPauseAnimateDiv.css('display', 'block');
                     settextTime();
                     loadVolume();
-                    console.log(aliplayer);
+                    //console.log(aliplayer);
                     window.ACHtml5Player.ui.addQualityToList(aliplayer.currentLang.qualitys, aliplayer.currentType.quality);
                     ACHtml5Player.ui.changeBtnLoopIcon(aliplayer.getOptions().rePlay);
                     ACHtml5Player.ui.hideLoadingShade();
@@ -325,9 +332,9 @@ $(function () {
 
                 //当前视频播放完毕时触发。
                 aliplayer.on('ended', function (e) {
+                    status = 'ended';
                     bulletComments.stop();
                     loadBulletComments(bulletCommentsList, bulletComments);
-                    status = 'ended';
                 });
             }
         });
@@ -378,7 +385,7 @@ $(function () {
         );
         //设置已播放进度
         if (ACHtml5Player.drag != 'progressBarHandShankDiv') ACHtml5Player.ui.setProgressComplete(currentTime / totleTime);
-        //计算并设置以缓存进度
+        //计算并设置已缓存进度
         //buffered返回的是缓存的进度的分段，要查找当前正在播放的分段并显示此分段的结束时间
         //，或者显示要播放的下一个分段的结束时间（分段开始时间等于当前播放时间）
         let buffered = aliplayer.getBuffered();
@@ -401,9 +408,7 @@ $(function () {
         if (status == 'play' || status == 'playing' || status == 'ready' || status == 'pause') {
             if (aliplayer.paused()) aliplayer.play();
             else aliplayer.pause();
-        } else if (status == 'ended') {
-            aliplayer.replay();
-        }
+        } else if (status == 'ended') aliplayer.replay();
     }
 
     //设置弹幕数
@@ -457,11 +462,11 @@ $(function () {
         let totleTime = aliplayer.getDuration();
         if (time < 0) time = 0;
         else if (time > totleTime) time = totleTime;
-        if (needloadBulletComments) {
-            bulletComments.cleanBulletCommentList();
-            loadBulletComments(bulletCommentsList, bulletComments, time);
-        }
+        bulletComments.cleanBulletCommentList();
+        bulletComments.cleanBulletCommentListOnScreen();
+        if (needloadBulletComments) loadBulletComments(bulletCommentsList, bulletComments, time);
         aliplayer.seek(time);
+        if (time != totleTime && status == 'ended') status = 'pause';
         if (status == 'play' || status == 'playing') bulletComments.play();
     }
 
