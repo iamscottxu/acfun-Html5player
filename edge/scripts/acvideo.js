@@ -1,11 +1,16 @@
 $(function () {
     let webSocketClient; //ACFun弹幕服务器
     let aliplayer; //阿里巴巴播放器
-    ACHtml5Player.ui.setloadingCoverImg(pageInfo.coverImage);
+    let videoInfo = {
+        videoId: pageInfo.videoId ? pageInfo.videoId : (bgmInfo.videoId ? bgmInfo.videoId : pageInfo.video.videos[0].videoId),
+        coverImage: pageInfo.coverImage ? pageInfo.coverImage : (bgmInfo.image ? bgmInfo.image : pageInfo.video.videos[0].image)
+    } //视频基本信息
+    let bullectCommentsCount;
+    ACHtml5Player.ui.setloadingCoverImg(videoInfo.coverImage);
     //弹幕引擎
     let bulletComments = new BulletComments(ACHtml5Player.ui.elements.bulletCommentsDiv[0], {
         clock: function () {
-            if (aliplayer == null) return 0;
+            if (aliplayer == null || status == 'ended') return 0;
             return aliplayer.getCurrentTime() * 1000; //替换时间基准为播放器时间
         }
     }, 'canvas');
@@ -14,6 +19,7 @@ $(function () {
 
     //屏蔽整个播放器的右键菜单
     ACHtml5Player.ui.elements.ACHtml5PlayerDiv.on('contextmenu', function (e) {
+        if (e.target.id == 'ACHtml5Player_bulletCommentInput') return true;
         return false;
     });
 
@@ -54,6 +60,16 @@ $(function () {
 
     //播放/暂停按钮
     ACHtml5Player.ui.elements.btnPlayPauseDiv.click(changeState);
+
+    //发送弹幕按钮
+    ACHtml5Player.ui.elements.btnBulletCommentSendDiv.click(sendBulletComment);
+
+    //颜文字
+    ACHtml5Player.ui.elements.btnEmoticonsDivs.click(function (e) {
+        ACHtml5Player.ui.elements.clickPopupBoxEmoticons.hide();
+        let text = ACHtml5Player.ui.elements.bulletCommentInput.val();
+        ACHtml5Player.ui.elements.bulletCommentInput.val(text + $(this).text());
+    });
 
     //播放进度条
     ACHtml5Player.ui.elements.progressBarDiv.click(function (e) {
@@ -159,6 +175,7 @@ $(function () {
 
     //键盘事件
     ACHtml5Player.ui.elements.ACHtml5PlayerDiv.keypress(function (e) {
+        if (e.target.id == 'ACHtml5Player_bulletCommentInput') return true;
         switch (e.which) {
             case 32: //空格 暂停
                 changeState();
@@ -188,6 +205,10 @@ $(function () {
     });
 
     ACHtml5Player.ui.elements.ACHtml5PlayerDiv.keyup(function (e) {
+        if (e.target.id == 'ACHtml5Player_bulletCommentInput') {
+            if (e.which == 13) sendBulletComment();
+            return true;
+        }
         switch (e.which) {
             case 38: //上方向键 增大音量
                 turnUpDownVolume(true);
@@ -223,7 +244,7 @@ $(function () {
 
     //弹幕服务器认证？
     $.getJSON(
-        'http://danmu.aixifan.com/auth/' + pageInfo.videoId,
+        'http://danmu.aixifan.com/auth/' + videoInfo.videoId,
         function (result) {
 
         }
@@ -231,24 +252,22 @@ $(function () {
 
     //获取弹幕数
     $.getJSON(
-        'http://danmu.aixifan.com/size/' + pageInfo.videoId,
+        'http://danmu.aixifan.com/size/' + videoInfo.videoId,
         function (result) {
-            let count = result[0] + result[1] + result[2];
-            let countText = ACHtml5Player.tools.format_number(count);
-            $('.danmu .sp2').text(countText);
-            $('#ACHtml5Player_bulletCommentsCount').text(countText);
+            bullectCommentsCount = result[0] + result[1] + result[2];
+            displayBullectCommentsCount(bullectCommentsCount);
         }
     );
 
     //加载弹幕
     $.ajax({
         type: "GET",
-        url: 'http://danmu.aixifan.com/V4/' + pageInfo.videoId + '/4073558400000/2000?order=-1',
+        url: 'http://danmu.aixifan.com/V4/' + videoInfo.videoId + '/4073558400000/2000?order=-1',
         dataType: "json",
         success: function (result) {
             bulletCommentsList = result[2];
             loadBulletCommentsToList(bulletCommentsList);
-            loadBulletComments(bulletCommentsList, bulletComments, 0);
+            loadBulletComments(bulletCommentsList, bulletComments);
         },
         complete: loadVideo
     });
@@ -257,7 +276,7 @@ $(function () {
     function loadVideo() {
         $.ajax({
             type: "GET",
-            url: "http://api.aixifan.com/plays/youku/" + pageInfo.videoId,
+            url: "http://api.aixifan.com/plays/youku/" + videoInfo.videoId,
             dataType: "json",
             headers: {
                 deviceType: 2
@@ -266,7 +285,7 @@ $(function () {
                 aliplayer = window.ykv(ACHtml5Player.ui.elements.playerDiv[0], {
                     autoplay: false,
                     vid: data.data.sourceId,
-                    quality: "mp4",
+                    quality: "hd3",
                     //client_id: "908a519d032263f8",
                     embsig: data.data.embsig,
                     //events: {
@@ -274,7 +293,15 @@ $(function () {
                     //}
                     //}
                 });
-
+                //Edge专有补丁
+                //Edge浏览器下，切换清晰度aliplay并不能成功改变video标签的src属性，造成切换清晰的无效
+                //故另添加一行改变src属性的代码
+                let _initplay = aliplayer.initPlay;
+                aliplayer.initPlay = function(a) {
+                    _initplay.call(this, a);
+                    window.ACHtml5Player.ui.elements.playerDiv.children('video')[0].src = this._options.source;
+                };
+                //////////////////////////////////////////////////
                 //播放器视频初始化按钮渲染完毕。
                 //播放器UI初始设置需要此事件后触发，避免UI被初始化所覆盖。
                 //播放器提供的方法需要在此事件发生后才可以调用。
@@ -283,8 +310,8 @@ $(function () {
                     ACHtml5Player.ui.elements.acfunPlayPauseAnimateDiv.css('display', 'block');
                     settextTime();
                     loadVolume();
-                    console.log(aliplayer);
-                    loadQuality();
+                    //console.log(aliplayer);
+                    window.ACHtml5Player.ui.addQualityToList(aliplayer.currentLang.qualitys, aliplayer.currentType.quality);
                     ACHtml5Player.ui.changeBtnLoopIcon(aliplayer.getOptions().rePlay);
                     ACHtml5Player.ui.hideLoadingShade();
                     status = 'ready';
@@ -313,9 +340,9 @@ $(function () {
 
                 //当前视频播放完毕时触发。
                 aliplayer.on('ended', function (e) {
+                    status = 'ended';
                     bulletComments.stop();
                     loadBulletComments(bulletCommentsList, bulletComments);
-                    status = 'ended';
                 });
             }
         });
@@ -366,7 +393,7 @@ $(function () {
         );
         //设置已播放进度
         if (ACHtml5Player.drag != 'progressBarHandShankDiv') ACHtml5Player.ui.setProgressComplete(currentTime / totleTime);
-        //计算并设置以缓存进度
+        //计算并设置已缓存进度
         //buffered返回的是缓存的进度的分段，要查找当前正在播放的分段并显示此分段的结束时间
         //，或者显示要播放的下一个分段的结束时间（分段开始时间等于当前播放时间）
         let buffered = aliplayer.getBuffered();
@@ -389,9 +416,14 @@ $(function () {
         if (status == 'play' || status == 'playing' || status == 'ready' || status == 'pause') {
             if (aliplayer.paused()) aliplayer.play();
             else aliplayer.pause();
-        } else if (status == 'ended') {
-            aliplayer.replay();
-        }
+        } else if (status == 'ended') aliplayer.replay();
+    }
+
+    //设置弹幕数
+    function displayBullectCommentsCount(bullectCommentsCount) {
+        let countText = ACHtml5Player.tools.format_number(bullectCommentsCount);
+        $('.danmu .sp2').text(countText);
+        $('#ACHtml5Player_bulletCommentsCount').text(countText);
     }
 
     //加载弹幕到弹幕列表
@@ -403,28 +435,33 @@ $(function () {
         }
         ACHtml5Player.ui.elements.bulletCommentsEmptyDiv.css('display', 'none');
         for (let bulletComment of bulletCommentsList) {
-            let info = bulletComment.c.split(',');
-            let text = bulletComment.m;
-            let tr = $('<tr class="row"></tr>');
-            tr.attr('data-uuid', info[6]);
-            tr.attr('data-userid', info[4]);
-            tr.attr('data-starttime', info[0]);
-            let tdTime = $('<td style="width: 45px;text-align: center;"></td>');
-            let time = parseInt(info[0]);
-            let minute = parseInt(time / 60);
-            let second = time % 60;
-            tdTime.text(ACHtml5Player.tools.PrefixInteger(minute, 2) + ':' + ACHtml5Player.tools.PrefixInteger(second, 2));
-            tr.append(tdTime);
-            let tdText = $('<td></td>');
-            tdText.text(text);
-            tr.append(tdText);
-            ACHtml5Player.ui.elements.bulletCommentsListTable.prepend(tr);
-            //弹幕列表项点击事件
-            tr.click(function () {
-                //跳转到弹幕发出时间
-                videoSeek(parseInt($(this).data('starttime')));
-            });
+            loadBulletCommentToList(bulletComment)
         }
+    }
+
+    //追加弹幕
+    function loadBulletCommentToList(bulletComment) {
+        let info = bulletComment.c.split(',');
+        let text = bulletComment.m;
+        let tr = $('<tr class="row"></tr>');
+        tr.attr('data-uuid', info[6]);
+        tr.attr('data-userid', info[4]);
+        tr.attr('data-starttime', info[0]);
+        let tdTime = $('<td style="width: 45px;text-align: center;"></td>');
+        let time = parseInt(info[0]);
+        let minute = parseInt(time / 60);
+        let second = time % 60;
+        tdTime.text(ACHtml5Player.tools.PrefixInteger(minute, 2) + ':' + ACHtml5Player.tools.PrefixInteger(second, 2));
+        tr.append(tdTime);
+        let tdText = $('<td></td>');
+        tdText.text(text);
+        tr.append(tdText);
+        ACHtml5Player.ui.elements.bulletCommentsListTable.prepend(tr);
+        //弹幕列表项点击事件
+        tr.click(function () {
+            //跳转到弹幕发出时间
+            videoSeek(parseInt($(this).data('starttime')));
+        });
     }
 
     //设置视频位置
@@ -433,55 +470,61 @@ $(function () {
         let totleTime = aliplayer.getDuration();
         if (time < 0) time = 0;
         else if (time > totleTime) time = totleTime;
-        if (needloadBulletComments) {
-            bulletComments.cleanBulletCommentList();
-            loadBulletComments(bulletCommentsList, bulletComments, time);
-        }
+        bulletComments.cleanBulletCommentList();
+        bulletComments.cleanBulletCommentListOnScreen();
+        if (needloadBulletComments) loadBulletComments(bulletCommentsList, bulletComments, time);
         aliplayer.seek(time);
+        if (time != totleTime && status == 'ended') status = 'pause';
         if (status == 'play' || status == 'playing') bulletComments.play();
     }
 
     //加载弹幕
-    function loadBulletComments(bulletCommentsList, bulletComments, loadStartTime) {
+    function loadBulletComments(bulletCommentsList, bulletComments, loadStartTime = 0) {
         if (bulletCommentsList == null) return;
         for (let bulletComment of bulletCommentsList) {
-            //传输格式：开始时间（相对于视频,秒）,颜色（16进制RGB值的十进制表示）,
-            //类型,字号（像素）,发送用户的编号,发送日期,弹幕编号（早期视频为编号，新视频为UUID）
-            let info = bulletComment.c.split(',');
-            if (Number(info[0]) < loadStartTime) continue; //当前弹幕开始时间小于加载开始时间
-            let text = bulletComment.m;
-            let type = 0;
-            let speed = 0.10 + bulletComment.m.length / 200; //弹幕越长，速度越快
-            if (speed > 0.20) speed = 0.20;
-            switch (Number(info[2])) {
-                case 1:
-                    type = 0; //流弹幕
-                    break;
-                case 2:
-                    type = 1; //逆向弹幕 猜测
-                    break;
-                case 3:
-                    type = 0; //游客弹幕 猜测
-                    break;
-                case 4:
-                    type = 3; //顶部弹幕
-                    break;
-                case 5:
-                    type = 2; //底部弹幕
-                    break;
-            }
-            bulletComments.addBulletComment({
-                uuid: info[6], //uuid
-                userid: info[4], //用户编号
-                text: text, //文本
-                type: type, //类型
-                speed: speed, //速度
-                color: '#' + Number(info[1]).toString(16), //颜色
-                size: Number(info[3]), //字号
-                startTime: Number(info[0]) * 1000 //开始时间
-            });
+            loadBulletComment(bulletComment, bulletComments, loadStartTime);
         }
     }
+
+    //追加弹幕
+    function loadBulletComment(bulletComment, bulletComments, loadStartTime, newBulletComment = false) {
+        //传输格式：开始时间（相对于视频,秒）,颜色（16进制RGB值的十进制表示）,
+        //类型,字号（像素）,发送用户的编号,发送日期,弹幕编号（早期视频为编号，新视频为UUID）
+        let info = bulletComment.c.split(',');
+        if (Number(info[0]) < loadStartTime) return; //当前弹幕开始时间小于加载开始时间
+        let text = bulletComment.m;
+        let type = 0;
+        let speed = 0.10 + bulletComment.m.length / 200; //弹幕越长，速度越快
+        if (speed > 0.20) speed = 0.20;
+        switch (Number(info[2])) {
+            case 1:
+                type = 0; //流弹幕
+                break;
+            case 2:
+                type = 1; //逆向弹幕 猜测
+                break;
+            case 3:
+                type = 0; //游客弹幕 猜测
+                break;
+            case 4:
+                type = 3; //顶部弹幕
+                break;
+            case 5:
+                type = 2; //底部弹幕
+                break;
+        }
+        bulletComments.addBulletComment({
+            uuid: info[6], //uuid
+            userid: info[4], //用户编号
+            text: text, //文本
+            type: type, //类型
+            speed: speed, //速度
+            color: '#' + Number(info[1]).toString(16), //颜色
+            boxColor: newBulletComment ? '#6EFFFE' : null, //边框颜色
+            size: Number(info[3]), //字号
+            startTime: Number(info[0]) * 1000 //开始时间
+        });
+    };
 
     //ACFun弹幕服务器
     function loadWebSocketClient() {
@@ -490,10 +533,11 @@ $(function () {
             webSocketClient.refreshOnlineUsersCount();
         }
         webSocketClient = new ACHtml5Player.webSocketClient(
-            pageInfo.videoId,
+            videoInfo.videoId,
             parseInt(totleTime),
             $.cookie('auth_key'),
-            $.cookie('auth_key_ac_sha1')
+            $.cookie('auth_key_ac_sha1'),
+            $.cookie('_did')
         )
         webSocketClient.onConnected = function () {
             refresh();
@@ -606,13 +650,7 @@ $(function () {
         aliplayer.currentType = aliplayer.currentLang.types[qualityId];
         aliplayer.loadByUrl(m3u8Url, aliplayer.getCurrentTime(), !aliplayer.paused());
         status = 'reload_' + status;
-        loadQuality();
-    }
-
-    //加载清晰度
-    function loadQuality() {
         window.ACHtml5Player.ui.setQualityText(aliplayer.currentType.quality);
-        window.ACHtml5Player.ui.addQualityToList(aliplayer.currentLang.qualitys, aliplayer.currentType.quality);
     }
 
     //显示/隐藏弹幕
@@ -639,5 +677,37 @@ $(function () {
         if (aliplayer.muted()) aliplayer.unMute();
         else aliplayer.mute();
         loadVolume();
+    }
+
+    //发送弹幕
+    function sendBulletComment() {
+        if (status == 'init') return;
+        let text = ACHtml5Player.ui.elements.bulletCommentInput.val();
+        if (text == '') return;
+        if (!ACHtml5Player.ui.disabeBulletCommentSendBtn()) return;
+        ACHtml5Player.ui.elements.bulletCommentInput.val('');
+        let fontSize = 25;
+        let textColor = 16777215;
+        let bulletCommentType = 1;
+        let totleTime = aliplayer.getDuration();
+        let currentTime = aliplayer.getCurrentTime();
+        let dateTime = new Date().getTime();
+        let bulletComment = {
+            c: (currentTime + 0.5 > totleTime ? totleTime : currentTime) + ',' + textColor + ',' + bulletCommentType + ',' + fontSize + ',' + $.cookie('auth_key') + ',' + dateTime + ',0',
+            m: text
+        }
+        loadBulletComment(bulletComment, bulletComments, currentTime, true);
+        loadBulletCommentToList(bulletComment);
+        displayBullectCommentsCount(++bullectCommentsCount);
+        bulletCommentsList.push(bulletComment);
+        webSocketClient.sendbulletComment(currentTime, bulletCommentType, dateTime, textColor, text, fontSize);
+    }
+
+    //接收弹幕
+
+    //销毁
+    window.ACHtml5Player.dispose = function () {
+        aliplayer.dispose();
+        delete window.ACHtml5Player;
     }
 });

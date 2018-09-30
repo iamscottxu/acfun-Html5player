@@ -70,6 +70,75 @@ section.player #player.small .ACHtml5Player {
 .ACHtml5Player-controlBar.big{
     height: 39px;
 }
+.ACHtml5Player-bulletCommentSend{
+    position: absolute;
+    height: 25px;
+    padding: 7px 5px;
+    right: 0;
+    left: 80px;
+}
+.ACHtml5Player-bulletCommentInputArea{
+    float: left;
+    width: calc(100% - 106px);
+    height: 100%;
+    padding: 0 8px;
+    margin: 0 5px;
+    background: #F5F5F5;
+    color: #999999;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+.ACHtml5Player-bulletCommentInput{
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: none;
+    color: #999999;
+    font-size: 12px;
+}
+.ACHtml5Player-btnBulletCommentSend{
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 15px;
+    text-align: center;
+    line-height: 25px;
+    border-radius: 3px;
+    width: 70px;
+    height: 100%;
+    float: right;
+    margin: 0 5px;
+    background: #FA4E5F;
+}
+.ACHtml5Player-btnBulletCommentSend.disable{
+    background: #CCCCCC;
+}
+.ACHtml5Player-btnBulletCommentSend.disable:hover{
+    cursor: default;
+}
+.ACHtml5Player-btnBulletCommentSend:hover{
+    cursor: pointer;
+}
+.ACHtml5Player-bulletCommentInput::-webkit-input-placeholder
+{
+    opacity: 1;
+    color: #999999;
+}
+.ACHtml5Player-bulletCommentInput:-moz-placeholder
+{
+    opacity: 1;
+    color: #999999;
+}
+.ACHtml5Player-bulletCommentInput::-moz-placeholder
+{
+    opacity: 1;
+    color: #999999;
+}
+.ACHtml5Player-bulletCommentInput:-ms-input-placeholder{
+    opacity: 1;
+    color: #999999;
+}
 .ACHtml5Player-main-el {
     position: absolute;
     left: 0;
@@ -292,10 +361,48 @@ section.player #player.small .ACHtml5Player {
     left: -40px;
     right: -240px;
     height: 190px;
+    padding: 2px 5px 2px 9px;
 }
 .center .ACHtml5Player-clickPopupBoxEmoticons {
     left: -140px !important;
     right: -140px !important;
+}
+.ACHtml5Player-textEmoticons {
+    margin: 10px 0 2px;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: left;
+    color: #999999;
+    width: 100%;
+}
+.ACHtml5Player-boxEmoticons {
+    margin: 2px 0;
+    text-align: left;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 100%;
+    height: 155px;
+}
+.ACHtml5Player-btnEmoticons {
+    color: #000000;
+    text-align: center;
+    font-weight: 400;
+    font-size: 11px;
+    width: 70px;
+    height: 30px;
+    display: inline-block;
+    line-height: 30px;
+    cursor: pointer;
+    margin: -2px 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, '微软雅黑', '苹方-简';
+    overflow: hidden;
+}
+.ACHtml5Player-btnEmoticons span{
+    font-size: 8px;
+}
+.ACHtml5Player-btnEmoticons:hover {
+    background: #F5F5F5;
 }
 .ACHtml5Player-popupBox {
     position: absolute;

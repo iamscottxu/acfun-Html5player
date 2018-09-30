@@ -1,5 +1,5 @@
 $(function () {
-    window.ACHtml5Player.webSocketClient = function (videoId, videoLength, userId, userIdSHA1) {
+    window.ACHtml5Player.webSocketClient = function (videoId, videoLength, userId, userIdSHA1, udid) {
         let _this = this;
         let config = {
             serverUrl: 'ws://danmaku.acfun.cn:443',
@@ -67,7 +67,7 @@ $(function () {
                     uid: userId,
                     uid_ck: userIdSHA1
                 }
-                sendMessane('auth', JSON.stringify(authInfo));
+                sendMessane(null, 'auth', null, JSON.stringify(authInfo));
             }
         };
         this.close = function () {
@@ -85,15 +85,37 @@ $(function () {
             if (status != 'connected' && 
                 status != 'connected_disabled' &&
                 status != 'connected_notIdentified')  return;
-            sendMessane('onlanNumber', 'WALLE DOES NOT HAVE PENNIS');
+            sendMessane(null, 'onlanNumber', null, 'WALLE DOES NOT HAVE PENNIS');
         }
+
+        this.sendbulletComment = function (stime, mode, time, color, message, size) {
+            if (status != 'connected' && 
+                status != 'connected_disabled' &&
+                status != 'connected_notIdentified')  return;
+            let command = {
+                user: userId,
+                stime: Math.round(stime) + '',
+                mode: mode + '',
+                time: time + '',
+                color: color + '',
+                message: message,
+                islock: '2',
+                size: size + ''
+            }
+            sendMessane('web', 'post', udid, JSON.stringify(command));
+        }
+
         this.onOnlineUsersCountChange = null;
 
-        function sendMessane(acthon, message) {
+        this.onNewBulletCommentReceive = null;
+
+        function sendMessane(platform, acthon, udid, message) {
             if (socket == null) return;
             if (socket.readyState != 1) return;
             let data = {
+                platform: platform,
                 action: acthon,
+                udid: udid,
                 command: message
             }
             socket.send(JSON.stringify(data));

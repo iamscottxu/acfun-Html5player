@@ -30,7 +30,11 @@ $(function () {
             checkBoxFullScreenPageDiv: $('#ACHtml5Player_checkBoxFullScreenPage'),
             checkBoxFullScreenDesktopDiv: $('#ACHtml5Player_checkBoxFullScreenDesktop'),
             controlBarsDiv: $('#ACHtml5Player_controlBars'),
-            foldBarDiv: $('#ACHtml5Player_foldBar')
+            foldBarDiv: $('#ACHtml5Player_foldBar'),
+            bulletCommentInput: $('#ACHtml5Player_bulletCommentInput'),
+            btnBulletCommentSendDiv: $('#ACHtml5Player_btnBulletCommentSend'),
+            btnEmoticonsDivs: $('.ACHtml5Player-btnEmoticons'),
+            clickPopupBoxEmoticons: $('#ACHtml5Player_clickPopupBoxEmoticons')
         },
         event: {
             onmouseup: null,
@@ -46,37 +50,42 @@ $(function () {
         hideLoadingShade: function () {
             window.ACHtml5Player.ui.elements.loadingShadeDiv.css('display', 'none');
         },
-        getQualityNameByQuality: function (quality) {
+        getQualityNameByQuality: function (index) {
             let qualityName = '未知';
-            switch (quality) {
-                case 'flv':
+            switch (index) {
+                case '0':
                     qualityName = '流畅';
                     break;
-                case 'mp4':
-                    qualityName = '超清';
-                    break;
-                case 'hd2':
+                case '1':
                     qualityName = '高清';
                     break;
-                case 'hd3':
+                case '2':
+                    qualityName = '超清';
+                    break;
+                case '3':
                     qualityName = '原画';
                     break;
             }
             return qualityName;
         },
-        setQualityText: function (quality) {
-            let qualityName = ACHtml5Player.ui.getQualityNameByQuality(quality);
+        setQualityText: function (selectQuality) {
+            let qualityDivs = window.ACHtml5Player.ui.elements.qualityListDiv.children();
+            qualityDivs.removeClass('select');
+            let selectQualityDiv = qualityDivs.filter("[data-name='" + selectQuality + "']");
+            selectQualityDiv.addClass('select');
+            let qualityName = ACHtml5Player.ui.getQualityNameByQuality(selectQualityDiv.data('index') + '');
             ACHtml5Player.ui.elements.btnQualityDiv.find('span').text(qualityName);
         },
         addQualityToList: function (qualitys, selectQuality) {
             window.ACHtml5Player.ui.elements.qualityListDiv.html('');
-            for (quality of qualitys) {
+            for (let index in qualitys) {
                 let li = $('<li></li>');
-                li.text(window.ACHtml5Player.ui.getQualityNameByQuality(quality));
-                li.attr('data-name', quality);
-                if (quality == selectQuality) li.addClass('select');
+                li.text(window.ACHtml5Player.ui.getQualityNameByQuality(index));
+                li.attr('data-name', qualitys[index]);
+                li.attr('data-index', index);
                 window.ACHtml5Player.ui.elements.qualityListDiv.prepend(li);
             }
+            window.ACHtml5Player.ui.setQualityText(selectQuality);
         },
         setSlideBarValue: function (elements, progress) {
             if (elements.parent().hasClass('horizontal')) {
@@ -225,6 +234,26 @@ $(function () {
                     opacity: '1'
                 }, 620, 'linear');
             }
+        },
+        disabeBulletCommentSendBtn: function() {
+            let btnBulletCommentSendDiv = ACHtml5Player.ui.elements.btnBulletCommentSendDiv;
+            if (typeof(btnBulletCommentSendDiv[0].countdown) === 'undefined') btnBulletCommentSendDiv[0].countdown = 4;
+            if (btnBulletCommentSendDiv[0].countdown < 4) return false;
+            btnBulletCommentSendDiv[0].countdown = 3;
+            btnBulletCommentSendDiv.addClass('disable');            
+            let enableBulletCommentSendBtn = function() {
+                if (btnBulletCommentSendDiv[0].countdown > 0){
+                    btnBulletCommentSendDiv.text('发送(' + btnBulletCommentSendDiv[0].countdown + ')');
+                    btnBulletCommentSendDiv[0].countdown--;
+                    setTimeout(enableBulletCommentSendBtn, 1000);
+                } else {
+                    btnBulletCommentSendDiv[0].countdown = 4;
+                    btnBulletCommentSendDiv.text('发送');
+                    btnBulletCommentSendDiv.removeClass('disable');
+                }
+            }
+            enableBulletCommentSendBtn();
+            return true;
         }
     };
 
