@@ -18,7 +18,7 @@ acfun-html5player是一个为AcFun设计的全新Html5第三方播放器，完�
 
 * Firefox Add-ons [`https://addons.mozilla.org/zh-CN/firefox/addon/acfun-html5player/`](https://addons.mozilla.org/zh-CN/firefox/addon/acfun-html5player/)
 
-* Edge 版本插件可手动下载使用，暂未发布（微软Windows商店上架扩展需要提前申请，才能上传，审批时间奇慢无比，目前已经在申请，但是任然没有回应）
+* Edge 版本插件可手动下载使用，暂未发布（微软Windows商店上架扩展需要提前申请，才能上传，审批时间奇慢无比，目前已经提交申请，但是微软方面没有任何回应）
 
 >### 提示
 >#### Chrome浏览器crx扩展包的具体安装方法
@@ -33,7 +33,8 @@ acfun-html5player是一个为AcFun设计的全新Html5第三方播放器，完�
 >鉴于很多小伙伴询问Edge怎么使用扩展，这里说明下：
 > * 点击`Clone or download -> Download ZIP`下载；
 > * 下载解压缩后，打开Edge浏览器，地址栏输入`about:flags`，在里面勾选`启用开发人员扩展功能（这可能让设备处于危险之中）`选择，关闭页面；
-> * 点击`右上角有三个点图标的菜单 -> 扩展 -> 加载扩展`，在打开的窗口中选择`edge\Extension`文件夹，即可使用扩展。（Ps：Windows 10早期版本并不支持扩展加载，请更打开Windows自动更新，并更新到最新版本）。
+> * 点击`右上角有三个点图标的菜单 -> 扩展 -> 加载扩展`，在打开的窗口中选择`edge\Extension`文件夹，即可使用扩展。
+>Ps：Windows 10早期版本并不支持扩展加载，请打开Windows自动更新，并更新到最新版本。
 >
 
 ## 联系作者
