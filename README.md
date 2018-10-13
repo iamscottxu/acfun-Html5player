@@ -11,6 +11,8 @@ acfun-html5player是一个为AcFun设计的全新Html5第三方播放器，完�
 
 暂时只支持简单的弹幕发送，不支持拖动小窗口播放，可以播放普通弹幕。
 
+>由于最近正在重构播放器代码，更新速度将会变慢，敬请谅解。
+
 ## 安装和使用
 直接进入以下地址，安装浏览器扩展，打开AcFun播放页面即可使用。对于不能访问Chrome网上应用商店或使用其他Chromium内核浏览器（360浏览器、QQ浏览器等绝大多数国产浏览器）的小伙伴可以到[`https://github.com/iamscottxu/acfun-Html5player/releases/`](https://github.com/iamscottxu/acfun-Html5player/releases/)页面单独下载最新版本的crx包并打开Chrome的应用扩展页面进行安装。
 
