@@ -9,7 +9,7 @@ const fs = require('fs-extra');
 const sourcemaps = require('gulp-sourcemaps');
 const buffer = require('vinyl-buffer');
 const concat = require('gulp-concat');
-const minifyCSS = require('gulp-minify-css');
+const cleanCSS = require('gulp-clean-css');
 const htmlmin = require('gulp-htmlmin');
 const zip = require('gulp-zip');
 const buildConfig = require('./build.json');
@@ -66,7 +66,7 @@ gulp.task('css_min', () => {
         'node_modules/tooltipster/dist/css/tooltipster.bundle.min.css'
     ])
         .pipe(concat(`${buildConfig.name}.all.min.css`))
-        .pipe(minifyCSS())
+        .pipe(cleanCSS())
         .pipe(gulp.dest('dist/chrome_debug/styles'))
         .pipe(gulp.dest('dist/chrome/styles'))
         .pipe(gulp.dest('dist/firefox/styles'))
