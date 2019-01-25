@@ -1,6 +1,8 @@
 import * as openBSE from 'openbse'
+import Cookies from 'js-cookie'
 import { Event } from './event'
-import { Helper } from 'openbse/dist/lib/helper';
+import { Helper } from 'openbse/dist/lib/helper'
+import { ACWebSocketClient } from './acWebSocketClient'
 
 class BulletScreen {
     /**
@@ -13,24 +15,66 @@ class BulletScreen {
         let _loaded = 0;
         let _bulletScreenCount = 0;
         let _bulletScreenList = [];
+        let _videoId = null;
+        let _refreshOnlineUsersCountTimer = null;
 
         _event.add('loadsuccess');
         _event.add('loaderror');
-        _event.add('bulletScreenCountChanged');
-        _event.add('addBulletScreens');
+        _event.add('bulletscreencountchanged');
+        _event.add('addbulletscreens');
         _event.add('destroy');
+
+        _event.add('acwebsocketstatuschanged');
+        _event.add('onlineuserscountchanged');
 
         this.bind = _event.bind;
         this.unbind = _event.unbind;
 
         let bulletScreenEngine = new openBSE.BulletScreenEngine(bulletElement, {
             defaultStyle: {
-                fontFamily: 'Microsoft Yahei UI, Microsoft Yahei, SimHei, Heiti SC, sans-serif',
+                fontFamily: 'Microsoft YaHei UI, Microsoft YaHei, SimHei, Heiti SC, sans-serif',
                 borderColor: 'rgba(0,0,0,0.4)'
             },
             clock: () => videoElement.currentTime * 1000
         }, 'css3');
 
+        let _acWebSocketClient = new ACWebSocketClient(Cookies.get('auth_key'), Cookies.get('auth_key_ac_sha1'), Cookies.get('_did'));
+
+        _acWebSocketClient.bind('statuschanged', (e) => {
+            if (_acWebSocketClient.getIsConnected()) {
+                _refreshOnlineUsersCountTimer = setInterval(_acWebSocketClient.refreshOnlineUsersCount, 10000);
+                _acWebSocketClient.refreshOnlineUsersCount();
+            }
+            else clearInterval(_refreshOnlineUsersCountTimer);
+            _event.trigger('acwebsocketstatuschanged', e);
+        });
+        _acWebSocketClient.bind('onlineuserscountchanged', (e) => {
+            _event.trigger('onlineuserscountchanged', e);
+        });
+        _acWebSocketClient.bind('newbulletscreenreceived', (e) => {
+            let speed = 0.10 + e.bulletScreenData.message / 200; //弹幕越长，速度越快
+            let bulletScreen = {
+                uuid: e.bulletScreenData.commentid, //uuid
+                userid: e.bulletScreenData.user, //用户编号
+                text: e.bulletScreenData.message, //文本
+                type: getBulletScreenType(e.bulletScreenData.mode), //类型
+                startTime: parseFloat(e.bulletScreenData.stime) * 1000, //开始时间
+                style: {
+                    speed: speed, //速度
+                    color: `#${parseInt(e.bulletScreenData.color).toString(16)}`, //颜色
+                    size: parseInt(e.bulletScreenData.size), //字号
+                }
+            }
+            _bulletScreenList.unshift(bulletScreen);
+            if (bulletScreen.startTime >= videoElement.currentTime * 1000) //当前弹幕开始时间小于加载开始时间
+                bulletScreenEngine.addBulletScreen(bulletScreen);
+            _bulletScreenCount[2]++;
+            triggerbulletScreenCountChangedEvent();
+            triggerAddBulletScreens([bulletScreen]);
+        });
+        _acWebSocketClient.bind('loaderror', (e) => {
+            _event.trigger('loaderror', e);
+        });
         videoElement.addEventListener('playing', () => {
             if (!_loaded === 1) return;
             bulletScreenEngine.play();
@@ -56,7 +100,7 @@ class BulletScreen {
         videoElement.addEventListener('seeked', () => {
             if (!_loaded === 1) return;
             addBulletScreenList(videoElement.currentTime * 1000);
-            if(!videoElement.paused) bulletScreenEngine.play();
+            if (!videoElement.paused) bulletScreenEngine.play();
         });
         videoElement.addEventListener('ratechange', () => {
             bulletScreenEngine.setOptions({
@@ -68,7 +112,7 @@ class BulletScreen {
          * 加载弹幕
          * @param {string} videoId - 视频编号
          */
-        this.load = (videoId) => {
+        this.load = (videoId, duration) => {
             if (_loaded === 1) throw new Error();
             function loadBulletScreen(success, error) {
                 //弹幕服务器认证
@@ -107,11 +151,14 @@ class BulletScreen {
             }
             loadBulletScreen(() => {
                 _loaded = 1;
+                _videoId = videoId;
                 _event.trigger('loadsuccess', {});
             }, () => {
                 triggerLoaderrorEvent('REQUEST_BULLETSCREEN_FAILED');
             });
         }
+
+        this.connect = (duration) => _acWebSocketClient.connect(_videoId, duration);
 
         this.getVisibility = bulletScreenEngine.getVisibility;
 
@@ -125,7 +172,9 @@ class BulletScreen {
         this.destroy = () => {
             if (_loaded != 1) throw new Error();
             _loaded = 0;
+            _videoId = null;
             bulletScreenEngine.stop();
+            _acWebSocketClient.close();
             _bulletScreenList = [];
             _event.trigger('destroy', {});
         }
@@ -154,41 +203,38 @@ class BulletScreen {
             //类型,字号（像素）,发送用户的编号,发送日期,弹幕编号（早期视频为编号，新视频为UUID）
             let info = resultItem.c.split(',');
             let text = resultItem.m;
-            let type = 0;
             let speed = 0.10 + resultItem.m.length / 200; //弹幕越长，速度越快
             if (speed > 0.20) speed = 0.20;
-            switch (Number(info[2])) {
-                case 1:
-                    type = openBSE.BulletScreenType.rightToLeft; //流弹幕
-                    break;
-                case 2:
-                    type = openBSE.BulletScreenType.leftToRight; //逆向弹幕 猜测
-                    break;
-                //case 3:
-                //type = openBSE.BulletScreenType.rightToLeft; //游客弹幕 猜测
-                //break;
-                case 4:
-                    type = openBSE.BulletScreenType.top; //顶部弹幕
-                    break;
-                case 5:
-                    type = openBSE.BulletScreenType.bottom; //底部弹幕
-                    break;
-                default:
-                    type = openBSE.BulletScreenType.rightToLeft;
-                    break;
-            }
             _bulletScreenList.unshift({
                 uuid: info[6], //uuid
                 userid: info[4], //用户编号
                 text: text, //文本
-                type: type, //类型
-                startTime: Number(info[0]) * 1000, //开始时间
+                type: getBulletScreenType(info[2]), //类型
+                startTime: parseFloat(info[0]) * 1000, //开始时间
                 style: {
                     speed: speed, //速度
-                    color: `#${Number(info[1]).toString(16)}`, //颜色
-                    size: Number(info[3]), //字号
+                    color: `#${parseInt(info[1]).toString(16)}`, //颜色
+                    size: parseInt(info[3]), //字号
                 }
             });
+        }
+
+        function getBulletScreenType(typeId) {
+            switch (parseInt(typeId)) {
+                case 1:
+                    return openBSE.BulletScreenType.rightToLeft; //流弹幕
+                case 2:
+                    return openBSE.BulletScreenType.leftToRight; //逆向弹幕 猜测
+                //case 3:
+                //type = openBSE.BulletScreenType.rightToLeft; //游客弹幕 猜测
+                //break;
+                case 4:
+                    return openBSE.BulletScreenType.top; //顶部弹幕
+                case 5:
+                    return openBSE.BulletScreenType.bottom; //底部弹幕
+                default:
+                    return openBSE.BulletScreenType.rightToLeft;
+            }
         }
 
         /**
@@ -212,11 +258,11 @@ class BulletScreen {
         }
 
         function triggerbulletScreenCountChangedEvent() {
-            _event.trigger('bulletScreenCountChanged', { bulletScreenCount: Helper.clone(_bulletScreenCount) });
+            _event.trigger('bulletscreencountchanged', { bulletScreenCount: Helper.clone(_bulletScreenCount) });
         }
 
         function triggerAddBulletScreens(newBulletScreens, cleanOld = false) {
-            _event.trigger('addBulletScreens', { newBulletScreens: Helper.clone(newBulletScreens), cleanOld: cleanOld });
+            _event.trigger('addbulletscreens', { newBulletScreens: Helper.clone(newBulletScreens), cleanOld: cleanOld });
         }
 
         //小窗口播放缩小弹幕

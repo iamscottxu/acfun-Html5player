@@ -12,6 +12,7 @@
     "@babel/polyfill": "^7.2.5",
     "hls.js": "^0.12.2",
     "jquery": "^3.3.1",
+    "js-cookie": "^2.2.0",
     "openbse": "^2.0.9",
     "perfect-scrollbar": "^1.4.0",
     "tooltipster": "^4.2.6"

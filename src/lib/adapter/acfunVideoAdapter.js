@@ -13,8 +13,8 @@ class AcFunVideoAdapter {
         _event.add('videoloadsuccess');
         _event.add('loaderror');
         _event.add('destroy');
-        _event.add('qualitySwitching');
-        _event.add('qualitySwitched');
+        _event.add('qualityswitching');
+        _event.add('qualityswitched');
 
         this.bind = _event.bind;
         this.unbind = _event.unbind;
@@ -99,11 +99,11 @@ class AcFunVideoAdapter {
                 hls.attachMedia(videoElement);
 
                 hls.on(Hls.Events.LEVEL_SWITCHING, (event, data) => {
-                    _event.trigger('qualitySwitching', {qualityIndex: getQualityIndexByHLSQualityIndex(data.level)});
+                    _event.trigger('qualityswitching', {qualityIndex: getQualityIndexByHLSQualityIndex(data.level)});
                 });
 
                 hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
-                    _event.trigger('qualitySwitched', {qualityIndex: getQualityIndexByHLSQualityIndex(data.level)});
+                    _event.trigger('qualityswitched', {qualityIndex: getQualityIndexByHLSQualityIndex(data.level)});
                 });
 
                 hls.on(Hls.Events.ERROR, (event, data) => {
@@ -170,6 +170,7 @@ class AcFunVideoAdapter {
                 _hls = hls;
                 getVideoData((videoData) => {
                     _videoData = videoData;
+                    console.log(videoData);
                     loadVideo(() => {
                         _loaded = 1;
                         _event.trigger('loadsuccess', {});
@@ -189,6 +190,8 @@ class AcFunVideoAdapter {
             _hls.destroy();
             _event.trigger('destroy', {});
         }
+
+        //this.getDuration = () => _hls.
 
         /**
          * 获取当前视频清晰度

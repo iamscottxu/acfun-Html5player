@@ -2,7 +2,6 @@ import { Helper } from './lib/helper'
 import { SlideBar } from './lib/slideBar'
 import Emoticons from './emoticons.json'
 import PerfectScrollbar from 'perfect-scrollbar'
-import { setInterval } from 'core-js';
 
 let $ = require('jquery');
 $ = require('tooltipster');
@@ -33,12 +32,12 @@ let LoadUI = (player, coverImage) => {
         setBtnQuality();
     });
 
-    player.bind('bulletScreenDestroy', () => {
+    player.bind('bulletscreendestroy', () => {
         $('#ACHtml5Player_bulletScreenList').empty();
         $('#ACHtml5Player_bulletScreenEmpty').show();
     });
 
-    player.bind('adapterDestroy', () => {
+    player.bind('adapterdestroy', () => {
         $('#ACHtml5Player_loadingShade').show();
     });
 
@@ -65,7 +64,7 @@ let LoadUI = (player, coverImage) => {
 
     player.bind('pause', _pauseEvent);
 
-    player.bind('currentTimeChanged', (e) => {
+    player.bind('currenttimechanged', (e) => {
         $('#ACHtml5Player_textCurrentTime').text(e.currentTimeText);
         $('#ACHtml5Player_textDuration').text(e.durationText);
         $('#ACHtml5Player_progressBarBuffer').css('width', `${e.bufferPercent}%`);
@@ -73,20 +72,24 @@ let LoadUI = (player, coverImage) => {
         $('#ACHtml5Player_progressBarComplete').css('width', `${e.percent}%`);
     });
 
-    player.bind('bulletScreenCountChanged', (e) => {
+    player.bind('bulletscreencountchanged', (e) => {
         $('.danmu.fl > .sp2').text(e.bulletScreenCountText);
         $('#ACHtml5Player_bulletScreenCount').text(e.bulletScreenCountText);
     });
 
-    player.bind('qualitySwitching', (e) => {
+    player.bind('onlineuserscountchanged', (e) => {
+        $('#ACHtml5Player_onlineUsersCount').text(e.onlineUsersCountText);
+    });
+
+    player.bind('qualityswitching', (e) => {
         setBtnQuality(e.qualityIndex);
     });
 
-    player.bind('qualitySwitched', (e) => {
+    player.bind('qualityswitched', (e) => {
         setBtnQuality(e.qualityIndex);
     });
 
-    player.bind('addBulletScreens', (e) => {
+    player.bind('addbulletscreens', (e) => {
         if (e.cleanOld) {
             $('#ACHtml5Player_bulletScreenList').empty();
             $('#ACHtml5Player_bulletScreenEmpty').show();

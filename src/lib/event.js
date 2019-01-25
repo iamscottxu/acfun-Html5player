@@ -21,8 +21,8 @@ class Event {
          * @throws {TypeError} 传入的参数错误或事件已存在时引发错误。请参阅 MDN [TypeError]{@link https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypeError} 。
          */
         this.add = function (name) {
-            if (typeof name != 'string') throw new TypeError(Resources.PARAMETERS_TYPE_ERROR);
-            if (typeof eventList[name] != 'undefined') throw new TypeError(Resources.EVENT_ALREADY_EXISTS_ERROR);
+            if (typeof name != 'string') throw new TypeError(Resources.PARAMETERS_TYPE_ERROR.toString());
+            if (typeof eventList[name] != 'undefined') throw new TypeError(Resources.EVENT_ALREADY_EXISTS_ERROR.toString());
             eventList[name] = [];
         };
         /**
@@ -32,8 +32,8 @@ class Event {
          * @throws {TypeError} 传入的参数错误或事件不存在时引发错误。请参阅 MDN [TypeError]{@link https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypeError} 。
          */
         this.remove = function (name) {
-            if (typeof name != 'string') throw new TypeError(Resources.PARAMETERS_TYPE_ERROR);
-            if (typeof eventList[name] === 'undefined') throw new TypeError(Resources.EVENT_NAME_NOT_FOUND);
+            if (typeof name != 'string') throw new TypeError(Resources.PARAMETERS_TYPE_ERROR.toString());
+            if (typeof eventList[name] === 'undefined') throw new TypeError(Resources.EVENT_NAME_NOT_FOUND_ERROR.toString());
             delete (eventList[name]);
         };
         /**
@@ -45,9 +45,9 @@ class Event {
          * @throws {TypeError} 传入的参数错误或事件不存在时引发错误。请参阅 MDN [TypeError]{@link https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypeError} 。
          */
         this.bind = function (name, fun) {
-            if (typeof name != 'string' || typeof fun != 'function') throw new TypeError(Resources.PARAMETERS_TYPE_ERROR);
+            if (typeof name != 'string' || typeof fun != 'function') throw new TypeError(Resources.PARAMETERS_TYPE_ERROR.toString());
             let event = eventList[name];
-            if (typeof event === 'undefined') throw new TypeError(Resources.EVENT_NAME_NOT_FOUND);
+            if (typeof event === 'undefined') throw new TypeError(Resources.EVENT_NAME_NOT_FOUND_ERROR.toString());
             for (let index in event) {
                 if (event[index] === fun)
                     return false;
@@ -63,9 +63,9 @@ class Event {
          * @throws {TypeError} 传入的参数错误或事件不存在时引发错误。请参阅 MDN [TypeError]{@link https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypeError} 。
          */
         this.unbind = function (name, fun) {
-            if (typeof name != 'string') throw new TypeError(Resources.PARAMETERS_TYPE_ERROR);
+            if (typeof name != 'string') throw new TypeError(Resources.PARAMETERS_TYPE_ERROR.toString());
             let event = eventList[name];
-            if (typeof event === 'undefined') throw new TypeError(Resources.EVENT_NAME_NOT_FOUND);
+            if (typeof event === 'undefined') throw new TypeError(Resources.EVENT_NAME_NOT_FOUND_ERROR.toString());
             if (typeof fun == 'function') for (let index in event) {
                 if (event[index] === fun) {
                     event.splice(fun, 1);
@@ -81,9 +81,9 @@ class Event {
          * @throws {TypeError} 传入的参数错误或事件不存在时引发错误。请参阅 MDN [TypeError]{@link https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypeError} 。
          */
         this.trigger = function (name, e) {
-            if (typeof name != 'string' || Helper._typeof(e) != 'object') throw new TypeError(Resources.PARAMETERS_TYPE_ERROR);
+            if (typeof name != 'string' || Helper._typeof(e) != 'object') throw new TypeError(Resources.PARAMETERS_TYPE_ERROR.toString());
             let event = eventList[name];
-            if (typeof event === 'undefined') throw new TypeError(Resources.EVENT_NAME_NOT_FOUND);
+            if (typeof event === 'undefined') throw new TypeError(Resources.EVENT_NAME_NOT_FOUND_ERROR.toString());
             e.type = name;
             for (let fun of event) {
                 if (!fun(e))

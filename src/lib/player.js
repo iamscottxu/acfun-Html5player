@@ -20,22 +20,24 @@ class Player {
         else requestAnimationFrame = (fun) => window.setTimeout(fun, 17); //60fps
 
         videoElement.controls = false;
-        let adapter = new AcFunVideoAdapter(videoElement);
-        let bulletScreen = new BulletScreen(bulletElement, videoElement);
+        let _adapter = new AcFunVideoAdapter(videoElement);
+        let _bulletScreen = new BulletScreen(bulletElement, videoElement);
         let _event = new Event();
         let _playNextPartFun = null;
 
         _event.add('loadsuccess');
         _event.add('loaderror');
 
-        _event.add('currentTimeChanged');
-        _event.add('qualitySwitching');
-        _event.add('qualitySwitched');
-        _event.add('adapterDestroy');
+        _event.add('currenttimechanged');
+        _event.add('qualityswitching');
+        _event.add('qualityswitched');
+        _event.add('adapterdestroy');
 
-        _event.add('bulletScreenCountChanged');
-        _event.add('addBulletScreens');
-        _event.add('bulletScreenDestroy');
+        _event.add('bulletscreencountchanged');
+        _event.add('addbulletscreens');
+        _event.add('bulletscreendestroy');
+        _event.add('acwebsocketstatuschanged');
+        _event.add('onlineuserscountchanged');
 
         _event.add('loadstart');
         _event.add('progress');
@@ -63,49 +65,57 @@ class Player {
         this.bind = _event.bind;
         this.unbind = _event.unbind;
 
-        adapter.bind('loadsuccess', () => {
-            if (bulletScreen.getLoadedState() != 0) _event.trigger('loadsuccess', {});
+        _adapter.bind('loadsuccess', () => {
+            if (_bulletScreen.getLoadedState() != 0) _event.trigger('loadsuccess', {});
         });
 
-        bulletScreen.bind('loadsuccess', () => {
-            if (adapter.getLoadedState() === 1) _event.trigger('loadsuccess', {});
+        _bulletScreen.bind('loadsuccess', () => {
+            if (_adapter.getLoadedState() === 1) _event.trigger('loadsuccess', {});
         });
 
-        adapter.bind('destroy', () => {
-            _event.trigger('bulletScreenDestroy', {});
+        _adapter.bind('destroy', () => {
+            _event.trigger('bulletscreendestroy', {});
         });
 
-        bulletScreen.bind('destroy', () => {
-            _event.trigger('adapterDestroy', {});
+        _bulletScreen.bind('destroy', () => {
+            _event.trigger('adapterdestroy', {});
         });
 
-        adapter.bind('loaderror', (e) => {
+        _adapter.bind('loaderror', (e) => {
             _event.trigger('loaderror', e);
         });
 
-        adapter.bind('qualitySwitching', (e) => {
-            _event.trigger('qualitySwitching', e);
+        _adapter.bind('qualityswitching', (e) => {
+            _event.trigger('qualityswitching', e);
         });
 
-        adapter.bind('qualitySwitched', (e) => {
-            _event.trigger('qualitySwitched', e);
+        _adapter.bind('qualityswitched', (e) => {
+            _event.trigger('qualityswitched', e);
         });
 
-        bulletScreen.bind('bulletScreenCountChanged', (e) => {
+        _bulletScreen.bind('bulletscreencountchanged', (e) => {
             let count = 0;
             for (let n of e.bulletScreenCount) count += n;
             e.bulletScreenCountText = Helper.separateNumber(count);
-            _event.trigger('bulletScreenCountChanged', e);
+            _event.trigger('bulletscreencountchanged', e);
         });
 
-        bulletScreen.bind('addBulletScreens', (e) => {
+        _bulletScreen.bind('addbulletscreens', (e) => {
             for (let bulletScreen of e.newBulletScreens) bulletScreen.startTimeText = Helper.getTimeText(bulletScreen.startTime /= 1000);
-            _event.trigger('addBulletScreens', e);
+            _event.trigger('addbulletscreens', e);
         });
 
-        bulletScreen.bind('loaderror', (e) => {
+        _bulletScreen.bind('loaderror', (e) => {
             console.warn(`${e.type} ${e.message}`);
-            if (adapter.getLoadedState() === 1) _event.trigger('loadsuccess', {});
+            if (_adapter.getLoadedState() === 1) _event.trigger('loadsuccess', {});
+        });
+
+        _bulletScreen.bind('acwebsocketstatuschanged', (e) => {
+            _event.trigger('acwebsocketstatuschanged', e);
+        });
+        _bulletScreen.bind('onlineuserscountchanged', (e) => {
+            e.onlineUsersCountText = Helper.separateNumber(e.onlineUsersCount);
+            _event.trigger('onlineuserscountchanged', e);
         });
 
         videoElement.addEventListener('loadstart', () => {
@@ -149,6 +159,7 @@ class Player {
         });
 
         videoElement.addEventListener('loadedmetadata', () => {
+            _bulletScreen.connect(Math.round(videoElement.duration));
             _event.trigger('loadedmetadata', {});
         });
 
@@ -195,15 +206,15 @@ class Player {
         this.load = (videoId, autoplay = false) => {
             this.destroy();
             videoElement.autoplay = autoplay;
-            adapter.load(videoId, -1);
-            bulletScreen.load(videoId);
+            _adapter.load(videoId, -1);
+            _bulletScreen.load(videoId);
         }
 
         this.destroy = () => {
-            if (adapter.getLoadedState() === 1) {
-                adapter.destroy();
+            if (_adapter.getLoadedState() === 1) {
+                _adapter.destroy();
             }
-            if (bulletScreen.getLoadedState() === 1) bulletScreen.destroy();
+            if (_bulletScreen.getLoadedState() === 1) _bulletScreen.destroy();
         }
 
         this.play = videoElement.play;
@@ -246,40 +257,40 @@ class Player {
 
         this.getDuration = () => videoElement.duration;
 
-        this.getBulletScreenVisibility = bulletScreen.getVisibility;
+        this.getBulletScreenVisibility = _bulletScreen.getVisibility;
 
-        this.hideBulletScreen = bulletScreen.hide;
+        this.hideBulletScreen = _bulletScreen.hide;
 
-        this.showBulletScreen = bulletScreen.show;
+        this.showBulletScreen = _bulletScreen.show;
 
         /**
          * 获取当前视频清晰度
          * @function
          * @returns {number} 视频清晰度索引
          */
-        this.getQualityIndex = adapter.getQualityIndex;
+        this.getQualityIndex = _adapter.getQualityIndex;
 
         /**
          * 获取是否启用了自动质量选择
          * @function
          */
-        this.getAutoQualityEnabled = adapter.getAutoQualityEnabled;
+        this.getAutoQualityEnabled = _adapter.getAutoQualityEnabled;
 
         /**
          * 获取视频清晰度列表
          * @function
          * @returns {Array} 视频清晰度索引列表（从质量差到质量好排序）
          */
-        this.getQualityIndexList = adapter.getQualityIndexList;
+        this.getQualityIndexList = _adapter.getQualityIndexList;
 
         /**
          * 切换视频质量
          */
-        this.setQualityIndex = adapter.setQualityIndex;
+        this.setQualityIndex = _adapter.setQualityIndex;
 
         this.changeBulletScreenVisibility = () => {
-            if (bulletScreen.getVisibility()) bulletScreen.hide();
-            else bulletScreen.show();
+            if (_bulletScreen.getVisibility()) _bulletScreen.hide();
+            else _bulletScreen.show();
         }
 
         this.setPlayNextPartFun = (playNextPartFun) => {
@@ -323,7 +334,7 @@ class Player {
             duration = videoElement.duration;
             if (typeof currentTime != 'number' || isNaN(currentTime)) currentTime = 0;
             if (typeof duration != 'number' || isNaN(duration)) duration = 0;
-            _event.trigger('currentTimeChanged', {
+            _event.trigger('currenttimechanged', {
                 currentTime: currentTime,
                 duration: duration,
                 percent: currentTime === 0 ? 0 : currentTime / duration * 100,
