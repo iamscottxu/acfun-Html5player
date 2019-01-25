@@ -154,18 +154,18 @@ function separateNumber(n) {
 
 function requestFullscreen(element) {
     if (typeof element.requestFullscreen === 'function') element.requestFullscreen();
-    else if (typeof element.mozRequestFullScreen === 'function') element.mozRequestFullScreen();
     else if (typeof element.webkitRequestFullscreen === 'function') element.webkitRequestFullscreen();
+    else if (typeof element.mozRequestFullScreen === 'function') element.mozRequestFullScreen();
     else if (typeof element.msRequestFullscreen === 'function') element.msRequestFullscreen();
     else if (typeof element.oRequestFullScreen === 'function') element.oRequestFullScreen();
 }
 
 function exitFullscreen() {
     if (typeof document.exitFullscreen === 'function') document.exitFullscreen();
-    else if (typeof document.mozCancelFullScreen === 'function') document.mozCancelFullScreen();
     else if (typeof document.webkitExitFullscreen === 'function') document.webkitExitFullscreen();
-    else if (typeof document.msExitFullScreen === 'function') document.msExitFullScreen();
-    else if (typeof document.oExitFullScreen === 'function') document.oExitFullScreen();
+    else if (typeof document.mozCancelFullScreen === 'function') document.mozCancelFullScreen();
+    else if (typeof document.msExitFullscreen === 'function') document.msExitFullscreen();
+    else if (typeof document.oExitFullscreen === 'function') document.oExitFullscreen();
 }
 
 function addScreenchangeEventListener(listerer, options) {
@@ -178,7 +178,10 @@ function addScreenchangeEventListener(listerer, options) {
 
 function getFullscreenElement() {
     if (typeof document.fullscreenElement != 'undefined') return document.fullscreenElement;
+    else if (typeof document.webkitFullscreenElement != 'undefined') return document.webkitFullscreenElement;
     else if (typeof document.mozFullScreenElement != 'undefined') return document.mozFullScreenElement;
+    else if (typeof document.msFullscreenElement != 'undefined') return document.msFullscreenElement;
+    else if (typeof document.oFullscreenElement != 'undefined') return document.oFullscreenElement;
 }
 
 /**
