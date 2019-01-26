@@ -81,6 +81,11 @@ let LoadUI = (player, coverImage) => {
         $('#ACHtml5Player_onlineUsersCount').text(e.onlineUsersCountText);
     });
 
+    player.bind('acwebsocketstatuschanged', (e) => {
+        if (e.newStatus === 'connected') $('#ACHtml5Player_btnBulletScreenSend').removeClass('disable');
+        else $('#ACHtml5Player_btnBulletScreenSend').addClass('disable');
+    });
+
     player.bind('qualityswitching', (e) => {
         setBtnQuality(e.qualityIndex);
     });
@@ -130,7 +135,7 @@ let LoadUI = (player, coverImage) => {
         player.setVolume(e.value);
     });
 
-    $('#ACHtml5Player_btnVolume').click(function(e) {
+    $('#ACHtml5Player_btnVolume').click(function (e) {
         if (e.target != this) return;
         player.setMuted(!player.getMuted());
     });
@@ -169,6 +174,23 @@ let LoadUI = (player, coverImage) => {
         setBtnLoopIcon();
     });
 
+    $('#ACHtml5Player_btnBulletScreenSend').click((e) => {
+        let btn = $(e.target);
+        if (btn.hasClass('disable') || btn.hasClass('countdown')) return;
+        let countdownNumber = 3;
+        let countdown = () => {
+            if (countdownNumber === 0) btn.removeClass('countdown');
+            else {
+                $('#ACHtml5Player_btnBulletScreenSend_countdownNumber').text(countdownNumber--);
+                setTimeout(countdown, 1000);
+            }
+        }
+        btn.addClass('countdown');
+        countdown();
+        player.sendbulletScreen(new FormData($('#ACHtml5Player_bulletScreenForm')[0]));
+        $('#ACHtml5Player_bulletScreenForm input[name="text"]').val('');
+    });
+
     $('#ACHtml5Player_qualityList').click((e) => {
         if (e.target.tagName.toLowerCase() === 'li') {
             let qualityIndex = $(e.target).data('index');
@@ -183,7 +205,7 @@ let LoadUI = (player, coverImage) => {
 
     $('#ACHtml5Player_boxEmoticons').click((e) => {
         if ($(e.target).hasClass('ACHtml5Player-btnEmoticons')) {
-            let input = $('#ACHtml5Player_bulletScreenInput');
+            let input = $('#ACHtml5Player_bulletScreenForm input[name="text"]');
             input.val(input.val() + $(e.target).text());
         }
     });
@@ -215,7 +237,7 @@ let LoadUI = (player, coverImage) => {
     });
 
     let progressMousedown;
-    $('#ACHtml5Player_progressBarHandShank').mousedown((e) => { progressMousedown = true; progressMousedownLastEvent = e;});
+    $('#ACHtml5Player_progressBarHandShank').mousedown((e) => { progressMousedown = true; progressMousedownLastEvent = e; });
 
     $('body').mouseup(() => { progressMousedown = false; });
 

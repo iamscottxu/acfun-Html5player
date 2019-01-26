@@ -52,7 +52,7 @@ class BulletScreen {
             _event.trigger('onlineuserscountchanged', e);
         });
         _acWebSocketClient.bind('newbulletscreenreceived', (e) => {
-            let speed = 0.10 + e.bulletScreenData.message / 200; //弹幕越长，速度越快
+            let speed = 0.10 + e.bulletScreenData.message.length / 200; //弹幕越长，速度越快
             let bulletScreen = {
                 uuid: e.bulletScreenData.commentid, //uuid
                 userid: e.bulletScreenData.user, //用户编号
@@ -194,6 +194,29 @@ class BulletScreen {
          */
         this.getBulletScreenList = () => _bulletScreenList;
 
+        this.sendbulletScreen = (startTime, typeName, color, text, size) => {
+            let type = openBSE.BulletScreenType[typeName];
+            let speed = 0.10 + text.length / 200; //弹幕越长，速度越快
+            bulletScreenEngine.addBulletScreen({
+                text: text, //文本
+                type: type, //类型
+                startTime: startTime * 1000, //开始时间
+                layer: 1,
+                canDiscard: false,
+                style: {
+                    speed: speed, //速度
+                    color: color, //颜色
+                    size: size, //字号
+                    boxColor: '#6EFFFE' //边框颜色
+                }
+            });
+            _acWebSocketClient.sendbulletScreen(
+                startTime, getBulletScreenMode(type),
+                new Date().getTime(), parseInt(color.substring(1, color.length - 2), 16),
+                text, size
+            )
+        }
+
         /**
          * 从请求结果加载弹幕列表
          * @param {object} resultItem - 请求返回的结果
@@ -219,8 +242,8 @@ class BulletScreen {
             });
         }
 
-        function getBulletScreenType(typeId) {
-            switch (parseInt(typeId)) {
+        function getBulletScreenType(mode) {
+            switch (parseInt(mode)) {
                 case 1:
                     return openBSE.BulletScreenType.rightToLeft; //流弹幕
                 case 2:
@@ -237,6 +260,21 @@ class BulletScreen {
             }
         }
 
+        function getBulletScreenMode(type) {
+            switch (type) {
+                case openBSE.BulletScreenType.rightToLeft:
+                    return 1; //流弹幕
+                case openBSE.BulletScreenType.leftToRight:
+                    return 2; //逆向弹幕 猜测
+                case openBSE.BulletScreenType.top:
+                    return 4; //顶部弹幕
+                case openBSE.BulletScreenType.bottom:
+                    return 5; //底部弹幕
+                default:
+                    return 1;
+            }
+        }
+
         /**
          * 添加弹幕到弹幕引擎
          * @param {number} loadStartTime - 开始时间（单位：毫秒）
@@ -244,7 +282,7 @@ class BulletScreen {
         function addBulletScreenList(loadStartTime = 0) {
             bulletScreenEngine.cleanBulletScreenList(); //清空弹幕列表
             for (let bulletScreen of _bulletScreenList) {
-                if (bulletScreen.startTime < loadStartTime) continue; //当前弹幕开始时间小于加载开始时间
+                if (bulletScreen.startTime < loadStartTime - 1000) continue; //当前弹幕开始时间小于加载开始时间
                 bulletScreenEngine.addBulletScreen(bulletScreen);
             }
         }

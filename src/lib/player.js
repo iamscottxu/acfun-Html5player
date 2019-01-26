@@ -301,6 +301,14 @@ class Player {
 
         this.playNextPart = _playNextPartFun;
 
+        this.sendbulletScreen = (formData) => {
+            _bulletScreen.sendbulletScreen(
+                videoElement.currentTime,
+                formData.get('type'), formData.get('color'),
+                formData.get('text'), parseInt(formData.get('size'))
+            );
+        }
+
 
         /**
          * 获取缓冲进度

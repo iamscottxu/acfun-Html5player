@@ -139,11 +139,17 @@ section.player #player.small .ACHtml5Player {
     margin: 0 5px;
     background: #FA4E5F;
 }
-.ACHtml5Player-btnBulletScreenSend.disable{
+.ACHtml5Player-btnBulletScreenSend.disable, .ACHtml5Player-btnBulletScreenSend.countdown {
     background: #CCCCCC;
 }
-.ACHtml5Player-btnBulletScreenSend.disable:hover{
+.ACHtml5Player-btnBulletScreenSend.disable:hover, .ACHtml5Player-btnBulletScreenSend.countdown:hover {
     cursor: default;
+}
+.ACHtml5Player-btnBulletScreenSend.countdown > .ACHtml5Player-btnBulletScreenSend-countdown {
+    display: inline;
+}
+.ACHtml5Player-btnBulletScreenSend-countdown {
+    display: none;
 }
 .ACHtml5Player-btnBulletScreenSend:hover{
     cursor: pointer;

@@ -170,7 +170,6 @@ class AcFunVideoAdapter {
                 _hls = hls;
                 getVideoData((videoData) => {
                     _videoData = videoData;
-                    console.log(videoData);
                     loadVideo(() => {
                         _loaded = 1;
                         _event.trigger('loadsuccess', {});
