@@ -37,21 +37,21 @@ class SlideBar {
 
         $('body').mousemove((e) => {
             if (mousedown) {
-                if (SlideBarElement.height() === 0 || SlideBarElement.width() === 0) {
+                if (SlideBarElement.innerHeight() === 0 || SlideBarElement.innerWidth() === 0) {
                     mousedown = false;
                     return;
                 }
                 let value;
                 if (vertical) {
                     let Y = e.pageY - SlideBarElement.offset().top;
-                    value = 1 - Y / SlideBarElement.height();
+                    value = 1 - Y / SlideBarElement.innerHeight();
                 } else {
                     let X = e.pageX - SlideBarElement.offset().left;
-                    value = X / SlideBarElement.width();
+                    value = X / SlideBarElement.innerWidth();
                 }
                 _value = value > 1 ? 1 : value < 0 ? 0 : value;
-                this.set(value);
-                _event.trigger('valuechangedbyui', { value: value });
+                this.set(_value);
+                _event.trigger('valuechangedbyui', { value: _value });
             }
         });
 
@@ -63,14 +63,14 @@ class SlideBar {
             let value;
             if (vertical) {
                 let Y = e.pageY - SlideBarElement.offset().top;
-                value = 1 - Y / SlideBarElement.height();
+                value = 1 - Y / SlideBarElement.innerHeight();
             } else {
                 let X = e.pageX - SlideBarElement.offset().left;
-                value = X / SlideBarElement.width();
+                value = X / SlideBarElement.innerWidth();
             }
             _value = value > 1 ? 1 : value < 0 ? 0 : value;
-            this.set(value);
-            _event.trigger('valuechangedbyui', { value: value });
+            this.set(_value);
+            _event.trigger('valuechangedbyui', { value: _value });
         });
 
         this.set = (value) => {

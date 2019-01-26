@@ -255,6 +255,9 @@ class Player {
         this.getPlaybackRate = () => videoElement.playbackRate;
         this.setPlaybackRate = (playbackRate) => { videoElement.playbackRate = playbackRate; }
 
+        this.getBulletScreenOpacity = _bulletScreen.getOpacity;
+        this.setBulletScreenOpacity = _bulletScreen.setOpacity;
+
         this.getDuration = () => videoElement.duration;
 
         this.getBulletScreenVisibility = _bulletScreen.getVisibility;

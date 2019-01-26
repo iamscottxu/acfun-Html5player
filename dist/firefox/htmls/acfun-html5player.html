@@ -37,7 +37,7 @@
             </div>
         </div>
         <div id="ACHtml5Player_controlBars" class="ACHtml5Player-controlBars">
-            <div class="ACHtml5Player-controlBar ACHtml5Player-barSmallPadding small">
+            <div id="ACHtml5Player_controlBar_control" class="ACHtml5Player-controlBar ACHtml5Player-barSmallPadding small">
                 <div id="ACHtml5Player_btnPlayPause" class="ACHtml5Player-barButton ACHtml5Player-barleft ACHtml5Player-resource-play"></div>
                 <div class="ACHtml5Player-barText ACHtml5Player-barleft"><span id="ACHtml5Player_textCurrentTime">00:00</span>/<span id="ACHtml5Player_textDuration">00:00</span></div>
 
@@ -58,7 +58,12 @@
                 <div id="ACHtml5Player_btnSettings" class="ACHtml5Player-barButton ACHtml5Player-barright ACHtml5Player-resource-settings ACHtml5Player-tooltip" title="播放设置"></div>
                 <div id="ACHtml5Player_btnLoop" class="ACHtml5Player-barButton ACHtml5Player-barright ACHtml5Player-resource-loopOff ACHtml5Player-tooltip" title="洗脑循环"></div>
                 <div id="ACHtml5Player_btnBulletScreen" class="ACHtml5Player-barButton ACHtml5Player-barright ACHtml5Player-resource-bulletScreenOn">
-                    <div class="ACHtml5Player-popupBox ACHtml5Player-popupBulletScreen"></div>
+                    <div class="ACHtml5Player-popupBox ACHtml5Player-popupBulletScreen">
+                        <div class="ACHtml5Player-bulletScreenOpacity">
+                            <div class="ACHtml5Player-bulletScreenOpacityText">不透明度</div>
+                            <div id="ACHtml5Player_bulletScreenOpacitySlideBarBox" class="ACHtml5Player-bulletScreenOpacitySlideBarBox"></div>
+                        </div>
+                    </div>
                 </div>
                 <div id="ACHtml5Player_btnVolume" class="ACHtml5Player-barButton ACHtml5Player-barright ACHtml5Player-resource-volume">
                     <div class="ACHtml5Player-popupBox ACHtml5Player-popupBoxVolume">
@@ -66,7 +71,7 @@
                         <div id="ACHtml5Player_volumeSlideBarBox" class="ACHtml5Player-volumeSlideBarBox"></div>
                     </div>
                 </div>
-                <div id="ACHtml5Player_btnSpeed" class="ACHtml5Player-barButton ACHtml5Player-barright"><span>倍数</span>
+                <div id="ACHtml5Player_btnSpeed" class="ACHtml5Player-barButton ACHtml5Player-barright"><span>倍速</span>
                     <div class="ACHtml5Player-popupBox ACHtml5Player-popupBoxSpeed">
                         <ul id="ACHtml5Player_speedList">
                             <li data-rate="2">2倍</li>
@@ -85,9 +90,16 @@
                     </div>
                 </div>
             </div>
-            <form id="ACHtml5Player_bulletScreenForm">
-                <div class="ACHtml5Player-controlBar big">
-                    <div class="ACHtml5Player-barButton ACHtml5Player-barleft ACHtml5Player-resource-bulletScreenSettings">
+            <div id="ACHtml5Player_controlBar_bulletScreen" class="ACHtml5Player-controlBar big">
+                <form id="ACHtml5Player_bulletScreenForm" class="ACHtml5Player-bulletScreenForm">
+                    <div class="ACHtml5Player-bulletScreenSend">
+                        <div class="ACHtml5Player-bulletScreenInputArea">
+                            <input class="ACHtml5Player-bulletScreenInput" type="text" name="text" placeholder="发个弹幕玩玩吧∠( ᐛ 」∠)＿">
+                        </div>
+                        <div id="ACHtml5Player_btnBulletScreenSend" class="ACHtml5Player-btnBulletScreenSend disable">发送<span class="ACHtml5Player-btnBulletScreenSend-countdown">(<span id="ACHtml5Player_btnBulletScreenSend_countdownNumber">0</span>)</span></div>
+                    </div>
+                    <div class="ACHtml5Player-barButton ACHtml5Player-barleft">
+                        <i class="ACHtml5Player-resource-bulletScreenSettings"></i>
                         <div class="ACHtml5Player-barButtonToolTip" title="弹幕设置"></div>
                         <div class="ACHtml5Player-clickPopupBox ACHtml5Player-clickPopupBoxBulletScreenSettings">
                             <input type="hidden" name="type" value="rightToLeft">
@@ -95,7 +107,8 @@
                             <input type="hidden" name="size" value="25">
                         </div>
                     </div>
-                    <div class="ACHtml5Player-barButton ACHtml5Player-barleft ACHtml5Player-resource-emoticons">
+                    <div class="ACHtml5Player-barButton ACHtml5Player-barleft">
+                        <i class="ACHtml5Player-resource-emoticons"></i>
                         <div class="ACHtml5Player-barButtonToolTip" title="颜文字"></div>
                         <div id="ACHtml5Player_clickPopupBoxEmoticons" class="ACHtml5Player-clickPopupBox ACHtml5Player-clickPopupBoxEmoticons">
                             <div class="ACHtml5Player-textEmoticons">颜文字</div>
@@ -103,14 +116,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="ACHtml5Player-bulletScreenSend">
-                        <div class="ACHtml5Player-bulletScreenInputArea">
-                            <input class="ACHtml5Player-bulletScreenInput" type="text" name="text" placeholder="发个弹幕玩玩吧∠( ᐛ 」∠)＿">
-                        </div>
-                        <div id="ACHtml5Player_btnBulletScreenSend" class="ACHtml5Player-btnBulletScreenSend disable">发送<span class="ACHtml5Player-btnBulletScreenSend-countdown">(<span id="ACHtml5Player_btnBulletScreenSend_countdownNumber">0</span>)</span></div>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
         <div id="ACHtml5Player_foldBar" class="ACHtml5Player-foldBar ACHtml5Player-resource-foldBar"></div>
     </div>

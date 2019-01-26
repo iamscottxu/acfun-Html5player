@@ -17,6 +17,7 @@ class BulletScreen {
         let _bulletScreenList = [];
         let _videoId = null;
         let _refreshOnlineUsersCountTimer = null;
+        let _userId = Cookies.get('auth_key');
 
         _event.add('loadsuccess');
         _event.add('loaderror');
@@ -36,9 +37,9 @@ class BulletScreen {
                 borderColor: 'rgba(0,0,0,0.4)'
             },
             clock: () => videoElement.currentTime * 1000
-        }, 'css3');
+        }, 'canvas');
 
-        let _acWebSocketClient = new ACWebSocketClient(Cookies.get('auth_key'), Cookies.get('auth_key_ac_sha1'), Cookies.get('_did'));
+        let _acWebSocketClient = new ACWebSocketClient(_userId, Cookies.get('auth_key_ac_sha1'), Cookies.get('_did'));
 
         _acWebSocketClient.bind('statuschanged', (e) => {
             if (_acWebSocketClient.getIsConnected()) {
@@ -66,7 +67,7 @@ class BulletScreen {
                 }
             }
             _bulletScreenList.unshift(bulletScreen);
-            if (bulletScreen.startTime >= videoElement.currentTime * 1000) //当前弹幕开始时间小于加载开始时间
+            if (bulletScreen.startTime >= videoElement.currentTime * 1000 && e.bulletScreenData.user != _userId) //当前弹幕开始时间小于加载开始时间
                 bulletScreenEngine.addBulletScreen(bulletScreen);
             _bulletScreenCount[2]++;
             triggerbulletScreenCountChangedEvent();
@@ -161,6 +162,9 @@ class BulletScreen {
         this.connect = (duration) => _acWebSocketClient.connect(_videoId, duration);
 
         this.getVisibility = bulletScreenEngine.getVisibility;
+
+        this.getOpacity = () => bulletScreenEngine.getOptions().opacity;
+        this.setOpacity = (opacity) => bulletScreenEngine.setOptions({ opacity: opacity });
 
         this.hide = bulletScreenEngine.hide;
 

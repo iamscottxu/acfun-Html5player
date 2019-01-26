@@ -27,6 +27,9 @@ let LoadUI = (player, coverImage) => {
 
     const volumeSlideBar = new SlideBar('#ACHtml5Player_volumeSlideBarBox', true, true);
 
+    const bulletScreenOpacitySlideBar = new SlideBar('#ACHtml5Player_bulletScreenOpacitySlideBarBox', true, false);
+    $('#ACHtml5Player_bulletScreenOpacitySlideBarBox .ACHtml5Player-slideBarHandShank').append('<span><span id="ACHtml5Player_bulletScreenOpacityNumber">0</span>%</span>');
+
     player.bind('loadsuccess', () => {
         loadQualityList();
         setBtnQuality();
@@ -93,7 +96,7 @@ let LoadUI = (player, coverImage) => {
     player.bind('qualityswitched', (e) => {
         setBtnQuality(e.qualityIndex);
     });
-
+4
     player.bind('addbulletscreens', (e) => {
         if (e.cleanOld) {
             $('#ACHtml5Player_bulletScreenList').empty();
@@ -124,11 +127,19 @@ let LoadUI = (player, coverImage) => {
     });
 
     player.bind('ratechanged', (e) => {
-        $('#ACHtml5Player_btnSpeed > span').text(e.playbackRate === 1 ? '倍数' : `${e.playbackRate}倍`);
+        $('#ACHtml5Player_btnSpeed > span').text(e.playbackRate === 1 ? '倍速' : `${e.playbackRate}倍`);
+    });
+
+    bulletScreenOpacitySlideBar.bind('valuechanged', (e) => {
+        $('#ACHtml5Player_bulletScreenOpacityNumber').text(Math.round(e.value * 100));
+    });
+
+    bulletScreenOpacitySlideBar.bind('valuechangedbyui', (e) => {
+        player.setBulletScreenOpacity(e.value);
     });
 
     volumeSlideBar.bind('valuechanged', (e) => {
-        $('#ACHtml5Player_volumeNumber').text(parseInt(e.value * 100));
+        $('#ACHtml5Player_volumeNumber').text(Math.round(e.value * 100));
     });
 
     volumeSlideBar.bind('valuechangedbyui', (e) => {
@@ -164,7 +175,8 @@ let LoadUI = (player, coverImage) => {
         changeFullScreen();
     });
 
-    $('#ACHtml5Player_btnBulletScreen').click(() => {
+    $('#ACHtml5Player_btnBulletScreen').click(function(e) {
+        if (e.target != this) return;
         player.changeBulletScreenVisibility();
         setBtnBulletScreenIcon();
     });
@@ -289,6 +301,7 @@ let LoadUI = (player, coverImage) => {
         if (Helper.getFullscreenElement() === $('#ACHtml5Player')[0]) {
             $('#ACHtml5Player_progressBar').prependTo('#ACHtml5Player_controlBars');
             $('body').addClass('ACHtml5Player-fullScreen');
+            $('#ACHtml5Player_bulletScreenForm').prependTo('#ACHtml5Player_controlBar_control');
             $('body').addClass('ACHtml5Player-fullScreen-desktop');
             $('#ACHtml5Player').on('mousemove', controlBarsHideMousemoveEvent);
             controlBarsHideMousemoveEvent();
@@ -299,7 +312,10 @@ let LoadUI = (player, coverImage) => {
             $('#ACHtml5Player').removeClass('ACHtml5Player-hideControlBars');
             $('#ACHtml5Player_progressBar').appendTo('#ACHtml5Player_main');
             $('body').removeClass('ACHtml5Player-fullScreen-desktop');
-            if (fullScreenType === 'desktop') $('body').removeClass('ACHtml5Player-fullScreen');
+            if (fullScreenType === 'desktop') {
+                $('body').removeClass('ACHtml5Player-fullScreen');
+                $('#ACHtml5Player_bulletScreenForm').prependTo('#ACHtml5Player_controlBar_bulletScreen');
+            }
         }
     });
 
@@ -345,6 +361,10 @@ let LoadUI = (player, coverImage) => {
             $('#ACHtml5Player_btnVolume').addClass('ACHtml5Player-resource-volume');
         }
         volumeSlideBar.set(volume);
+    }
+
+    function loadBulletScreenSettings() {
+        bulletScreenOpacitySlideBar.set(player.getBulletScreenOpacity());
     }
 
     function loadQualityList() {
@@ -400,8 +420,14 @@ let LoadUI = (player, coverImage) => {
         let fullScreenType = new FormData($('#ACHtml5Player_btnFullScreen form')[0]).get('fullScreenType');
         if (fullScreenType === 'page') {
             if (Helper.getFullscreenElement() === $('#ACHtml5Player')[0]) Helper.exitFullscreen();
-            else if ($('body').hasClass('ACHtml5Player-fullScreen')) $('body').removeClass('ACHtml5Player-fullScreen');
-            else $('body').addClass('ACHtml5Player-fullScreen');
+            else if ($('body').hasClass('ACHtml5Player-fullScreen')) {
+                $('body').removeClass('ACHtml5Player-fullScreen')
+                $('#ACHtml5Player_bulletScreenForm').prependTo('#ACHtml5Player_controlBar_bulletScreen');
+            }
+            else {
+                $('body').addClass('ACHtml5Player-fullScreen');
+                $('#ACHtml5Player_bulletScreenForm').prependTo('#ACHtml5Player_controlBar_control');
+            }
         } else if (fullScreenType === 'desktop') {
             if (Helper.getFullscreenElement() != $('#ACHtml5Player')[0]) Helper.requestFullscreen($('#ACHtml5Player')[0]);
             else Helper.exitFullscreen();
@@ -414,6 +440,7 @@ let LoadUI = (player, coverImage) => {
     setRadioFullScreen();
     setVolmueAndMuted();
     loadEmoticons();
+    loadBulletScreenSettings();
 }
 
 export { LoadUI }

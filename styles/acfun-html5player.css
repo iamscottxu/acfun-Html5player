@@ -91,6 +91,7 @@ section.player #player.small .ACHtml5Player {
 }
 .ACHtml5Player-controlBar{
     border-top: 1px solid #EEEEEE;
+    position: relative;
 }
 .ACHtml5Player-controlBar.small{
     height: 34px;
@@ -98,19 +99,50 @@ section.player #player.small .ACHtml5Player {
 .ACHtml5Player-controlBar.big{
     height: 39px;
 }
-.ACHtml5Player-bulletScreenSend{
+.small .ACHtml5Player-bulletScreenForm {
     position: absolute;
-    height: 25px;
+    left: 180px;
+    right: 350px;
+    top: 0;
+    bottom: 0;
+}
+.small .ACHtml5Player-bulletScreenSend {
+    padding: 5px 5px;
+    left: 0;
+}
+.big .ACHtml5Player-bulletScreenSend {
     padding: 7px 5px;
-    right: 0;
     left: 80px;
 }
-.ACHtml5Player-bulletScreenInputArea{
-    float: left;
-    width: calc(100% - 106px);
-    height: 100%;
+.ACHtml5Player-bulletScreenSend {
+    position: absolute;
+    height: 25px;
+    right: 0;
+}
+.small .ACHtml5Player-bulletScreenForm .ACHtml5Player-barButton {
+    position: relative;
+    left: calc(100% - 183px);
+}
+.small .ACHtml5Player-bulletScreenForm .ACHtml5Player-barButton:hover {
+    background-color: transparent;
+}
+.small .ACHtml5Player-bulletScreenForm .ACHtml5Player-barButton:hover > i {
+    -webkit-filter: brightness(130%);
+    -ms-filter: brightness(130%);
+    filter: brightness(130%);
+}
+.small .ACHtml5Player-bulletScreenInputArea {
+    padding: 0 88px 0 8px;
+}
+.big .ACHtml5Player-bulletScreenInputArea {
     padding: 0 8px;
+}
+.ACHtml5Player-bulletScreenInputArea {
+    float: left;
+    width: calc(100% - 90px);
+    box-sizing: border-box;
     margin: 0 5px;
+    height: 100%;
     background: #F5F5F5;
     color: #999999;
     font-size: 12px;
@@ -118,7 +150,7 @@ section.player #player.small .ACHtml5Player {
     border-radius: 3px;
     -webkit-border-radius: 3px;
 }
-.ACHtml5Player-bulletScreenInput{
+.ACHtml5Player-bulletScreenInput {
     width: 100%;
     height: 100%;
     border: none;
@@ -126,7 +158,7 @@ section.player #player.small .ACHtml5Player {
     color: #999999;
     font-size: 12px;
 }
-.ACHtml5Player-btnBulletScreenSend{
+.ACHtml5Player-btnBulletScreenSend {
     color: #FFFFFF;
     font-weight: 700;
     font-size: 15px;
@@ -383,7 +415,7 @@ section.player #player.small .ACHtml5Player {
     right: 0;
     bottom: 0;
 }
-.ACHtml5Player-barButton {
+.ACHtml5Player-controlBar .ACHtml5Player-barButton {
     position: relative;
     height: 20px;
     min-width: 20px;
@@ -399,21 +431,32 @@ section.player #player.small .ACHtml5Player {
     padding-right: 10px;
     background-origin: border-box;
 }
-.ACHtml5Player-barButton:hover {
+.ACHtml5Player-controlBar .ACHtml5Player-barButton > i {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-origin: border-box;
+}
+.ACHtml5Player-controlBar .ACHtml5Player-barButton:hover {
     background-color: #F5F5F5;
 }
-.ACHtml5Player-barText {
+.ACHtml5Player-controlBar .ACHtml5Player-barText {
     height: 20px;
     font-size: 12px;
     color: #999999;
     padding-left: 10px;
     padding-right: 10px;
 }
-.small > .ACHtml5Player-barText, .small > .ACHtml5Player-barButton {
+.small .ACHtml5Player-barText, .small .ACHtml5Player-barButton {
     padding-top: 7px;
     padding-bottom: 7px;
 }
-.big > .ACHtml5Player-barText, .big > .ACHtml5Player-barButton {
+.big .ACHtml5Player-barText, .big .ACHtml5Player-barButton {
     padding-top: 9.5px;
     padding-bottom: 9.5px;
 }
@@ -518,29 +561,37 @@ section.player #player.small .ACHtml5Player {
     border-radius: 2px;
     display: none;
     cursor: default;
+}
+.big .ACHtml5Player-clickPopupBox {
     bottom: 74px;
 }
-.center .ACHtml5Player-clickPopupBox {
-    bottom: 34px !important;
+.small .ACHtml5Player-clickPopupBox {
+    bottom: 34px;
 }
 .ACHtml5Player-clickPopupBoxBulletScreenSettings {
-    left: 0;
-    right: -250px;
     height: 275px;
 }
-.center .ACHtml5Player-clickPopupBoxBulletScreenSettings {
-    left: -125px !important;
-    right: -125px !important;
+.big .ACHtml5Player-clickPopupBoxBulletScreenSettings {
+    left: 0;
+    right: -250px;
+}
+.small .ACHtml5Player-clickPopupBoxBulletScreenSettings {
+    left: -125px;
+    right: -125px;
 }
 .ACHtml5Player-clickPopupBoxEmoticons {
+    height: 190px;
+    padding: 2px 5px 2px 9px;
+}
+.big .ACHtml5Player-clickPopupBoxEmoticons {
     left: -40px;
     right: -240px;
     height: 190px;
     padding: 2px 5px 2px 9px;
 }
-.center .ACHtml5Player-clickPopupBoxEmoticons {
-    left: -140px !important;
-    right: -140px !important;
+.small .ACHtml5Player-clickPopupBoxEmoticons {
+    left: -140px;
+    right: -140px;
 }
 .ACHtml5Player-textEmoticons {
     margin: 10px 0 2px;
@@ -603,6 +654,7 @@ section.player #player.small .ACHtml5Player {
     left: -90px;
     right: -90px;
     height: 175px;
+    padding: 9px 8px;
 }
 .ACHtml5Player-popupFullScreen {
     right: 0;
@@ -687,6 +739,34 @@ section.player #player.small .ACHtml5Player {
     width: 6px;
     padding: 10px 18px;
 }
+.ACHtml5Player-bulletScreenOpacity {
+    height: 31px;
+    padding-bottom: 10px;
+    margin-left: 5px;
+}
+.ACHtml5Player-bulletScreenOpacityText {
+    font-size: 12px;
+    color: #000;
+    padding: 14px 4px 0 5px;
+    float: left;
+}
+.ACHtml5Player-bulletScreenOpacitySlideBarBox {
+    padding-left: 4px;
+    margin: 21px 17px 0 0;
+    width: 120px;
+    height: 6px;
+    float: right;
+}
+#ACHtml5Player_bulletScreenOpacitySlideBarBox .ACHtml5Player-slideBarHandShank > span {
+    position: absolute;
+    display: block;
+    bottom: 16px;
+    left: -10px;
+    right: -10px;
+    font-size: 10px;
+    text-align: center;
+    color: #999;
+}
 .ACHtml5Player-checkBox {
     margin: 6px;
     height: 13px;
@@ -755,11 +835,15 @@ section.player #player.small .ACHtml5Player {
     bottom: 35px !important;
     z-index: 10001;
 }
-.ACHtml5Player-fullScreen-desktop .ACHtml5Player-popupBox {
+.ACHtml5Player-fullScreen-desktop .ACHtml5Player-popupBox,
+.ACHtml5Player-fullScreen-desktop .ACHtml5Player-clickPopupBox {
     z-index: 10002;
 }
-.ACHtml5Player-fullScreen-desktop .ACHtml5Player_acfunPlayPauseAnimate{
+.ACHtml5Player-fullScreen-desktop .ACHtml5Player_acfunPlayPauseAnimate {
     margin-bottom: 35px;
+}
+.ACHtml5Player-fullScreen-desktop .ACHtml5Player-loadingShade {
+    z-index: 20000;
 }
 .ACHtml5Player-loadingShade{
     position: absolute;
@@ -777,8 +861,6 @@ section.player #player.small .ACHtml5Player {
     bottom: -20px;
     right: -20px;
     -webkit-filter: blur(20px);
-    -moz-filter: blur(20px);
-    -o-filter: blur(20px);
     -ms-filter: blur(20px);
     filter: blur(20px);
     background-repeat: no-repeat;
@@ -818,3 +900,4 @@ section.player #player.small .ACHtml5Player {
     -o-transition-delay: 0s; /* Opera */
     opacity: 1;
 }
+
