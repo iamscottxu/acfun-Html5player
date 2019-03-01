@@ -37,7 +37,7 @@ class BulletScreen {
                 borderColor: 'rgba(0,0,0,0.4)'
             },
             clock: () => videoElement.currentTime * 1000
-        }, 'canvas');
+        }, 'css3');
 
         let _acWebSocketClient = new ACWebSocketClient(_userId, Cookies.get('auth_key_ac_sha1'), Cookies.get('_did'));
 

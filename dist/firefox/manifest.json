@@ -21,12 +21,6 @@
         "http://*.hapame.com/*",
         "https://static.yximgs.com/*"
     ],
-
-    "web_accessible_resources": [
-        "scripts/acfun-html5player.all.min.js",
-        "styles/acfun-html5player.all.min.css",
-        "htmls/acfun-html5player.html"
-    ],
   
     "content_scripts": [
       {
@@ -44,5 +38,11 @@
 
     "background": {
         "scripts": ["background_scripts/webRequest.js"]
+    },
+
+    "applications": {
+        "gecko": {
+          "id": "xyc0714@aliyun.com"
+        }
     }
   }
