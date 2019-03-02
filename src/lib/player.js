@@ -24,6 +24,7 @@ class Player {
         let _bulletScreen = new BulletScreen(bulletElement, videoElement);
         let _event = new Event();
         let _playNextPartFun = null;
+        let _playbackRate = 1;
 
         _event.add('loadsuccess');
         _event.add('loaderror');
@@ -168,6 +169,7 @@ class Player {
         });
 
         videoElement.addEventListener('canplay', () => {
+            videoElement.playbackRate = _playbackRate;
             _event.trigger('canplay', {});
         });
 
@@ -189,6 +191,7 @@ class Player {
 
         videoElement.addEventListener('ended', () => {
             _event.trigger('ended', {});
+            if (_playNextPartFun != null) _playNextPartFun();
         });
 
         videoElement.addEventListener('ratechange', () => {
@@ -252,8 +255,8 @@ class Player {
         this.getCurrentTime = () => videoElement.currentTime;
         this.setCurrentTime = (currentTime) => { videoElement.currentTime = currentTime; }
 
-        this.getPlaybackRate = () => videoElement.playbackRate;
-        this.setPlaybackRate = (playbackRate) => { videoElement.playbackRate = playbackRate; }
+        this.getPlaybackRate = () => _playbackRate;
+        this.setPlaybackRate = (playbackRate) => { _playbackRate = videoElement.playbackRate = playbackRate; }
 
         this.getBulletScreenOpacity = _bulletScreen.getOpacity;
         this.setBulletScreenOpacity = _bulletScreen.setOpacity;
@@ -300,9 +303,9 @@ class Player {
             _playNextPartFun = playNextPartFun;
         }
 
-        this.getHasNextPart = () => playNextPartFun != null;
+        this.getHasNextPart = () => _playNextPartFun != null;
 
-        this.playNextPart = _playNextPartFun;
+        this.playNextPart = () => _playNextPartFun();
 
         this.sendbulletScreen = (formData) => {
             _bulletScreen.sendbulletScreen(

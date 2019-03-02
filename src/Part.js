@@ -6,33 +6,48 @@ let $ = require('jquery');
  * @param {Player} player - 播放器对象
  */
 let ChangePart = (player) => {
-    $('.part-wrap > .scroll-div > span').click((e) => {
+    //v.hapame.com
+    $('.part-wrap > .scroll-div > a').each((index, element) => {
+        $(element).attr('data-href', $(element).attr('href'));
+        $(element).removeAttr('href');
+        $(element).attr('data-id', pageInfo.videoList[index].id);
+    });
+    $('.part-wrap > .scroll-div > *').click((e) => {
         e.stopPropagation();
-        let span = $(e.target);
-        span.siblings('span').removeClass('active');
-        span.addClass('active');
-        if (span.data('id') === pageInfo.videoId) return;
-        history.pushState(null, null, span.data('href'));
+        let link = $(e.target);
+        link.siblings().removeClass('active');
+        link.addClass('active');
+        if (link.data('id') === pageInfo.videoId) return;
+        history.pushState(null, null, link.data('href'));
         for (let videoInfo of pageInfo.videoList) {
-            if (videoInfo.id === span.data('id')) {
+            if (videoInfo.id === link.data('id')) {
                 loadPart(videoInfo.index);
                 break;
             }
         }
     });
+    getNextPart();
 
     function getNextPart() {
-        if (pageInfo.P + 1 === pageInfo.videoList.length) return null;
-        else return pageInfo.P + 1;
+        //创建获取下一个部分的方法
+        if (pageInfo.P + 1 != pageInfo.videoList.length) {
+            let netxPart = pageInfo.P + 1;
+            player.setPlayNextPartFun(() => {
+                activeLink(netxPart);
+                loadPart(netxPart, true); //自动播放
+            });
+            return;
+        }
+        player.setPlayNextPartFun(null);
     }
 
-    function activeSpan(index) {
+    function activeLink(index) {
         let videoId = pageInfo.videoList[index].id;
-        let span = $(`.part-wrap > .scroll-div > span[data-id='${videoId}']`);
-        if (span.length != 1) return;
-        span.siblings('span').removeClass('active');
-        span.addClass('active');
-        history.pushState(null, null, span.data('href'));
+        let link = $(`.part-wrap > .scroll-div > [data-id='${videoId}']`);
+        if (link.length != 1) return;
+        link.siblings().removeClass('active');
+        link.addClass('active');
+        history.pushState(null, null, link.data('href'));
     }
 
     function loadPart(index, autoplay = false) {
@@ -41,13 +56,7 @@ let ChangePart = (player) => {
         player.load(pageInfo.videoId, autoplay);
         //获取播放量
         getPlayCount();
-        //创建获取下一个部分的方法
-        let netxPart = getNextPart();
-        if (netxPart === null) player.setPlayNextPartFun(null);
-        else player.setPlayNextPartFun(() => {
-            activeSpan(netxPart);
-            loadPart(netxPart, true); //自动播放
-        });
+        getNextPart();
     }
 
     function getPlayCount() {

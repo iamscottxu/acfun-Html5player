@@ -15,6 +15,8 @@ const qualityName = [
 
 let LoadUI = (player, coverImage) => {
 
+    $('#player').css('position', '');
+    $('.noflash-alert').remove();
     $('#ACHtml5Player_loadingCover').css('background-image', `url(${coverImage})`);
 
     const bulletScreenScrollbar = new PerfectScrollbar('.ACHtml5Player-bulletScreenScrolly', {
@@ -41,10 +43,12 @@ let LoadUI = (player, coverImage) => {
     });
 
     player.bind('adapterdestroy', () => {
+        $('#ACFlashPlayer').remove();
         $('#ACHtml5Player_loadingShade').show();
     });
 
     player.bind('loadedmetadata', () => {
+        setBtnNext();
         $('#ACHtml5Player_loadingShade').hide();
         $('#ACHtml5Player_acfunPlayPauseAnimate').addClass('ACHtml5Player_acfunPlayPauseAnimate_show');
     });
@@ -161,6 +165,10 @@ let LoadUI = (player, coverImage) => {
 
     $('#ACHtml5Player_btnPlayPause').click(() => {
         player.changePlayState();
+    });
+
+    $('#ACHtml5Player_btnNext').click(() => {
+        player.playNextPart();
     });
 
     //区分单击和双击事件
@@ -346,6 +354,11 @@ let LoadUI = (player, coverImage) => {
             $('#ACHtml5Player_btnBulletScreen').removeClass('ACHtml5Player-resource-bulletScreenOn');
             $('#ACHtml5Player_btnBulletScreen').addClass('ACHtml5Player-resource-bulletScreenOff');
         }
+    }
+
+    function setBtnNext() {
+        if (player.getHasNextPart()) $('#ACHtml5Player_btnNext').show();
+        else $('#ACHtml5Player_btnNext').hide();
     }
 
     function setRadioFullScreen() {

@@ -1,15 +1,16 @@
 import { Player } from './lib/player'
 import { LoadUI } from './ui'
 import { ChangePart } from './Part'
+import { ChangeBangumi } from './Bangumi'
 
 let $ = require('jquery');
 
 window.H5Player = {
-    resize: () => {}
+    resize: () => {},
+    isSupported: () => true
 }
 
 $(() => {
-    console.log(pageInfo);
     let videoInfo = {
         videoId: pageInfo.videoId ? pageInfo.videoId : (bgmInfo.videoId ? bgmInfo.videoId : pageInfo.video.videos[0].videoId),
         coverImage: pageInfo.coverImage ? pageInfo.coverImage : (bgmInfo.image ? bgmInfo.image : pageInfo.video.videos[0].image)
@@ -17,6 +18,7 @@ $(() => {
 
     let player = new Player($('#ACHtml5Player_player > video')[0], $('#ACHtml5Player_bulletScreens')[0]);
     if(pageInfo && pageInfo.videoList && pageInfo.videoList.length > 1) ChangePart(player);
+    else if(pageInfo && pageInfo.album) ChangeBangumi(player);
     LoadUI(player, videoInfo.coverImage);
     player.load(videoInfo.videoId, GetUrlParameter('autoplay') != null);
 
