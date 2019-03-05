@@ -1,7 +1,7 @@
 import * as openBSE from 'openbse'
 import Cookies from 'js-cookie'
 import { Event } from './event'
-import { Helper } from 'openbse/dist/lib/helper'
+import { Helper } from './helper'
 import { ACWebSocketClient } from './acWebSocketClient'
 
 class BulletScreen {
@@ -37,7 +37,7 @@ class BulletScreen {
                 borderColor: 'rgba(0,0,0,0.4)'
             },
             clock: () => videoElement.currentTime * 1000
-        }, 'css3');
+        }, 'canvas');
 
         let _acWebSocketClient = new ACWebSocketClient(_userId, Cookies.get('auth_key_ac_sha1'), Cookies.get('_did'));
 
@@ -62,8 +62,8 @@ class BulletScreen {
                 startTime: parseFloat(e.bulletScreenData.stime) * 1000, //开始时间
                 style: {
                     speed: speed, //速度
-                    color: `#${parseInt(e.bulletScreenData.color).toString(16)}`, //颜色
-                    size: parseInt(e.bulletScreenData.size), //字号
+                    color: `#${Helper.pad(parseInt(e.bulletScreenData.color, 10), 6, 16)}`, //颜色
+                    size: parseInt(e.bulletScreenData.size, 10), //字号
                 }
             }
             _bulletScreenList.unshift(bulletScreen);
@@ -198,6 +198,23 @@ class BulletScreen {
          */
         this.getBulletScreenList = () => _bulletScreenList;
 
+        /**
+         * 获取隐藏弹幕类型
+         */
+        this.getHiddenTypes = () => bulletScreenEngine.getOptions().hiddenTypes;
+
+        /**
+         * 设置隐藏弹幕类型
+         */
+        this.setHiddenTypes = (hiddenTypes) => bulletScreenEngine.setOptions({
+            hiddenTypes: hiddenTypes
+        });
+
+        /**
+         * 清空屏幕弹幕
+         */
+        this.cleanScreen = () => bulletScreenEngine.cleanScreen();
+
         this.sendbulletScreen = (startTime, typeName, color, text, size) => {
             let type = openBSE.BulletScreenType[typeName];
             let speed = 0.10 + text.length / 200; //弹幕越长，速度越快
@@ -240,8 +257,8 @@ class BulletScreen {
                 startTime: parseFloat(info[0]) * 1000, //开始时间
                 style: {
                     speed: speed, //速度
-                    color: `#${parseInt(info[1]).toString(16)}`, //颜色
-                    size: parseInt(info[3]), //字号
+                    color: `#${Helper.pad(parseInt(info[1], 10), 6, 16)}`, //颜色
+                    size: parseInt(info[3], 10), //字号
                 }
             });
         }

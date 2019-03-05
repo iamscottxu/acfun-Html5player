@@ -1,4 +1,4 @@
-<div id="ACHtml5Player" class="ACHtml5Player">
+<div id="ACHtml5Player" class="ACHtml5Player" tabindex="0">
     <div class="ACHtml5Player-right">
         <div class="ACHtml5Player-rightTop">
             <div class="ACHtml5Player-rightTopText">
@@ -27,7 +27,7 @@
                 <video></video>
             </div>
             <div id="ACHtml5Player_bulletScreens" class="ACHtml5Player-main-el"></div>
-            <div id="ACHtml5Player_acfunPlayPauseAnimate" class="ACHtml5Player_acfunPlayPauseAnimate ACHtml5Player-resource-acfunPlay"></div>
+            <div id="ACHtml5Player_acfunPlayPauseAnimate" class="ACHtml5Player-acfunPlayPauseAnimate ACHtml5Player-resource-acfunPlay"></div>
             <div id="ACHtml5Player_progressBar" class="ACHtml5Player-progressBar horizontal">
                 <div id="ACHtml5Player_progressBarTip" class="ACHtml5Player-progressBarTip">00:00</div>
                 <div id="ACHtml5Player_progressBarBuffer" class="ACHtml5Player-progressBarBuffer ACHtml5Player-slideBarFill"></div>
@@ -64,9 +64,32 @@
                             <div class="ACHtml5Player-bulletScreenOpacityText">不透明度</div>
                             <div id="ACHtml5Player_bulletScreenOpacitySlideBarBox" class="ACHtml5Player-bulletScreenOpacitySlideBarBox"></div>
                         </div>
-                        <div class="ACHtml5Player-bulletScreenCheckBoxs">
-                            <form></form>
-                        </div>/
+                        <form id="ACHtml5Player_popupBulletScreenForm" class="ACHtml5Player-form">
+                            <div class="ACHtml5Player-popupBulletScreenOptionCheckBoxs">
+                                <div class="ACHtml5Player-checkBox">
+                                    <input type="checkbox" name="bulletScreenOption" value="0">
+                                    <span>防挡字幕</span>
+                                </div>
+                                <div class="ACHtml5Player-checkBox">
+                                    <input type="checkbox" name="bulletScreenOption" value="1">
+                                    <span>合并重复弹幕</span>
+                                </div>
+                            </div>
+                            <div class="ACHtml5Player-popupBulletScreenVisibilityCheckBoxs">
+                                <div class="ACHtml5Player-popupBulletScreenCheckBox">
+                                    <input type="checkbox" name="hiddenTypes" value="4">
+                                    <span>顶部弹幕</span>
+                                </div>
+                                <div class="ACHtml5Player-popupBulletScreenCheckBox">
+                                    <input type="checkbox" name="hiddenTypes" value="8">
+                                    <span>底部弹幕</span>
+                                </div>
+                                <div class="ACHtml5Player-popupBulletScreenCheckBox">
+                                    <input type="checkbox" name="hiddenTypes" value="1">
+                                    <span>滚动弹幕</span>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div id="ACHtml5Player_btnVolume" class="ACHtml5Player-barButton ACHtml5Player-barright ACHtml5Player-resource-volume">
@@ -87,7 +110,8 @@
                         </ul>
                     </div>
                 </div>
-                <div id="ACHtml5Player_btnQuality" class="ACHtml5Player-barButton ACHtml5Player-barright"><span>未知</span>
+                <div id="ACHtml5Player_btnQuality" class="ACHtml5Player-barButton ACHtml5Player-barright">
+                    <span>未知</span>
                     <div class="ACHtml5Player-popupBox ACHtml5Player-popupBoxQuality">
                         <ul id="ACHtml5Player_qualityList">
                         </ul>
@@ -95,12 +119,12 @@
                 </div>
             </div>
             <div id="ACHtml5Player_controlBar_bulletScreen" class="ACHtml5Player-controlBar big">
-                <form id="ACHtml5Player_bulletScreenForm" class="ACHtml5Player-bulletScreenForm">
+                <form id="ACHtml5Player_bulletScreenSendForm" class="ACHtml5Player-bulletScreenSendForm">
                     <div class="ACHtml5Player-bulletScreenSend">
                         <div class="ACHtml5Player-bulletScreenInputArea">
-                            <input class="ACHtml5Player-bulletScreenInput" type="text" name="text" placeholder="发个弹幕玩玩吧∠( ᐛ 」∠)＿">
+                            <input id="ACHtml5Player_bulletScreenInput" class="ACHtml5Player-bulletScreenInput" type="text" name="text" placeholder="发个弹幕玩玩吧∠( ᐛ 」∠)＿" required>
                         </div>
-                        <div id="ACHtml5Player_btnBulletScreenSend" class="ACHtml5Player-btnBulletScreenSend disable">发送<span class="ACHtml5Player-btnBulletScreenSend-countdown">(<span id="ACHtml5Player_btnBulletScreenSend_countdownNumber">0</span>)</span></div>
+                        <button type="submit" id="ACHtml5Player_btnBulletScreenSend" class="ACHtml5Player-btnBulletScreenSend disable">发送<span class="ACHtml5Player-btnBulletScreenSend-countdown">(<span id="ACHtml5Player_btnBulletScreenSend_countdownNumber">0</span>)</span></button>
                     </div>
                     <div class="ACHtml5Player-barButton ACHtml5Player-barleft">
                         <i class="ACHtml5Player-resource-bulletScreenSettings"></i>

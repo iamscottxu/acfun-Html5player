@@ -116,11 +116,12 @@ function clone(object) {
 
 /**
  * 格式化数字（在数字前加0）
- * @param {*} num - 数字
+ * @param {number} num - 数字
  * @param {*} n - 位数
+ * @param {number} radix - 表示数字的基数
  */
-function pad(num, n) {
-    num = num.toString();
+function pad(num, n, radix = 10) {
+    num = num.toString(radix);
     let len = num.length;
     while (len++ < n) num = "0" + num;
     return num;

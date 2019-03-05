@@ -1,5 +1,5 @@
 # acfun-Html5player
-[![Version 3.2](https://img.shields.io/badge/version-3.2-brightgreen.svg)](https://github.com/iamscottxu/acfun-Html5player/releases)
+[![Version 3.3](https://img.shields.io/badge/version-3.3-brightgreen.svg)](https://github.com/iamscottxu/acfun-Html5player/releases)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/oodpfboapdbeeefjdlilcmoohdhnieen.svg)](https://chrome.google.com/webstore/detail/acfun-html5-player/oodpfboapdbeeefjdlilcmoohdhnieen)
 [![Firefox Add-ons](https://img.shields.io/amo/stars/acfun-html5player.svg)](https://addons.mozilla.org/zh-CN/firefox/addon/acfun-html5player/)
 [![MIT](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/iamscottxu/acfun-Html5player/blob/master/LICENSE)
@@ -45,6 +45,12 @@ Email：xyc0714@aliyun.com
 这个项目是一个开源项目，遵循MIT开源协议。
 
 ## 更新历史
+### 3.3(2019-03-05)
+* 恢复再某些情况下弹幕显示异常的问题；
+* 优化弹幕引擎性能；
+* 恢复快捷键支持；
+* 恢复一些问题。
+
 ### 3.2(2019-03-02)
 * 增加自动换集功能；
 * 恢复番剧、影视区支持。

@@ -10,11 +10,14 @@ section.player #player .ACHtml5Player {
 
 /* 小窗口模式 */
 section.player #player.small .ACHtml5Player {
-    width: 258px;
-    height: 169px;
-    border-radius: 3px 3px 0 0;
-    border: none;
+    height: 146px;
+    top: 26px;
     position: absolute;
+    border-radius: 0 0 3px 3px;
+}
+.small .ACHtml5Player-loadingCover, .small .ACHtml5Player-loadingShade, 
+.small .ACHtml5Player-main, .small .ACHtml5Player-progressBar {
+    border-radius: 0 0 3px 3px;
 }
 .small .ACHtml5Player-right {
     display: none;
@@ -30,9 +33,15 @@ section.player #player.small .ACHtml5Player {
     border: none;
 }
 .small .ACHtml5Player-main {
-    border:1px solid #eee;
-    border-radius: 3px 3px 0 0;
     height: 100%;
+}
+.small .ACHtml5Player-acfunPlayPauseAnimate {
+    right: 0;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    width: 51px;
+    margin: auto;
 }
 
 .ACHtml5Player-hideControlBars * {
@@ -99,7 +108,7 @@ section.player #player.small .ACHtml5Player {
 .ACHtml5Player-controlBar.big{
     height: 39px;
 }
-.small .ACHtml5Player-bulletScreenForm {
+.small .ACHtml5Player-bulletScreenSendForm {
     position: absolute;
     left: 180px;
     right: 350px;
@@ -119,14 +128,14 @@ section.player #player.small .ACHtml5Player {
     height: 25px;
     right: 0;
 }
-.small .ACHtml5Player-bulletScreenForm .ACHtml5Player-barButton {
+.small .ACHtml5Player-bulletScreenSendForm .ACHtml5Player-barButton {
     position: relative;
     left: calc(100% - 183px);
 }
-.small .ACHtml5Player-bulletScreenForm .ACHtml5Player-barButton:hover {
+.small .ACHtml5Player-bulletScreenSendForm .ACHtml5Player-barButton:hover {
     background-color: transparent;
 }
-.small .ACHtml5Player-bulletScreenForm .ACHtml5Player-barButton:hover > i {
+.small .ACHtml5Player-bulletScreenSendForm .ACHtml5Player-barButton:hover > i {
     -webkit-filter: brightness(130%);
     -ms-filter: brightness(130%);
     filter: brightness(130%);
@@ -170,6 +179,7 @@ section.player #player.small .ACHtml5Player {
     float: right;
     margin: 0 5px;
     background: #FA4E5F;
+    border: none;
 }
 .ACHtml5Player-btnBulletScreenSend.disable, .ACHtml5Player-btnBulletScreenSend.countdown {
     background: #CCCCCC;
@@ -263,7 +273,8 @@ section.player #player.small .ACHtml5Player {
     overflow: hidden;
     position: relative;
 }
-.ACHtml5Player_acfunPlayPauseAnimate {
+
+.ACHtml5Player-acfunPlayPauseAnimate {
     position: absolute;
     right: 30px;
     bottom: 30px;
@@ -273,129 +284,102 @@ section.player #player.small .ACHtml5Player {
     background-size:100% 100%;
     visibility: hidden;
 }
-.ACHtml5Player_acfunPlayPauseAnimate.ACHtml5Player_acfunPlayPauseAnimate_hide {
-    animation: ACHtml5Player_acfunPlayPauseAnimate_hide 620ms forwards;
+.ACHtml5Player-acfunPlayPauseAnimate.ACHtml5Player-acfunPlayPauseAnimate-hide {
+    animation: ACHtml5Player-acfunPlayPauseAnimate-hide 620ms forwards;
 }
-@-o-keyframes ACHtml5Player_acfunPlayPauseAnimate_hide {
+@-o-keyframes ACHtml5Player-acfunPlayPauseAnimate-hide {
     0% {
-        height: 50px;
-        width: 233px;
-        right: 30px;
-        bottom: 30px;
+        -o-transform: scale(1,1); 	/* Opera */
         opacity: 1;
         cursor: default;
         visibility: visible;
     }
     100% {
-        height: 100px;
-        width: 466px;
-        right: -86.5px;
-        bottom: 5px;
+        -o-transform: scale(2,2); 	/* Opera */
         opacity: 0;
         cursor: default;
         visibility: hidden;
     }
 }
-@-webkit-keyframes ACHtml5Player_acfunPlayPauseAnimate_hide {
+@-webkit-keyframes ACHtml5Player-acfunPlayPauseAnimate-hide {
     0% {
-        height: 50px;
-        width: 233px;
-        right: 30px;
-        bottom: 30px;
+        -webkit-transform: scale(1,1); /* Safari 和 Chrome */
         opacity: 1;
         cursor: default;
         visibility: visible;
     }
     100% {
-        height: 100px;
-        width: 466px;
-        right: -86.5px;
-        bottom: 5px;
+        -webkit-transform: scale(2,2); /* Safari 和 Chrome */
         opacity: 0;
         cursor: default;
         visibility: hidden;
     }
 }
-@keyframes ACHtml5Player_acfunPlayPauseAnimate_hide {
+@keyframes ACHtml5Player-acfunPlayPauseAnimate-hide {
     0% {
-        height: 50px;
-        width: 233px;
-        right: 30px;
-        bottom: 30px;
+        transform: scale(1,1); 
+        -ms-transform: scale(1,1);  	/* IE 9 */
+        -moz-transform: scale(1,1);  	/* Firefox */
         opacity: 1;
         cursor: default;
         visibility: visible;
     }
     100% {
-        height: 100px;
-        width: 466px;
-        right: -86.5px;
-        bottom: 5px;
+        transform: scale(2,2); 
+        -ms-transform: scale(2,2);  	/* IE 9 */
+        -moz-transform: scale(2,2);  	/* Firefox */
         opacity: 0;
         cursor: default;
         visibility: hidden;
     }
 }
-.ACHtml5Player_acfunPlayPauseAnimate.ACHtml5Player_acfunPlayPauseAnimate_show {
-    animation: ACHtml5Player_acfunPlayPauseAnimate_show 620ms forwards;
+.ACHtml5Player-acfunPlayPauseAnimate.ACHtml5Player-acfunPlayPauseAnimate-show {
+    animation: ACHtml5Player-acfunPlayPauseAnimate-show 620ms forwards;
 }
-@-o-keyframes ACHtml5Player_acfunPlayPauseAnimate_show {
+@-o-keyframes ACHtml5Player-acfunPlayPauseAnimate-show {
     0% {
-        height: 100px;
-        width: 466px;
-        right: -86.5px;
-        bottom: 5px;
+        -o-transform: scale(2,2); 	/* Opera */
         opacity: 0;
         visibility: visible;
     }
     100% {
-        height: 50px;
-        width: 233px;
-        right: 30px;
-        bottom: 30px;
+        -o-transform: scale(1,1); 	/* Opera */
         opacity: 1;
         cursor: pointer;
         visibility: visible;
     }
 }
-@-webkit-keyframes ACHtml5Player_acfunPlayPauseAnimate_show {
+@-webkit-keyframes ACHtml5Player-acfunPlayPauseAnimate-show {
     0% {
-        height: 100px;
-        width: 466px;
-        right: -86.5px;
-        bottom: 5px;
+        -webkit-transform: scale(2,2); /* Safari 和 Chrome */
         opacity: 0;
         visibility: visible;
     }
     100% {
-        height: 50px;
-        width: 233px;
-        right: 30px;
-        bottom: 30px;
+        -webkit-transform: scale(1,1); /* Safari 和 Chrome */
         opacity: 1;
         cursor: pointer;
         visibility: visible;
     }
 }
-@keyframes ACHtml5Player_acfunPlayPauseAnimate_show {
+@keyframes ACHtml5Player-acfunPlayPauseAnimate-show {
     0% {
-        height: 100px;
-        width: 466px;
-        right: -86.5px;
-        bottom: 5px;
+        transform: scale(2,2); 
+        -ms-transform: scale(2,2);  	/* IE 9 */
+        -moz-transform: scale(2,2);  	/* Firefox */
         opacity: 0;
         visibility: visible;
     }
     100% {
-        height: 50px;
-        width: 233px;
-        right: 30px;
-        bottom: 30px;
+        transform: scale(1,1); 
+        -ms-transform: scale(1,1);  	/* IE 9 */
+        -moz-transform: scale(1,1);  	/* Firefox */
         opacity: 1;
         cursor: pointer;
         visibility: visible;
     }
 }
+
 .ACHtml5Player-bulletScreenEmpty {
     position: absolute;
     top:70px;
@@ -653,7 +637,7 @@ section.player #player.small .ACHtml5Player {
 .ACHtml5Player-popupBulletScreen {
     left: -90px;
     right: -90px;
-    height: 175px;
+    height: 157px;
     padding: 9px 8px;
 }
 .ACHtml5Player-popupFullScreen {
@@ -767,6 +751,7 @@ section.player #player.small .ACHtml5Player {
     text-align: center;
     color: #999;
 }
+
 .ACHtml5Player-checkBox {
     margin: 6px;
     height: 13px;
@@ -786,6 +771,9 @@ section.player #player.small .ACHtml5Player {
     height: 100%;
     opacity: 0;
 }
+.ACHtml5Player-checkBox > input:hover {
+    cursor: pointer;
+}
 .ACHtml5Player-checkBox > span {
     width: 100%;
     height: 100%;
@@ -793,6 +781,49 @@ section.player #player.small .ACHtml5Player {
     background-position: center left;
     background-repeat: no-repeat;
 }
+
+.ACHtml5Player-popupBulletScreenCheckBox {
+    margin: 1px;
+    color: #000;
+    font-size: 12px;
+    font-weight: normal;
+    position: relative;
+    display: inline-block;
+}
+.ACHtml5Player-popupBulletScreenCheckBox > input {
+    position: absolute;
+    height: 46px;
+    width: 100%;
+    opacity: 0;
+}
+.ACHtml5Player-popupBulletScreenCheckBox > input:hover {
+    cursor: pointer;
+}
+.ACHtml5Player-popupBulletScreenCheckBox > span {
+    width: 56px;
+    height: 13px;
+    line-height: 13px;
+    padding-top: 55px;
+    padding-left: 1.2px;
+    background-position: top left;
+    background-repeat: no-repeat;
+    text-align: left;
+    display: inline-block;
+}
+
+.ACHtml5Player-popupBulletScreenVisibilityCheckBoxs {
+    padding: 10px 0 0 5px;
+}
+
+.ACHtml5Player-popupBulletScreenOptionCheckBoxs {
+    height: 30px;
+    text-align: left;
+}
+.ACHtml5Player-popupBulletScreenOptionCheckBoxs .ACHtml5Player-checkBox {
+    display: inline-block;
+    color: #000;
+}
+
 .ACHtml5Player-fullScreen {
     overflow: hidden;
 }

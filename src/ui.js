@@ -50,21 +50,21 @@ let LoadUI = (player, coverImage) => {
     player.bind('loadedmetadata', () => {
         setBtnNext();
         $('#ACHtml5Player_loadingShade').hide();
-        $('#ACHtml5Player_acfunPlayPauseAnimate').addClass('ACHtml5Player_acfunPlayPauseAnimate_show');
+        $('#ACHtml5Player_acfunPlayPauseAnimate').addClass('ACHtml5Player-acfunPlayPauseAnimate-show');
     });
 
     player.bind('play', () => {
         $('#ACHtml5Player_btnPlayPause').removeClass('ACHtml5Player-resource-play');
         $('#ACHtml5Player_btnPlayPause').addClass('ACHtml5Player-resource-pause');
-        $('#ACHtml5Player_acfunPlayPauseAnimate').removeClass('ACHtml5Player_acfunPlayPauseAnimate_show');
-        $('#ACHtml5Player_acfunPlayPauseAnimate').addClass('ACHtml5Player_acfunPlayPauseAnimate_hide');
+        $('#ACHtml5Player_acfunPlayPauseAnimate').removeClass('ACHtml5Player-acfunPlayPauseAnimate-show');
+        $('#ACHtml5Player_acfunPlayPauseAnimate').addClass('ACHtml5Player-acfunPlayPauseAnimate-hide');
     });
 
     let _pauseEvent = () => {
         $('#ACHtml5Player_btnPlayPause').removeClass('ACHtml5Player-resource-pause');
         $('#ACHtml5Player_btnPlayPause').addClass('ACHtml5Player-resource-play');
-        $('#ACHtml5Player_acfunPlayPauseAnimate').removeClass('ACHtml5Player_acfunPlayPauseAnimate_hide');
-        $('#ACHtml5Player_acfunPlayPauseAnimate').addClass('ACHtml5Player_acfunPlayPauseAnimate_show');
+        $('#ACHtml5Player_acfunPlayPauseAnimate').removeClass('ACHtml5Player-acfunPlayPauseAnimate-hide');
+        $('#ACHtml5Player_acfunPlayPauseAnimate').addClass('ACHtml5Player-acfunPlayPauseAnimate-show');
     }
 
     player.bind('emptied', _pauseEvent);
@@ -150,6 +150,88 @@ let LoadUI = (player, coverImage) => {
         player.setVolume(e.value);
     });
 
+    //快捷键支持
+    $('#ACHtml5Player').keypress((e) => {
+        if (e.target.id === 'ACHtml5Player_bulletScreenInput') return true;
+        switch (e.which) {
+            case 32: //空格 暂停
+                player.changePlayState();
+                return false;
+            case 13: //回车 弹幕输入焦点
+                $('#ACHtml5Player_bulletScreenInput').focus();
+                return false;
+            case 67: //C 显示/隐藏弹幕
+                if (e.shiftKey) {
+                    player.changeBulletScreenVisibility();
+                    setBtnBulletScreenIcon();
+                    return false;
+                }
+                break;
+            case 79: //O 开启/关闭循环
+                if (e.shiftKey) {
+                    player.setLoop(!player.getLoop());
+                    setBtnLoopIcon();
+                    return false;
+                }
+                break;
+            case 77: //M 开启/关闭静音
+                if (e.shiftKey) {
+                    player.setMuted(!player.getMuted());
+                    return false;
+                }
+                break;
+            case 70: //F 打开/关闭全屏
+                if (e.shiftKey) {
+                    changeFullScreen();
+                    return false;
+                }
+                break;
+            case 81: //Q 清空屏幕弹幕
+                if (e.shiftKey) {
+                    player.cleanBulletScreen();
+                    return false;
+                }
+                break;
+            case 90: //Z 展开/收起弹幕池
+                if (e.shiftKey) {
+                    changeFoldVisibility();
+                    return false;
+                }
+                break;
+        }
+        return true;
+    });
+    $('#ACHtml5Player').keydown((e) => {
+        if (e.target.id === 'ACHtml5Player_bulletScreenInput') return true;
+        switch (e.which) {
+            case 37: //左方向键 快退
+                if (e.ctrlKey) player.setCurrentTime(player.getCurrentTime() - 20);
+                else if (e.shiftKey) player.setCurrentTime(player.getCurrentTime() - 30);
+                else player.setCurrentTime(player.getCurrentTime() - 10);
+                return false;
+            case 39: //右方向键 快进
+                if (e.ctrlKey) player.setCurrentTime(player.getCurrentTime() + 20);
+                else if (e.shiftKey) player.setCurrentTime(player.getCurrentTime() + 30);
+                else player.setCurrentTime(player.getCurrentTime() + 10);
+                return false;
+            case 38: //上方向键 增大音量
+                player.setVolume(player.getVolume() + 0.1);
+                return false;
+            case 40: //下方向键 减小音量
+                player.setVolume(player.getVolume() - 0.1);
+                return false;
+        }
+        return true;
+    });
+    $('#ACHtml5Player_bulletScreenInput').keydown((e) => {
+        if (e.which === 27) //Esc
+        {
+            $('#ACHtml5Player').focus();
+            return false;
+        }
+        return true;
+    });
+
     $('#ACHtml5Player_btnVolume').click(function (e) {
         if (e.target != this) return;
         player.setMuted(!player.getMuted());
@@ -160,7 +242,7 @@ let LoadUI = (player, coverImage) => {
     });
 
     $('#ACHtml5Player_acfunPlayPauseAnimate').click((e) => {
-        if ($(e.target).hasClass('ACHtml5Player_acfunPlayPauseAnimate_show')) player.changePlayState();
+        if ($(e.target).hasClass('ACHtml5Player-acfunPlayPauseAnimate-show')) player.changePlayState();
     });
 
     $('#ACHtml5Player_btnPlayPause').click(() => {
@@ -178,7 +260,7 @@ let LoadUI = (player, coverImage) => {
         bulletScreensClickTimer = setTimeout(player.changePlayState, 500);
     });
 
-    $('#ACHtml5Player_bulletScreens').dblclick(() => {
+    $('#ACHtml5Player_bulletScreens').dblclick((e) => {
         clearTimeout(bulletScreensClickTimer);
         changeFullScreen();
     });
@@ -194,8 +276,8 @@ let LoadUI = (player, coverImage) => {
         setBtnLoopIcon();
     });
 
-    $('#ACHtml5Player_btnBulletScreenSend').click((e) => {
-        let btn = $(e.target);
+    $('#ACHtml5Player_bulletScreenSendForm').submit((e) => {
+        let btn = $('#ACHtml5Player_btnBulletScreenSend');
         if (btn.hasClass('disable') || btn.hasClass('countdown')) return;
         let countdownNumber = 3;
         let countdown = () => {
@@ -207,8 +289,9 @@ let LoadUI = (player, coverImage) => {
         }
         btn.addClass('countdown');
         countdown();
-        player.sendbulletScreen(new FormData($('#ACHtml5Player_bulletScreenForm')[0]));
-        $('#ACHtml5Player_bulletScreenForm input[name="text"]').val('');
+        player.sendbulletScreen(new FormData($('#ACHtml5Player_bulletScreenSendForm')[0]));
+        $('#ACHtml5Player_bulletScreenSendForm input[name="text"]').val('');
+        return false;
     });
 
     $('#ACHtml5Player_qualityList').click((e) => {
@@ -225,14 +308,19 @@ let LoadUI = (player, coverImage) => {
 
     $('#ACHtml5Player_boxEmoticons').click((e) => {
         if ($(e.target).hasClass('ACHtml5Player-btnEmoticons')) {
-            let input = $('#ACHtml5Player_bulletScreenForm input[name="text"]');
+            let input = $('#ACHtml5Player_bulletScreenSendForm input[name="text"]');
             input.val(input.val() + $(e.target).text());
         }
     });
 
-    $('#ACHtml5Player_foldBar').click(() => {
-        if ($('#ACHtml5Player').hasClass('fold')) $('#ACHtml5Player').removeClass('fold');
-        else $('#ACHtml5Player').addClass('fold');
+    $('#ACHtml5Player_foldBar').click(changeFoldVisibility);
+
+    $('#ACHtml5Player_popupBulletScreenForm').click(() => {
+        let formData = new FormData($('#ACHtml5Player_popupBulletScreenForm')[0]);
+        let hiddenTypesList = formData.getAll('hiddenTypes');
+        let hiddenTypes = 0;
+        for (let index in hiddenTypesList) hiddenTypes += parseInt(hiddenTypesList[index]);
+        player.setBulletScreenHiddenTypes(hiddenTypes);
     });
 
     $('#ACHtml5Player_progressBar').click((e) => {
@@ -309,7 +397,7 @@ let LoadUI = (player, coverImage) => {
         if (Helper.getFullscreenElement() === $('#ACHtml5Player')[0]) {
             $('#ACHtml5Player_progressBar').prependTo('#ACHtml5Player_controlBars');
             $('body').addClass('ACHtml5Player-fullScreen');
-            $('#ACHtml5Player_bulletScreenForm').prependTo('#ACHtml5Player_controlBar_control');
+            $('#ACHtml5Player_bulletScreenSendForm').prependTo('#ACHtml5Player_controlBar_control');
             $('body').addClass('ACHtml5Player-fullScreen-desktop');
             $('#ACHtml5Player').on('mousemove', controlBarsHideMousemoveEvent);
             controlBarsHideMousemoveEvent();
@@ -322,7 +410,7 @@ let LoadUI = (player, coverImage) => {
             $('body').removeClass('ACHtml5Player-fullScreen-desktop');
             if (fullScreenType === 'desktop') {
                 $('body').removeClass('ACHtml5Player-fullScreen');
-                $('#ACHtml5Player_bulletScreenForm').prependTo('#ACHtml5Player_controlBar_bulletScreen');
+                $('#ACHtml5Player_bulletScreenSendForm').prependTo('#ACHtml5Player_controlBar_bulletScreen');
             }
         }
     });
@@ -334,6 +422,11 @@ let LoadUI = (player, coverImage) => {
             if (Helper.getFullscreenElement() != $('#ACHtml5Player')[0]) return;
             $('#ACHtml5Player').addClass('ACHtml5Player-hideControlBars');
         }, 2000);
+    }
+
+    function changeFoldVisibility() {
+        if ($('#ACHtml5Player').hasClass('fold')) $('#ACHtml5Player').removeClass('fold');
+        else $('#ACHtml5Player').addClass('fold');
     }
 
     function setBtnLoopIcon() {
@@ -430,16 +523,17 @@ let LoadUI = (player, coverImage) => {
     }
 
     function changeFullScreen() {
+        $(window).scrollTop(0);
         let fullScreenType = new FormData($('#ACHtml5Player_btnFullScreen form')[0]).get('fullScreenType');
         if (fullScreenType === 'page') {
             if (Helper.getFullscreenElement() === $('#ACHtml5Player')[0]) Helper.exitFullscreen();
             else if ($('body').hasClass('ACHtml5Player-fullScreen')) {
                 $('body').removeClass('ACHtml5Player-fullScreen')
-                $('#ACHtml5Player_bulletScreenForm').prependTo('#ACHtml5Player_controlBar_bulletScreen');
+                $('#ACHtml5Player_bulletScreenSendForm').prependTo('#ACHtml5Player_controlBar_bulletScreen');
             }
             else {
                 $('body').addClass('ACHtml5Player-fullScreen');
-                $('#ACHtml5Player_bulletScreenForm').prependTo('#ACHtml5Player_controlBar_control');
+                $('#ACHtml5Player_bulletScreenSendForm').prependTo('#ACHtml5Player_controlBar_control');
             }
         } else if (fullScreenType === 'desktop') {
             if (Helper.getFullscreenElement() != $('#ACHtml5Player')[0]) Helper.requestFullscreen($('#ACHtml5Player')[0]);

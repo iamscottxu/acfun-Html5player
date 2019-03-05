@@ -190,8 +190,6 @@ class AcFunVideoAdapter {
             _event.trigger('destroy', {});
         }
 
-        //this.getDuration = () => _hls.
-
         /**
          * 获取当前视频清晰度
          * @returns {number} 视频清晰度索引
@@ -215,6 +213,7 @@ class AcFunVideoAdapter {
          */
         this.setQualityIndex = (qualityIndex) => {
             _hls.nextLevel = getHLSQualityIndexByQualityIndex(qualityIndex);
+            _hls.startLoad(0);
         }
 
         /**

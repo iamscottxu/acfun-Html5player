@@ -247,13 +247,19 @@ class Player {
 
         this.getVolume = () => videoElement.volume;
         this.setVolume = (volume) => {
+            if (volume < 0) volume = 0;
+            else if (volume > 1) volume = 1;
             videoElement.volume = volume;
             if (volume === 0) videoElement.muted = true;
             else videoElement.muted = false;
         };
 
         this.getCurrentTime = () => videoElement.currentTime;
-        this.setCurrentTime = (currentTime) => { videoElement.currentTime = currentTime; }
+        this.setCurrentTime = (currentTime) => { 
+            if (currentTime < 0) currentTime = 0;
+            else if (currentTime > videoElement.duration) currentTime = videoElement.duration;
+            videoElement.currentTime = currentTime; 
+        }
 
         this.getPlaybackRate = () => _playbackRate;
         this.setPlaybackRate = (playbackRate) => { _playbackRate = videoElement.playbackRate = playbackRate; }
@@ -264,6 +270,15 @@ class Player {
         this.getDuration = () => videoElement.duration;
 
         this.getBulletScreenVisibility = _bulletScreen.getVisibility;
+
+        /**
+         * 获取隐藏弹幕类型
+         */
+        this.getBulletScreenHiddenTypes = _bulletScreen.getHiddenTypes;
+        /**
+         * 设置隐藏弹幕类型
+         */
+        this.setBulletScreenHiddenTypes = _bulletScreen.setHiddenTypes;
 
         this.hideBulletScreen = _bulletScreen.hide;
 
@@ -293,6 +308,12 @@ class Player {
          * 切换视频质量
          */
         this.setQualityIndex = _adapter.setQualityIndex;
+
+        /**
+         * 清空屏幕弹幕
+         */
+        this.cleanBulletScreen = _bulletScreen.cleanScreen;
+
 
         this.changeBulletScreenVisibility = () => {
             if (_bulletScreen.getVisibility()) _bulletScreen.hide();
