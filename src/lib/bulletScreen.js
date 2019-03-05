@@ -77,29 +77,29 @@ class BulletScreen {
             _event.trigger('loaderror', e);
         });
         videoElement.addEventListener('playing', () => {
-            if (!_loaded === 1) return;
+            if (_loaded != 1) return;
             bulletScreenEngine.play();
         });
         videoElement.addEventListener('waiting', () => {
-            if (!_loaded === 1) return;
+            if (_loaded != 1) return;
             bulletScreenEngine.pause();
         });
         videoElement.addEventListener('pause', () => {
-            if (!_loaded === 1) return;
+            if (_loaded != 1) return;
             bulletScreenEngine.pause();
         });
         videoElement.addEventListener('ended', () => {
-            if (!_loaded === 1) return;
+            if (_loaded != 1) return;
             bulletScreenEngine.stop();
             addBulletScreenList();
         });
         videoElement.addEventListener('seeking', () => {
-            if (!_loaded === 1) return;
+            if (_loaded != 1) return;
             bulletScreenEngine.cleanScreen();
             bulletScreenEngine.pause();
         });
         videoElement.addEventListener('seeked', () => {
-            if (!_loaded === 1) return;
+            if (_loaded != 1) return;
             addBulletScreenList(videoElement.currentTime * 1000);
             if (!videoElement.paused) bulletScreenEngine.play();
         });
