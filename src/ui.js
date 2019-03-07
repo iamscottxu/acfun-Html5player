@@ -303,7 +303,7 @@ let LoadUI = (player, coverImage) => {
 
     $('#ACHtml5Player_bulletScreenSendForm').submit((e) => {
         let btn = $('#ACHtml5Player_btnBulletScreenSend');
-        if (btn.hasClass('disable') || btn.hasClass('countdown')) return;
+        if (btn.hasClass('disable') || btn.hasClass('countdown')) return false;
         let countdownNumber = 3;
         let countdown = () => {
             if (countdownNumber === 0) btn.removeClass('countdown');
