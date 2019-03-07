@@ -1,7 +1,8 @@
 function stopRequest(e) {
     if (
         e.url.indexOf('acfun-player/h5player') != -1
-        || e.url.indexOf('/js/component/Player/h5.min.js') != -1
+        || e.url.indexOf('/js/component/Player/h5.min.js'
+        || e.url.indexOf('/flash/player-view-homura.swf')) != -1
     ) return { cancel: true };
 }
 

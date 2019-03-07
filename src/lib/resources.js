@@ -6,7 +6,8 @@ import * as Resources from './resources.json'
  */
 function fillData() {
     if (arguments.length === 0) return this;
-    var param = arguments[0], str = this;
+    var param = arguments[0], str = this.toString();
+    if (typeof (param) === 'undefined' || param === null) return str;
     if (typeof (param) === 'object') {
         for (var key in param)
             str = str.replace(new RegExp("\\{" + key + "\\}", "g"), param[key]);

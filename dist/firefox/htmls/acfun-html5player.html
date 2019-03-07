@@ -27,6 +27,10 @@
                 <video></video>
             </div>
             <div id="ACHtml5Player_bulletScreens" class="ACHtml5Player-main-el"></div>
+            <div id="ACHtml5Player_watingAnimate" class="ACHtml5Player-watingAnimate" style="display:none;">
+                <div class="ACHtml5Player-watingAnimate-circle"></div>
+                <div id="ACHtml5Player_watingAnimate_img" class="ACHtml5Player-watingAnimate-img"></div>
+            </div>
             <div id="ACHtml5Player_acfunPlayPauseAnimate" class="ACHtml5Player-acfunPlayPauseAnimate ACHtml5Player-resource-acfunPlay"></div>
             <div id="ACHtml5Player_progressBar" class="ACHtml5Player-progressBar horizontal">
                 <div id="ACHtml5Player_progressBarTip" class="ACHtml5Player-progressBarTip">00:00</div>
@@ -121,7 +125,9 @@
             <div id="ACHtml5Player_controlBar_bulletScreen" class="ACHtml5Player-controlBar big">
                 <form id="ACHtml5Player_bulletScreenSendForm" class="ACHtml5Player-bulletScreenSendForm">
                     <div class="ACHtml5Player-bulletScreenSend">
-                        <div class="ACHtml5Player-bulletScreenInputArea">
+                        <div id="ACHtml5Player_bulletScreenInputArea" class="ACHtml5Player-bulletScreenInputArea">
+                            <div class="ACHtml5Player-bulletScreenLoginTip">发送弹幕请先<a onclick="location.href='/login/?returnUrl='+encodeURIComponent(location.href);">[登录]</a>哟。
+                            </div>
                             <input id="ACHtml5Player_bulletScreenInput" class="ACHtml5Player-bulletScreenInput" type="text" name="text" placeholder="发个弹幕玩玩吧∠( ᐛ 」∠)＿" required>
                         </div>
                         <button type="submit" id="ACHtml5Player_btnBulletScreenSend" class="ACHtml5Player-btnBulletScreenSend disable">发送<span class="ACHtml5Player-btnBulletScreenSend-countdown">(<span id="ACHtml5Player_btnBulletScreenSend_countdownNumber">0</span>)</span></button>
@@ -151,5 +157,8 @@
     </div>
     <div id="ACHtml5Player_loadingShade" class="ACHtml5Player-loadingShade">
         <div id="ACHtml5Player_loadingCover" class="ACHtml5Player-loadingCover"></div>
+    </div>
+    <div id="ACHtml5Player_errorTipCover" class="ACHtml5Player-errorTipCover" style="display: none;">
+        <div id="ACHtml5Player_errorTipWindow" class="ACHtml5Player-errorTipWindow"></div>
     </div>
 </div>

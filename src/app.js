@@ -11,6 +11,7 @@ window.H5Player = {
 }
 
 $(() => {
+    if (typeof pageInfo != 'object') return;
     let videoInfo = {
         videoId: pageInfo.videoId ? pageInfo.videoId : (bgmInfo.videoId ? bgmInfo.videoId : pageInfo.video.videos[0].videoId),
         coverImage: pageInfo.coverImage ? pageInfo.coverImage : (bgmInfo.image ? bgmInfo.image : pageInfo.video.videos[0].image)

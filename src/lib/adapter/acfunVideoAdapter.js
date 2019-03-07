@@ -12,6 +12,7 @@ class AcFunVideoAdapter {
         _event.add('loadsuccess');
         _event.add('videoloadsuccess');
         _event.add('loaderror');
+        _event.add('error');
         _event.add('destroy');
         _event.add('qualityswitching');
         _event.add('qualityswitched');
@@ -88,22 +89,37 @@ class AcFunVideoAdapter {
          * 加载适配器
          * @param {string} videoId - 视频编号
          */
-        this.load = (videoId, qualityIndex = -1) => {
+        function load(videoId, qualityIndex = -1) {
             if (_loaded === 1) throw new Error();
+            class loader extends Hls.DefaultConfig.loader {
+                constructor(config) {
+                    super(config);
+                    let _load = this.load.bind(this);
+                    this.load = function (context, config, callbacks) {
+                        let onSuccess = callbacks.onSuccess;
+                        callbacks.onSuccess = function (response, stats, context) {
+                            if (typeof response.data === 'string' 
+                            && response.data.search(/^#EXTM3U$/m) < 0) triggerErrorEvent('TOKEN_TIMEOUT');
+                            else onSuccess(response, stats, context);
+                        }
+                        _load(context, config, callbacks);
+                    };
+                }
+            }
             let loadHls = (success) => {
                 let hls = new Hls({
                     xhrSetup: (xhr, url) => { xhr.withCredentials = true; }, // 跨域请求，附加 Cookie，否则返回403
-                    debug: true
+                    loader: loader
                 });
                 // bind them together
                 hls.attachMedia(videoElement);
 
                 hls.on(Hls.Events.LEVEL_SWITCHING, (event, data) => {
-                    _event.trigger('qualityswitching', {qualityIndex: getQualityIndexByHLSQualityIndex(data.level)});
+                    _event.trigger('qualityswitching', { qualityIndex: getQualityIndexByHLSQualityIndex(data.level) });
                 });
 
                 hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
-                    _event.trigger('qualityswitched', {qualityIndex: getQualityIndexByHLSQualityIndex(data.level)});
+                    _event.trigger('qualityswitched', { qualityIndex: getQualityIndexByHLSQualityIndex(data.level) });
                 });
 
                 hls.on(Hls.Events.ERROR, (event, data) => {
@@ -122,7 +138,7 @@ class AcFunVideoAdapter {
                             default:
                                 // cannot recover
                                 hls.destroy();
-                                triggerLoaderrorEvent('HLS_OTHER_ERROR');
+                                triggerErrorEvent('FATAL_ERROR');
                                 break;
                         }
                     }
@@ -137,6 +153,10 @@ class AcFunVideoAdapter {
                         deviceType: 2
                     },
                     success: function (result) {
+                        if (result.code != 200) {
+                            error(result);
+                            return;
+                        }
                         $.ajax({
                             type: 'GET',
                             url: 'http://player.acfun.cn/js_data',
@@ -148,14 +168,18 @@ class AcFunVideoAdapter {
                                 ev: config.ev
                             },
                             success: function (result) {
+                                if (result.e.code != 0) {
+                                    error(result.e);
+                                    return;
+                                }
                                 if (result.encrypt = '1')
                                     result.data = JSON.parse(jie(config.mk.nk + config.ek.x2, decode64(result.data)));
                                 success(result.data);
                             },
-                            error: error
+                            error: (xhr) => error({ code: xhr.status, desc: xhr.statusText })
                         });
                     },
-                    error: error
+                    error: (xhr) => error({ code: xhr.status, desc: xhr.statusText })
                 });
             }
             let loadVideo = (success) => {
@@ -174,11 +198,12 @@ class AcFunVideoAdapter {
                         _loaded = 1;
                         _event.trigger('loadsuccess', {});
                     });
-                }, () => {
-                    triggerLoaderrorEvent('GET_DATA_FAILED');
+                }, (data = null) => {
+                    triggerLoaderrorEvent('GET_DATA_FAILED', data);
                 })
             })
         }
+        this.load = load;
 
         /**
          * 卸载视频
@@ -235,11 +260,21 @@ class AcFunVideoAdapter {
             return URL.createObjectURL(new Blob(m3u8, { type: 'application/x-mpegURL' }));
         }
 
-        function triggerLoaderrorEvent(type) {
+        function triggerLoaderrorEvent(type, data = null) {
             _loaded = -1;
+            let fullType = `VIDEOLOAD_${type}`;
             _event.trigger('loaderror', {
-                type: type,
-                message: Resources[`VIDEOLOAD_${type}`].toString()
+                errorType: fullType,
+                message: Resources[fullType].fillData(data)
+            });
+        }
+
+        function triggerErrorEvent(type, data = null) {
+            _loaded = 0;
+            let fullType = `VIDEO_${type}`;
+            _event.trigger('error', {
+                errorType: fullType,
+                message: Resources[fullType].fillData(data)
             });
         }
 

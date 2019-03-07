@@ -1,5 +1,5 @@
 # acfun-Html5player
-[![Version 3.4](https://img.shields.io/badge/version-3.4-brightgreen.svg)](https://github.com/iamscottxu/acfun-Html5player/releases)
+[![Version 3.5](https://img.shields.io/badge/version-3.5-brightgreen.svg)](https://github.com/iamscottxu/acfun-Html5player/releases)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/oodpfboapdbeeefjdlilcmoohdhnieen.svg)](https://chrome.google.com/webstore/detail/acfun-html5-player/oodpfboapdbeeefjdlilcmoohdhnieen)
 [![Firefox Add-ons](https://img.shields.io/amo/stars/acfun-html5player.svg)](https://addons.mozilla.org/zh-CN/firefox/addon/acfun-html5player/)
 [![MIT](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/iamscottxu/acfun-Html5player/blob/master/LICENSE)
@@ -45,6 +45,12 @@ Email：xyc0714@aliyun.com
 这个项目是一个开源项目，遵循MIT开源协议。
 
 ## 更新历史
+### 3.5(2019-03-07)
+* 更新弹幕服务器接口；
+* 增加加载动画；
+* 恢复一段时间后视频无法加载的问题；
+* 优化播放器逻辑。
+
 ### 3.4(2019-03-05)
 * 恢复实时弹幕解析错误的问题。
 

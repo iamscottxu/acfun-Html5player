@@ -25,6 +25,8 @@ class Player {
         let _event = new Event();
         let _playNextPartFun = null;
         let _playbackRate = 1;
+        let _setStartTime = () => { };
+        let _reLoadVideo = () => { };
 
         _event.add('loadsuccess');
         _event.add('loaderror');
@@ -83,6 +85,7 @@ class Player {
         });
 
         _adapter.bind('loaderror', (e) => {
+            console.error(`${e.errorType} ${e.message}`);
             _event.trigger('loaderror', e);
         });
 
@@ -92,6 +95,16 @@ class Player {
 
         _adapter.bind('qualityswitched', (e) => {
             _event.trigger('qualityswitched', e);
+        });
+
+        _adapter.bind('error', (e) => {
+            if (e.errorType === 'VIDEO_TOKEN_TIMEOUT') {
+                console.warn(`${e.errorType} ${e.message}`);
+                _reLoadVideo();
+                return;
+            }
+            console.error(`${e.errorType} ${e.message}`);
+            _event.trigger('error', e);
         });
 
         _bulletScreen.bind('bulletscreencountchanged', (e) => {
@@ -107,8 +120,12 @@ class Player {
         });
 
         _bulletScreen.bind('loaderror', (e) => {
-            console.warn(`${e.type} ${e.message}`);
+            console.warn(`${e.errorType} ${e.message}`);
             if (_adapter.getLoadedState() === 1) _event.trigger('loadsuccess', {});
+        });
+
+        _bulletScreen.bind('error', (e) => {
+            console.warn(`${e.errorType} ${e.message}`);
         });
 
         _bulletScreen.bind('acwebsocketstatuschanged', (e) => {
@@ -120,6 +137,8 @@ class Player {
         });
 
         videoElement.addEventListener('loadstart', () => {
+            _setStartTime();
+            videoElement.playbackRate = _playbackRate;
             _event.trigger('loadstart', {});
         });
 
@@ -136,7 +155,10 @@ class Player {
         });
 
         videoElement.addEventListener('error', () => {
-            _event.trigger('error', {});
+            let e = { errorType: 'videoError', message: '' };
+            if (videoElement.error) e = { errorType: `videoError${videoElement.error.code}`, message: videoElement.error.message };
+            console.error(`${e.errorType} ${e.message}`);
+            _event.trigger('error', e);
         });
 
         videoElement.addEventListener('emptied', () => {
@@ -169,7 +191,6 @@ class Player {
         });
 
         videoElement.addEventListener('canplay', () => {
-            videoElement.playbackRate = _playbackRate;
             _event.trigger('canplay', {});
         });
 
@@ -206,10 +227,12 @@ class Player {
             _event.trigger('volumeormutedchanged', { volume: videoElement.muted ? 0 : videoElement.volume, muted: videoElement.muted });
         });
 
-        this.load = (videoId, autoplay = false) => {
+        this.load = (videoId, autoplay = false, startTime = 0) => {
             this.destroy();
             videoElement.autoplay = autoplay;
-            _adapter.load(videoId, -1);
+            _setStartTime = () => videoElement.currentTime = startTime;
+            _reLoadVideo = () => this.load(videoId, autoplay = !videoElement.paused, startTime = videoElement.currentTime);
+            _adapter.load(videoId, -1, 0);
             _bulletScreen.load(videoId);
         }
 
@@ -255,10 +278,10 @@ class Player {
         };
 
         this.getCurrentTime = () => videoElement.currentTime;
-        this.setCurrentTime = (currentTime) => { 
+        this.setCurrentTime = (currentTime) => {
             if (currentTime < 0) currentTime = 0;
             else if (currentTime > videoElement.duration) currentTime = videoElement.duration;
-            videoElement.currentTime = currentTime; 
+            videoElement.currentTime = currentTime;
         }
 
         this.getPlaybackRate = () => _playbackRate;

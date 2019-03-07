@@ -2,11 +2,14 @@
     "EVENT_NAME_NOT_FOUND_ERROR": "Event name not found.",
     "EVENT_ALREADY_EXISTS_ERROR": "Event already exists.",
     "PARAMETERS_TYPE_ERROR": "Parameters type error.",
-    "VIDEOLOAD_GET_DATA_FAILED": "视频信息加载失败。",
+    "VIDEOLOAD_GET_DATA_FAILED": "视频信息加载失败。错误信息：{code}, {desc}",
     "VIDEOLOAD_HLS_NETWORK_ERROR": "网络错误。尝试恢复。",
     "VIDEOLOAD_HLS_MEDIA_ERROR": "媒体/视频错误。尝试恢复。",
     "VIDEOLOAD_HLS_OTHER_ERROR": "未知错误。",
     "VIDEOLOAD_HLS_ERROR": "HLS 错误代码：{code}",
     "BULLETSCREENLOAD_REQUEST_BULLETSCREEN_FAILED": "弹幕获取失败。",
-    "WEBSOCKETCONNECT_CONNECTED_ERROR": "套接字连接错误。"
+    "WEBSOCKETCONNECT_CONNECTED_ERROR": "套接字连接错误。",
+    "WEBSOCKETCONNECT_ACCIDENTAL_CUTTING": "套接字连接意外中断。",
+    "VIDEO_TOKEN_TIMEOUT": "视频缓存令牌超时。",
+    "VIDEO_FATAL_ERROR": "视频播放时发生致命错误。"
 }

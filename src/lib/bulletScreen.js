@@ -3,6 +3,7 @@ import Cookies from 'js-cookie'
 import { Event } from './event'
 import { Helper } from './helper'
 import { ACWebSocketClient } from './acWebSocketClient'
+import { Resources } from './resources'
 
 class BulletScreen {
     /**
@@ -16,11 +17,11 @@ class BulletScreen {
         let _bulletScreenCount = 0;
         let _bulletScreenList = [];
         let _videoId = null;
-        let _refreshOnlineUsersCountTimer = null;
         let _userId = Cookies.get('auth_key');
 
         _event.add('loadsuccess');
         _event.add('loaderror');
+        _event.add('error');
         _event.add('bulletscreencountchanged');
         _event.add('addbulletscreens');
         _event.add('destroy');
@@ -42,17 +43,13 @@ class BulletScreen {
         let _acWebSocketClient = new ACWebSocketClient(_userId, Cookies.get('auth_key_ac_sha1'), Cookies.get('_did'));
 
         _acWebSocketClient.bind('statuschanged', (e) => {
-            if (_acWebSocketClient.getIsConnected()) {
-                _refreshOnlineUsersCountTimer = setInterval(_acWebSocketClient.refreshOnlineUsersCount, 10000);
-                _acWebSocketClient.refreshOnlineUsersCount();
-            }
-            else clearInterval(_refreshOnlineUsersCountTimer);
             _event.trigger('acwebsocketstatuschanged', e);
         });
         _acWebSocketClient.bind('onlineuserscountchanged', (e) => {
             _event.trigger('onlineuserscountchanged', e);
         });
         _acWebSocketClient.bind('newbulletscreenreceived', (e) => {
+            if (e.bulletScreenData.user === _userId) return;
             let speed = 0.10 + e.bulletScreenData.message.length / 200; //弹幕越长，速度越快
             let bulletScreen = {
                 uuid: e.bulletScreenData.commentid, //uuid
@@ -75,6 +72,9 @@ class BulletScreen {
         });
         _acWebSocketClient.bind('loaderror', (e) => {
             _event.trigger('loaderror', e);
+        });
+        _acWebSocketClient.bind('error', (e) => {
+            _event.trigger('error', e);
         });
         videoElement.addEventListener('playing', () => {
             if (_loaded != 1) return;
@@ -218,10 +218,11 @@ class BulletScreen {
         this.sendbulletScreen = (startTime, typeName, color, text, size) => {
             let type = openBSE.BulletScreenType[typeName];
             let speed = 0.10 + text.length / 200; //弹幕越长，速度越快
+            let _startTime = startTime * 1000;
             bulletScreenEngine.addBulletScreen({
                 text: text, //文本
                 type: type, //类型
-                startTime: startTime * 1000, //开始时间
+                startTime: _startTime, //开始时间
                 layer: 1,
                 canDiscard: false,
                 style: {
@@ -236,6 +237,18 @@ class BulletScreen {
                 new Date().getTime(), parseInt(color.substring(1, color.length - 2), 16),
                 text, size
             )
+            triggerbulletScreenCountChangedEvent();
+            triggerAddBulletScreens([{
+                text: text, //文本
+                type: type, //类型
+                userid: _userId, //用户编号
+                startTime: _startTime, //开始时间
+                style: {
+                    speed: speed, //速度
+                    color: color, //颜色
+                    size: size, //字号
+                }
+            }]);
         }
 
         /**
@@ -310,9 +323,10 @@ class BulletScreen {
 
         function triggerLoaderrorEvent(type) {
             _loaded = -1;
+            let fullType = `BULLETSCREENLOAD_${type}`;
             _event.trigger('loaderror', {
-                type: type,
-                message: Resources[`BULLETSCREENLOAD_${type}`].toString()
+                errorType: fullType,
+                message: Resources[fullType].toString()
             });
         }
 

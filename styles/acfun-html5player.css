@@ -16,7 +16,8 @@ section.player #player.small .ACHtml5Player {
     border-radius: 0 0 3px 3px;
 }
 .small .ACHtml5Player-loadingCover, .small .ACHtml5Player-loadingShade, 
-.small .ACHtml5Player-main, .small .ACHtml5Player-progressBar {
+.small .ACHtml5Player-errorTipCover, .small .ACHtml5Player-main, 
+.small .ACHtml5Player-progressBar {
     border-radius: 0 0 3px 3px;
 }
 .small .ACHtml5Player-right {
@@ -42,6 +43,9 @@ section.player #player.small .ACHtml5Player {
     left: 0;
     width: 51px;
     margin: auto;
+}
+.small .ACHtml5Player-errorTipWindow {
+    display: none;
 }
 
 .ACHtml5Player-hideControlBars * {
@@ -146,6 +150,12 @@ section.player #player.small .ACHtml5Player {
 .big .ACHtml5Player-bulletScreenInputArea {
     padding: 0 8px;
 }
+.ACHtml5Player-bulletScreenInputArea.ACHtml5Player-login .ACHtml5Player-bulletScreenInput {
+    display: none;
+}
+.ACHtml5Player-bulletScreenInputArea.ACHtml5Player-login .ACHtml5Player-bulletScreenLoginTip {
+    display: block;
+}
 .ACHtml5Player-bulletScreenInputArea {
     float: left;
     width: calc(100% - 90px);
@@ -159,13 +169,25 @@ section.player #player.small .ACHtml5Player {
     border-radius: 3px;
     -webkit-border-radius: 3px;
 }
-.ACHtml5Player-bulletScreenInput {
+.ACHtml5Player-bulletScreenInput, .ACHtml5Player-bulletScreenLoginTip{
     width: 100%;
     height: 100%;
     border: none;
     background: none;
     color: #999999;
     font-size: 12px;
+    font-weight: normal;
+}
+.ACHtml5Player-bulletScreenLoginTip {
+    display: none;
+    line-height: 25px;
+}
+.ACHtml5Player-bulletScreenLoginTip a {
+    color: #ff9304;
+    text-decoration: none;
+}
+.ACHtml5Player-bulletScreenLoginTip a:hover {
+    cursor: pointer;
 }
 .ACHtml5Player-btnBulletScreenSend {
     color: #FFFFFF;
@@ -377,6 +399,106 @@ section.player #player.small .ACHtml5Player {
         opacity: 1;
         cursor: pointer;
         visibility: visible;
+    }
+}
+
+.ACHtml5Player-watingAnimate {
+    height: 130px;
+    width: 130px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    position: absolute;
+}
+.ACHtml5Player-watingAnimate-circle {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 108px;
+    height: 108px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    background-color: #445F74;
+    animation: ACHtml5Player-watingAnimation 3750ms linear infinite;
+    -webkit-animation: ACHtml5Player-watingAnimation 3750ms linear infinite;
+    -o-animation: ACHtml5Player-watingAnimation 3750ms linear infinite;
+    opacity: 0.5;
+}
+.ACHtml5Player-watingAnimate-img {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 98px;
+    height: 98px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    background-color: #FFF;
+    background-position: center center;
+    background-size: 80px auto;
+    background-repeat: no-repeat;
+}
+@keyframes ACHtml5Player-watingAnimation
+{
+    0% {
+        width: 108px;
+        height: 108px;
+        opacity: 0.5;
+    }
+    44.4% {
+        width: 130px;
+        height: 130px;
+        opacity: 0.6;
+    }
+    100% {
+        width: 108px;
+        height: 108px;
+        opacity: 0.5;
+    }
+}
+@-webkit-keyframes ACHtml5Player-watingAnimation
+{
+    0% {
+        width: 108px;
+        height: 108px;
+        opacity: 0.5;
+    }
+    44.4% {
+        width: 130px;
+        height: 130px;
+        opacity: 0.6;
+    }
+    100% {
+        width: 108px;
+        height: 108px;
+        opacity: 0.5;
+    }
+}
+@-o-keyframes ACHtml5Player-watingAnimation
+{
+    0% {
+        width: 108px;
+        height: 108px;
+        opacity: 0.5;
+    }
+    44.4% {
+        width: 130px;
+        height: 130px;
+        opacity: 0.6;
+    }
+    100% {
+        width: 108px;
+        height: 108px;
+        opacity: 0.5;
     }
 }
 
@@ -873,10 +995,11 @@ section.player #player.small .ACHtml5Player {
 .ACHtml5Player-fullScreen-desktop .ACHtml5Player_acfunPlayPauseAnimate {
     margin-bottom: 35px;
 }
-.ACHtml5Player-fullScreen-desktop .ACHtml5Player-loadingShade {
+.ACHtml5Player-fullScreen-desktop .ACHtml5Player-loadingShade,
+.ACHtml5Player-fullScreen-desktop .ACHtml5Player-errorTipCover {
     z-index: 20000;
 }
-.ACHtml5Player-loadingShade{
+.ACHtml5Player-loadingShade {
     position: absolute;
     left: 0;
     top: 0;
@@ -884,6 +1007,35 @@ section.player #player.small .ACHtml5Player {
     right: 0;
     background-color: #000000;
     overflow: hidden;
+}
+.ACHtml5Player-errorTipCover {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: #000000;
+    overflow: hidden;
+}
+.ACHtml5Player-errorTipWindow {
+    position: absolute;
+    width: 227px;
+    height: 65px;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    padding: 17.5px 13px 17.5px 100px;
+    background-position: 13px 17.5px;
+    background-size: 75px 65px;
+    background-repeat: no-repeat;
+    background-image: url(//cdn.aixifan.com/dotnet/20130418/umeditor/dialogs/emotion/images/ac/42.gif);
+    background-color: #FFFFFF;
+    font-size: 12px;
+    color: #A7A7A7;
+    display: flex;
+    align-items: center;
 }
 .ACHtml5Player-loadingCover {
     position: absolute; 

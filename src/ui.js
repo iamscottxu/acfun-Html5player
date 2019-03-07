@@ -37,6 +37,17 @@ let LoadUI = (player, coverImage) => {
         setBtnQuality();
     });
 
+    player.bind('loaderror', (e) => {
+        $('#ACHtml5Player_errorTipWindow').text(`${e.errorType} ${e.message}`);
+        $('#ACHtml5Player_errorTipCover').show();
+    });
+
+
+    player.bind('error', (e) => {
+        $('#ACHtml5Player_errorTipWindow').text(`${e.errorType} ${e.message}`);
+        $('#ACHtml5Player_errorTipCover').show();
+    });
+
     player.bind('bulletscreendestroy', () => {
         $('#ACHtml5Player_bulletScreenList').empty();
         $('#ACHtml5Player_bulletScreenEmpty').show();
@@ -45,12 +56,24 @@ let LoadUI = (player, coverImage) => {
     player.bind('adapterdestroy', () => {
         $('#ACFlashPlayer').remove();
         $('#ACHtml5Player_loadingShade').show();
+        $('#ACHtml5Player_errorTipCover').hide();
     });
 
     player.bind('loadedmetadata', () => {
         setBtnNext();
         $('#ACHtml5Player_loadingShade').hide();
         $('#ACHtml5Player_acfunPlayPauseAnimate').addClass('ACHtml5Player-acfunPlayPauseAnimate-show');
+    });
+
+    player.bind('waiting', () => {
+        let picId = Helper.pad(1 + Math.floor(Math.random() * 55), 2);
+        $('#ACHtml5Player_watingAnimate_img').css('background-image', 
+        `url(//cdn.aixifan.com/dotnet/20130418/umeditor/dialogs/emotion/images/ac/${picId}.gif)`);
+        $('#ACHtml5Player_watingAnimate').show();
+    });
+
+    player.bind('canplay', () => {
+        $('#ACHtml5Player_watingAnimate').hide();
     });
 
     player.bind('play', () => {
@@ -91,6 +114,8 @@ let LoadUI = (player, coverImage) => {
     player.bind('acwebsocketstatuschanged', (e) => {
         if (e.newStatus === 'connected') $('#ACHtml5Player_btnBulletScreenSend').removeClass('disable');
         else $('#ACHtml5Player_btnBulletScreenSend').addClass('disable');
+        if (e.newStatus === 'connected_notIdentified') $('#ACHtml5Player_bulletScreenInputArea').addClass('ACHtml5Player-login');
+            else $('#ACHtml5Player_bulletScreenInputArea').removeClass('ACHtml5Player-login');
     });
 
     player.bind('qualityswitching', (e) => {
@@ -100,7 +125,7 @@ let LoadUI = (player, coverImage) => {
     player.bind('qualityswitched', (e) => {
         setBtnQuality(e.qualityIndex);
     });
-4
+    
     player.bind('addbulletscreens', (e) => {
         if (e.cleanOld) {
             $('#ACHtml5Player_bulletScreenList').empty();
