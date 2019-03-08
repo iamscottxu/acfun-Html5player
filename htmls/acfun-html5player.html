@@ -147,7 +147,7 @@
                                     onclick="location.href='/login/?returnUrl='+encodeURIComponent(location.href);">[登录]</a>哟。
                             </div>
                             <input id="ACHtml5Player_bulletScreenInput" class="ACHtml5Player-bulletScreenInput"
-                                type="text" name="text" placeholder="发个弹幕玩玩吧∠( ᐛ 」∠)＿" required />
+                                type="text" name="text" placeholder="发个弹幕玩玩吧∠( ᐛ 」∠)＿" />
                         </div>
                         <button type="submit" id="ACHtml5Player_btnBulletScreenSend"
                             class="ACHtml5Player-btnBulletScreenSend disable">发送<span
@@ -158,9 +158,544 @@
                         <i class="ACHtml5Player-resource-bulletScreenSettings"></i>
                         <div class="ACHtml5Player-barButtonToolTip" title="弹幕设置"></div>
                         <div class="ACHtml5Player-clickPopupBox ACHtml5Player-clickPopupBoxBulletScreenSettings">
-                            <input type="hidden" name="type" value="rightToLeft" />
-                            <input type="hidden" name="color" value="#FFFFFF" />
-                            <input type="hidden" name="size" value="25" />
+                            <div class="ACHtml5Player-popupBoxBulletScreenSettings-item">
+                                <div class="ACHtml5Player-popupBoxBulletScreenSettings-lable">字号</div>
+                                <div class="ACHtml5Player-popupBoxBulletScreenSettingsFontSizeRadio">
+                                    <input type="radio" name="size" value="37">
+                                    <span>大</span>
+                                </div>
+                                <div class="ACHtml5Player-popupBoxBulletScreenSettingsFontSizeRadio">
+                                    <input type="radio" name="size" value="25" checked>
+                                    <span>中</span>
+                                </div>
+                                <div class="ACHtml5Player-popupBoxBulletScreenSettingsFontSizeRadio">
+                                    <input type="radio" name="size" value="16">
+                                    <span>小</span>
+                                </div>
+                            </div>
+                            <div class="ACHtml5Player-popupBoxBulletScreenSettings-item">
+                                <div class="ACHtml5Player-popupBoxBulletScreenSettings-lable">模式</div>
+                                <div class="ACHtml5Player-popupBoxBulletScreenSettingsTypeRadio">
+                                        <input type="radio" name="type" value="top">
+                                        <span>顶部</span>
+                                </div>
+                                <div class="ACHtml5Player-popupBoxBulletScreenSettingsTypeRadio">
+                                        <input type="radio" name="type" value="bottom">
+                                        <span>底部</span>
+                                </div>
+                                <div class="ACHtml5Player-popupBoxBulletScreenSettingsTypeRadio">
+                                        <input type="radio" name="type" value="rightToLeft" checked>
+                                        <span>滚动</span>
+                                </div>
+                            </div>
+                            <div class="ACHtml5Player-popupBoxBulletScreenSettings-item">
+                                <div class="ACHtml5Player-popupBoxBulletScreenSettings-lable">颜色</div>
+                                <div id="ACHtml5Player_color_picker_current" class="ACHtml5Player-color-picker-current"
+                                    style="background-color:#FFFFFF"></div>
+                                <input id="ACHtml5Player_color_picker_code" class="ACHtml5Player-color-picker-code"
+                                    type="text" name="color" value="#FFFFFF" maxlength="7"></input>
+                            </div>
+                            <div class="ACHtml5Player-popupBoxBulletScreenSettings-color-picker-box">
+                                <div id="ACHtml5Player_color_picker_panel"
+                                    class="ACHtml5Player-color-picker-panel clearfix">
+                                    <div class="color-spans color-line clearfix">
+                                        <span class="color-span" name="color_picker" data-color="000000"
+                                            style="background-color:#000000"></span>
+                                        <span class="color-span" name="color_picker" data-color="333333"
+                                            style="background-color:#333333"></span>
+                                        <span class="color-span" name="color_picker" data-color="666666"
+                                            style="background-color:#666666"></span>
+                                        <span class="color-span" name="color_picker" data-color="999999"
+                                            style="background-color:#999999"></span>
+                                        <span class="color-span" name="color_picker" data-color="CCCCCC"
+                                            style="background-color:#CCCCCC"></span>
+                                        <span class="color-span" name="color_picker" data-color="FFFFFF"
+                                            style="background-color:#FFFFFF"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF0000"
+                                            style="background-color:#FF0000"></span>
+                                        <span class="color-span" name="color_picker" data-color="00FF00"
+                                            style="background-color:#00FF00"></span>
+                                        <span class="color-span" name="color_picker" data-color="0000FF"
+                                            style="background-color:#0000FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="FFFF00"
+                                            style="background-color:#FFFF00"></span>
+                                        <span class="color-span" name="color_picker" data-color="00FFFF"
+                                            style="background-color:#00FFFF"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF00FF"
+                                            style="background-color:#FF00FF"></span>
+                                    </div>
+                                    <div class="color-spans color-line clearfix">
+                                        <span class="color-span" name="color_picker" data-color="000000"
+                                            style="background-color:#000000"></span>
+                                        <span class="color-span" name="color_picker" data-color="000000"
+                                            style="background-color:#000000"></span>
+                                        <span class="color-span" name="color_picker" data-color="000000"
+                                            style="background-color:#000000"></span>
+                                        <span class="color-span" name="color_picker" data-color="000000"
+                                            style="background-color:#000000"></span>
+                                        <span class="color-span" name="color_picker" data-color="000000"
+                                            style="background-color:#000000"></span>
+                                        <span class="color-span" name="color_picker" data-color="000000"
+                                            style="background-color:#000000"></span>
+                                        <span class="color-span" name="color_picker" data-color="000000"
+                                            style="background-color:#000000"></span>
+                                        <span class="color-span" name="color_picker" data-color="000000"
+                                            style="background-color:#000000"></span>
+                                        <span class="color-span" name="color_picker" data-color="000000"
+                                            style="background-color:#000000"></span>
+                                        <span class="color-span" name="color_picker" data-color="000000"
+                                            style="background-color:#000000"></span>
+                                        <span class="color-span" name="color_picker" data-color="000000"
+                                            style="background-color:#000000"></span>
+                                        <span class="color-span" name="color_picker" data-color="000000"
+                                            style="background-color:#000000"></span>
+                                    </div>
+                                    <div class="color-spans clearfix">
+                                        <span class="color-span" name="color_picker" data-color="000000"
+                                            style="background-color:#000000"></span>
+                                        <span class="color-span" name="color_picker" data-color="003300"
+                                            style="background-color:#003300"></span>
+                                        <span class="color-span" name="color_picker" data-color="006600"
+                                            style="background-color:#006600"></span>
+                                        <span class="color-span" name="color_picker" data-color="009900"
+                                            style="background-color:#009900"></span>
+                                        <span class="color-span" name="color_picker" data-color="00CC00"
+                                            style="background-color:#00CC00"></span>
+                                        <span class="color-span" name="color_picker" data-color="00FF00"
+                                            style="background-color:#00FF00"></span>
+                                        <span class="color-span" name="color_picker" data-color="000033"
+                                            style="background-color:#000033"></span>
+                                        <span class="color-span" name="color_picker" data-color="003333"
+                                            style="background-color:#003333"></span>
+                                        <span class="color-span" name="color_picker" data-color="006633"
+                                            style="background-color:#006633"></span>
+                                        <span class="color-span" name="color_picker" data-color="009933"
+                                            style="background-color:#009933"></span>
+                                        <span class="color-span" name="color_picker" data-color="00CC33"
+                                            style="background-color:#00CC33"></span>
+                                        <span class="color-span" name="color_picker" data-color="00FF33"
+                                            style="background-color:#00FF33"></span>
+                                        <span class="color-span" name="color_picker" data-color="000066"
+                                            style="background-color:#000066"></span>
+                                        <span class="color-span" name="color_picker" data-color="003366"
+                                            style="background-color:#003366"></span>
+                                        <span class="color-span" name="color_picker" data-color="006666"
+                                            style="background-color:#006666"></span>
+                                        <span class="color-span" name="color_picker" data-color="009966"
+                                            style="background-color:#009966"></span>
+                                        <span class="color-span" name="color_picker" data-color="00CC66"
+                                            style="background-color:#00CC66"></span>
+                                        <span class="color-span" name="color_picker" data-color="00FF66"
+                                            style="background-color:#00FF66"></span>
+                                        <span class="color-span" name="color_picker" data-color="000099"
+                                            style="background-color:#000099"></span>
+                                        <span class="color-span" name="color_picker" data-color="003399"
+                                            style="background-color:#003399"></span>
+                                        <span class="color-span" name="color_picker" data-color="006699"
+                                            style="background-color:#006699"></span>
+                                        <span class="color-span" name="color_picker" data-color="009999"
+                                            style="background-color:#009999"></span>
+                                        <span class="color-span" name="color_picker" data-color="00CC99"
+                                            style="background-color:#00CC99"></span>
+                                        <span class="color-span" name="color_picker" data-color="00FF99"
+                                            style="background-color:#00FF99"></span>
+                                        <span class="color-span" name="color_picker" data-color="0000CC"
+                                            style="background-color:#0000CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="0033CC"
+                                            style="background-color:#0033CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="0066CC"
+                                            style="background-color:#0066CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="0099CC"
+                                            style="background-color:#0099CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="00CCCC"
+                                            style="background-color:#00CCCC"></span>
+                                        <span class="color-span" name="color_picker" data-color="00FFCC"
+                                            style="background-color:#00FFCC"></span>
+                                        <span class="color-span" name="color_picker" data-color="0000FF"
+                                            style="background-color:#0000FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="0033FF"
+                                            style="background-color:#0033FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="0066FF"
+                                            style="background-color:#0066FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="0099FF"
+                                            style="background-color:#0099FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="00CCFF"
+                                            style="background-color:#00CCFF"></span>
+                                        <span class="color-span" name="color_picker" data-color="00FFFF"
+                                            style="background-color:#00FFFF"></span>
+                                    </div>
+                                    <div class="color-spans clearfix">
+                                        <span class="color-span" name="color_picker" data-color="330000"
+                                            style="background-color:#330000"></span>
+                                        <span class="color-span" name="color_picker" data-color="333300"
+                                            style="background-color:#333300"></span>
+                                        <span class="color-span" name="color_picker" data-color="336600"
+                                            style="background-color:#336600"></span>
+                                        <span class="color-span" name="color_picker" data-color="339900"
+                                            style="background-color:#339900"></span>
+                                        <span class="color-span" name="color_picker" data-color="33CC00"
+                                            style="background-color:#33CC00"></span>
+                                        <span class="color-span" name="color_picker" data-color="33FF00"
+                                            style="background-color:#33FF00"></span>
+                                        <span class="color-span" name="color_picker" data-color="330033"
+                                            style="background-color:#330033"></span>
+                                        <span class="color-span" name="color_picker" data-color="333333"
+                                            style="background-color:#333333"></span>
+                                        <span class="color-span" name="color_picker" data-color="336633"
+                                            style="background-color:#336633"></span>
+                                        <span class="color-span" name="color_picker" data-color="339933"
+                                            style="background-color:#339933"></span>
+                                        <span class="color-span" name="color_picker" data-color="33CC33"
+                                            style="background-color:#33CC33"></span>
+                                        <span class="color-span" name="color_picker" data-color="33FF33"
+                                            style="background-color:#33FF33"></span>
+                                        <span class="color-span" name="color_picker" data-color="330066"
+                                            style="background-color:#330066"></span>
+                                        <span class="color-span" name="color_picker" data-color="333366"
+                                            style="background-color:#333366"></span>
+                                        <span class="color-span" name="color_picker" data-color="336666"
+                                            style="background-color:#336666"></span>
+                                        <span class="color-span" name="color_picker" data-color="339966"
+                                            style="background-color:#339966"></span>
+                                        <span class="color-span" name="color_picker" data-color="33CC66"
+                                            style="background-color:#33CC66"></span>
+                                        <span class="color-span" name="color_picker" data-color="33FF66"
+                                            style="background-color:#33FF66"></span>
+                                        <span class="color-span" name="color_picker" data-color="330099"
+                                            style="background-color:#330099"></span>
+                                        <span class="color-span" name="color_picker" data-color="333399"
+                                            style="background-color:#333399"></span>
+                                        <span class="color-span" name="color_picker" data-color="336699"
+                                            style="background-color:#336699"></span>
+                                        <span class="color-span" name="color_picker" data-color="339999"
+                                            style="background-color:#339999"></span>
+                                        <span class="color-span" name="color_picker" data-color="33CC99"
+                                            style="background-color:#33CC99"></span>
+                                        <span class="color-span" name="color_picker" data-color="33FF99"
+                                            style="background-color:#33FF99"></span>
+                                        <span class="color-span" name="color_picker" data-color="3300CC"
+                                            style="background-color:#3300CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="3333CC"
+                                            style="background-color:#3333CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="3366CC"
+                                            style="background-color:#3366CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="3399CC"
+                                            style="background-color:#3399CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="33CCCC"
+                                            style="background-color:#33CCCC"></span>
+                                        <span class="color-span" name="color_picker" data-color="33FFCC"
+                                            style="background-color:#33FFCC"></span>
+                                        <span class="color-span" name="color_picker" data-color="3300FF"
+                                            style="background-color:#3300FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="3333FF"
+                                            style="background-color:#3333FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="3366FF"
+                                            style="background-color:#3366FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="3399FF"
+                                            style="background-color:#3399FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="33CCFF"
+                                            style="background-color:#33CCFF"></span>
+                                        <span class="color-span" name="color_picker" data-color="33FFFF"
+                                            style="background-color:#33FFFF"></span>
+                                    </div>
+                                    <div class="color-spans clearfix">
+                                        <span class="color-span" name="color_picker" data-color="660000"
+                                            style="background-color:#660000"></span>
+                                        <span class="color-span" name="color_picker" data-color="663300"
+                                            style="background-color:#663300"></span>
+                                        <span class="color-span active" name="color_picker" data-color="666600"
+                                            style="background-color:#666600"></span>
+                                        <span class="color-span" name="color_picker" data-color="669900"
+                                            style="background-color:#669900"></span>
+                                        <span class="color-span" name="color_picker" data-color="66CC00"
+                                            style="background-color:#66CC00"></span>
+                                        <span class="color-span" name="color_picker" data-color="66FF00"
+                                            style="background-color:#66FF00"></span>
+                                        <span class="color-span" name="color_picker" data-color="660033"
+                                            style="background-color:#660033"></span>
+                                        <span class="color-span" name="color_picker" data-color="663333"
+                                            style="background-color:#663333"></span>
+                                        <span class="color-span" name="color_picker" data-color="666633"
+                                            style="background-color:#666633"></span>
+                                        <span class="color-span" name="color_picker" data-color="669933"
+                                            style="background-color:#669933"></span>
+                                        <span class="color-span" name="color_picker" data-color="66CC33"
+                                            style="background-color:#66CC33"></span>
+                                        <span class="color-span" name="color_picker" data-color="66FF33"
+                                            style="background-color:#66FF33"></span>
+                                        <span class="color-span" name="color_picker" data-color="660066"
+                                            style="background-color:#660066"></span>
+                                        <span class="color-span" name="color_picker" data-color="663366"
+                                            style="background-color:#663366"></span>
+                                        <span class="color-span" name="color_picker" data-color="666666"
+                                            style="background-color:#666666"></span>
+                                        <span class="color-span" name="color_picker" data-color="669966"
+                                            style="background-color:#669966"></span>
+                                        <span class="color-span" name="color_picker" data-color="66CC66"
+                                            style="background-color:#66CC66"></span>
+                                        <span class="color-span" name="color_picker" data-color="66FF66"
+                                            style="background-color:#66FF66"></span>
+                                        <span class="color-span" name="color_picker" data-color="660099"
+                                            style="background-color:#660099"></span>
+                                        <span class="color-span" name="color_picker" data-color="663399"
+                                            style="background-color:#663399"></span>
+                                        <span class="color-span" name="color_picker" data-color="666699"
+                                            style="background-color:#666699"></span>
+                                        <span class="color-span" name="color_picker" data-color="669999"
+                                            style="background-color:#669999"></span>
+                                        <span class="color-span" name="color_picker" data-color="66CC99"
+                                            style="background-color:#66CC99"></span>
+                                        <span class="color-span" name="color_picker" data-color="66FF99"
+                                            style="background-color:#66FF99"></span>
+                                        <span class="color-span" name="color_picker" data-color="6600CC"
+                                            style="background-color:#6600CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="6633CC"
+                                            style="background-color:#6633CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="6666CC"
+                                            style="background-color:#6666CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="6699CC"
+                                            style="background-color:#6699CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="66CCCC"
+                                            style="background-color:#66CCCC"></span>
+                                        <span class="color-span" name="color_picker" data-color="66FFCC"
+                                            style="background-color:#66FFCC"></span>
+                                        <span class="color-span" name="color_picker" data-color="6600FF"
+                                            style="background-color:#6600FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="6633FF"
+                                            style="background-color:#6633FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="6666FF"
+                                            style="background-color:#6666FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="6699FF"
+                                            style="background-color:#6699FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="66CCFF"
+                                            style="background-color:#66CCFF"></span>
+                                        <span class="color-span" name="color_picker" data-color="66FFFF"
+                                            style="background-color:#66FFFF"></span>
+                                    </div>
+                                    <div class="color-spans clearfix">
+                                        <span class="color-span" name="color_picker" data-color="990000"
+                                            style="background-color:#990000"></span>
+                                        <span class="color-span" name="color_picker" data-color="993300"
+                                            style="background-color:#993300"></span>
+                                        <span class="color-span" name="color_picker" data-color="996600"
+                                            style="background-color:#996600"></span>
+                                        <span class="color-span" name="color_picker" data-color="999900"
+                                            style="background-color:#999900"></span>
+                                        <span class="color-span" name="color_picker" data-color="99CC00"
+                                            style="background-color:#99CC00"></span>
+                                        <span class="color-span" name="color_picker" data-color="99FF00"
+                                            style="background-color:#99FF00"></span>
+                                        <span class="color-span" name="color_picker" data-color="990033"
+                                            style="background-color:#990033"></span>
+                                        <span class="color-span" name="color_picker" data-color="993333"
+                                            style="background-color:#993333"></span>
+                                        <span class="color-span" name="color_picker" data-color="996633"
+                                            style="background-color:#996633"></span>
+                                        <span class="color-span" name="color_picker" data-color="999933"
+                                            style="background-color:#999933"></span>
+                                        <span class="color-span" name="color_picker" data-color="99CC33"
+                                            style="background-color:#99CC33"></span>
+                                        <span class="color-span" name="color_picker" data-color="99FF33"
+                                            style="background-color:#99FF33"></span>
+                                        <span class="color-span" name="color_picker" data-color="990066"
+                                            style="background-color:#990066"></span>
+                                        <span class="color-span" name="color_picker" data-color="993366"
+                                            style="background-color:#993366"></span>
+                                        <span class="color-span" name="color_picker" data-color="996666"
+                                            style="background-color:#996666"></span>
+                                        <span class="color-span" name="color_picker" data-color="999966"
+                                            style="background-color:#999966"></span>
+                                        <span class="color-span" name="color_picker" data-color="99CC66"
+                                            style="background-color:#99CC66"></span>
+                                        <span class="color-span" name="color_picker" data-color="99FF66"
+                                            style="background-color:#99FF66"></span>
+                                        <span class="color-span" name="color_picker" data-color="990099"
+                                            style="background-color:#990099"></span>
+                                        <span class="color-span" name="color_picker" data-color="993399"
+                                            style="background-color:#993399"></span>
+                                        <span class="color-span" name="color_picker" data-color="996699"
+                                            style="background-color:#996699"></span>
+                                        <span class="color-span" name="color_picker" data-color="999999"
+                                            style="background-color:#999999"></span>
+                                        <span class="color-span" name="color_picker" data-color="99CC99"
+                                            style="background-color:#99CC99"></span>
+                                        <span class="color-span" name="color_picker" data-color="99FF99"
+                                            style="background-color:#99FF99"></span>
+                                        <span class="color-span" name="color_picker" data-color="9900CC"
+                                            style="background-color:#9900CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="9933CC"
+                                            style="background-color:#9933CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="9966CC"
+                                            style="background-color:#9966CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="9999CC"
+                                            style="background-color:#9999CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="99CCCC"
+                                            style="background-color:#99CCCC"></span>
+                                        <span class="color-span" name="color_picker" data-color="99FFCC"
+                                            style="background-color:#99FFCC"></span>
+                                        <span class="color-span" name="color_picker" data-color="9900FF"
+                                            style="background-color:#9900FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="9933FF"
+                                            style="background-color:#9933FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="9966FF"
+                                            style="background-color:#9966FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="9999FF"
+                                            style="background-color:#9999FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="99CCFF"
+                                            style="background-color:#99CCFF"></span>
+                                        <span class="color-span" name="color_picker" data-color="99FFFF"
+                                            style="background-color:#99FFFF"></span>
+                                    </div>
+                                    <div class="color-spans clearfix">
+                                        <span class="color-span" name="color_picker" data-color="CC0000"
+                                            style="background-color:#CC0000"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC3300"
+                                            style="background-color:#CC3300"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC6600"
+                                            style="background-color:#CC6600"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC9900"
+                                            style="background-color:#CC9900"></span>
+                                        <span class="color-span" name="color_picker" data-color="CCCC00"
+                                            style="background-color:#CCCC00"></span>
+                                        <span class="color-span" name="color_picker" data-color="CCFF00"
+                                            style="background-color:#CCFF00"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC0033"
+                                            style="background-color:#CC0033"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC3333"
+                                            style="background-color:#CC3333"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC6633"
+                                            style="background-color:#CC6633"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC9933"
+                                            style="background-color:#CC9933"></span>
+                                        <span class="color-span" name="color_picker" data-color="CCCC33"
+                                            style="background-color:#CCCC33"></span>
+                                        <span class="color-span" name="color_picker" data-color="CCFF33"
+                                            style="background-color:#CCFF33"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC0066"
+                                            style="background-color:#CC0066"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC3366"
+                                            style="background-color:#CC3366"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC6666"
+                                            style="background-color:#CC6666"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC9966"
+                                            style="background-color:#CC9966"></span>
+                                        <span class="color-span" name="color_picker" data-color="CCCC66"
+                                            style="background-color:#CCCC66"></span>
+                                        <span class="color-span" name="color_picker" data-color="CCFF66"
+                                            style="background-color:#CCFF66"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC0099"
+                                            style="background-color:#CC0099"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC3399"
+                                            style="background-color:#CC3399"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC6699"
+                                            style="background-color:#CC6699"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC9999"
+                                            style="background-color:#CC9999"></span>
+                                        <span class="color-span" name="color_picker" data-color="CCCC99"
+                                            style="background-color:#CCCC99"></span>
+                                        <span class="color-span" name="color_picker" data-color="CCFF99"
+                                            style="background-color:#CCFF99"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC00CC"
+                                            style="background-color:#CC00CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC33CC"
+                                            style="background-color:#CC33CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC66CC"
+                                            style="background-color:#CC66CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC99CC"
+                                            style="background-color:#CC99CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="CCCCCC"
+                                            style="background-color:#CCCCCC"></span>
+                                        <span class="color-span" name="color_picker" data-color="CCFFCC"
+                                            style="background-color:#CCFFCC"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC00FF"
+                                            style="background-color:#CC00FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC33FF"
+                                            style="background-color:#CC33FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC66FF"
+                                            style="background-color:#CC66FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="CC99FF"
+                                            style="background-color:#CC99FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="CCCCFF"
+                                            style="background-color:#CCCCFF"></span>
+                                        <span class="color-span" name="color_picker" data-color="CCFFFF"
+                                            style="background-color:#CCFFFF"></span>
+                                    </div>
+                                    <div class="color-spans clearfix">
+                                        <span class="color-span" name="color_picker" data-color="FF0000"
+                                            style="background-color:#FF0000"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF3300"
+                                            style="background-color:#FF3300"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF6600"
+                                            style="background-color:#FF6600"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF9900"
+                                            style="background-color:#FF9900"></span>
+                                        <span class="color-span" name="color_picker" data-color="FFCC00"
+                                            style="background-color:#FFCC00"></span>
+                                        <span class="color-span" name="color_picker" data-color="FFFF00"
+                                            style="background-color:#FFFF00"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF0033"
+                                            style="background-color:#FF0033"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF3333"
+                                            style="background-color:#FF3333"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF6633"
+                                            style="background-color:#FF6633"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF9933"
+                                            style="background-color:#FF9933"></span>
+                                        <span class="color-span" name="color_picker" data-color="FFCC33"
+                                            style="background-color:#FFCC33"></span>
+                                        <span class="color-span" name="color_picker" data-color="FFFF33"
+                                            style="background-color:#FFFF33"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF0066"
+                                            style="background-color:#FF0066"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF3366"
+                                            style="background-color:#FF3366"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF6666"
+                                            style="background-color:#FF6666"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF9966"
+                                            style="background-color:#FF9966"></span>
+                                        <span class="color-span" name="color_picker" data-color="FFCC66"
+                                            style="background-color:#FFCC66"></span>
+                                        <span class="color-span" name="color_picker" data-color="FFFF66"
+                                            style="background-color:#FFFF66"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF0099"
+                                            style="background-color:#FF0099"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF3399"
+                                            style="background-color:#FF3399"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF6699"
+                                            style="background-color:#FF6699"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF9999"
+                                            style="background-color:#FF9999"></span>
+                                        <span class="color-span" name="color_picker" data-color="FFCC99"
+                                            style="background-color:#FFCC99"></span>
+                                        <span class="color-span" name="color_picker" data-color="FFFF99"
+                                            style="background-color:#FFFF99"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF00CC"
+                                            style="background-color:#FF00CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF33CC"
+                                            style="background-color:#FF33CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF66CC"
+                                            style="background-color:#FF66CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF99CC"
+                                            style="background-color:#FF99CC"></span>
+                                        <span class="color-span" name="color_picker" data-color="FFCCCC"
+                                            style="background-color:#FFCCCC"></span>
+                                        <span class="color-span" name="color_picker" data-color="FFFFCC"
+                                            style="background-color:#FFFFCC"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF00FF"
+                                            style="background-color:#FF00FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF33FF"
+                                            style="background-color:#FF33FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF66FF"
+                                            style="background-color:#FF66FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="FF99FF"
+                                            style="background-color:#FF99FF"></span>
+                                        <span class="color-span" name="color_picker" data-color="FFCCFF"
+                                            style="background-color:#FFCCFF"></span>
+                                        <span class="color-span" name="color_picker" data-color="FFFFFF"
+                                            style="background-color:#FFFFFF"></span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="ACHtml5Player-barButton ACHtml5Player-barleft">

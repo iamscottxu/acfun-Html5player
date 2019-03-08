@@ -675,7 +675,8 @@ section.player #player.small .ACHtml5Player {
     bottom: 34px;
 }
 .ACHtml5Player-clickPopupBoxBulletScreenSettings {
-    height: 275px;
+    height: 255px;
+    padding: 10px;
 }
 .big .ACHtml5Player-clickPopupBoxBulletScreenSettings {
     left: 0;
@@ -685,6 +686,136 @@ section.player #player.small .ACHtml5Player {
     left: -125px;
     right: -125px;
 }
+.ACHtml5Player-popupBoxBulletScreenSettings-item {
+    height: 24px;
+    padding: 6px 0 10px 0;
+    text-align: left;
+    font-weight: normal;
+    font-size: 12px;
+    display: flex;
+}
+.ACHtml5Player-popupBoxBulletScreenSettings-lable {
+    height: 100%;
+    width: 38px;
+    line-height: 24px;
+    color: #999;
+}
+.ACHtml5Player-popupBoxBulletScreenSettingsFontSizeRadio {
+    height: 100%;
+    width: 30px;
+    position: relative;
+    border-radius: 4px;
+    margin-right: 6px;
+}
+.ACHtml5Player-popupBoxBulletScreenSettingsFontSizeRadio > span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    color: black;
+    line-height: 24px;
+    text-align: center;
+}
+.ACHtml5Player-popupBoxBulletScreenSettingsFontSizeRadio > input[type='radio'] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    margin: 0;
+    cursor: pointer;
+}
+.ACHtml5Player-popupBoxBulletScreenSettingsFontSizeRadio > input[type='radio']:checked {
+    cursor: default;
+}
+.ACHtml5Player-popupBoxBulletScreenSettingsFontSizeRadio > input[type='radio']:checked + span {
+    color: #FD4C5B;
+    border: 1px solid #FD4C5B;
+    background-color: #FFEDEF;
+}
+
+
+.ACHtml5Player-popupBoxBulletScreenSettingsTypeRadio {
+    height: 100%;
+    width: 62px;
+    margin-right: 16px;
+    position: relative;
+}
+.ACHtml5Player-popupBoxBulletScreenSettingsTypeRadio > span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: black;
+    line-height: 24px;
+    text-align: left;
+    padding-left: 36px;
+    background-position: left center;
+    background-repeat: no-repeat;
+}
+.ACHtml5Player-popupBoxBulletScreenSettingsTypeRadio > input[type='radio'] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    margin: 0;
+    cursor: pointer;
+}
+.ACHtml5Player-popupBoxBulletScreenSettingsTypeRadio > input[type='radio']:checked {
+    cursor: default;
+}
+.ACHtml5Player-popupBoxBulletScreenSettingsTypeRadio > input[type='radio']:checked + span {
+    color: #FD4C5B;
+}
+
+.ACHtml5Player-color-picker-current, .ACHtml5Player-color-picker-code {
+    border: 1px solid #EEE;
+    border-radius: 2px;
+    height: 100%;
+    margin-right: 8px;
+}
+.ACHtml5Player-color-picker-current {
+    width: 47px;
+}
+.ACHtml5Player-color-picker-code {
+    width: 56px;
+    color: black;
+    font-size: 12px;
+    padding: 0 2px;
+}
+.ACHtml5Player-popupBoxBulletScreenSettings-color-picker-box {
+    margin: 1px 0 0 40px;
+}
+.ACHtml5Player-color-picker-panel {
+    width: auto;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.ACHtml5Player-color-picker-panel .color-spans.color-line {
+    width: 12px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.ACHtml5Player-color-picker-panel .color-spans {
+    width: 67px;
+    float: left;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-left: -1px;
+}
+.ACHtml5Player-color-picker-panel .color-span:hover {
+    border-color: #FFF;
+    z-index: 1;
+}
+.ACHtml5Player-color-picker-panel .color-span {
+    width: 12px;
+    height: 12px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px solid #000;
+    margin: -1px 0 0 -1px;
+    float: left;
+    position: relative;
+}
+
 .ACHtml5Player-clickPopupBoxEmoticons {
     height: 190px;
     padding: 2px 5px 2px 9px;

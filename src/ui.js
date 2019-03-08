@@ -67,8 +67,8 @@ let LoadUI = (player, coverImage) => {
 
     player.bind('waiting', () => {
         let picId = Helper.pad(1 + Math.floor(Math.random() * 55), 2);
-        $('#ACHtml5Player_watingAnimate_img').css('background-image', 
-        `url(//cdn.aixifan.com/dotnet/20130418/umeditor/dialogs/emotion/images/ac/${picId}.gif)`);
+        $('#ACHtml5Player_watingAnimate_img').css('background-image',
+            `url(//cdn.aixifan.com/dotnet/20130418/umeditor/dialogs/emotion/images/ac/${picId}.gif)`);
         $('#ACHtml5Player_watingAnimate').show();
     });
 
@@ -115,7 +115,7 @@ let LoadUI = (player, coverImage) => {
         if (e.newStatus === 'connected') $('#ACHtml5Player_btnBulletScreenSend').removeClass('disable');
         else $('#ACHtml5Player_btnBulletScreenSend').addClass('disable');
         if (e.newStatus === 'connected_notIdentified') $('#ACHtml5Player_bulletScreenInputArea').addClass('ACHtml5Player-login');
-            else $('#ACHtml5Player_bulletScreenInputArea').removeClass('ACHtml5Player-login');
+        else $('#ACHtml5Player_bulletScreenInputArea').removeClass('ACHtml5Player-login');
     });
 
     player.bind('qualityswitching', (e) => {
@@ -125,7 +125,7 @@ let LoadUI = (player, coverImage) => {
     player.bind('qualityswitched', (e) => {
         setBtnQuality(e.qualityIndex);
     });
-    
+
     player.bind('addbulletscreens', (e) => {
         if (e.cleanOld) {
             $('#ACHtml5Player_bulletScreenList').empty();
@@ -177,7 +177,7 @@ let LoadUI = (player, coverImage) => {
 
     //快捷键支持
     $('#ACHtml5Player').keypress((e) => {
-        if (e.target.id === 'ACHtml5Player_bulletScreenInput') return true;
+        if ($(e.target).is('input[type="text"]')) return true;
         switch (e.which) {
             case 32: //空格 暂停
                 player.changePlayState();
@@ -227,7 +227,7 @@ let LoadUI = (player, coverImage) => {
         return true;
     });
     $('#ACHtml5Player').keydown((e) => {
-        if (e.target.id === 'ACHtml5Player_bulletScreenInput') return true;
+        if ($(e.target).is('input[type="text"]')) return true;
         switch (e.which) {
             case 37: //左方向键 快退
                 if (e.ctrlKey) player.setCurrentTime(player.getCurrentTime() - 20);
@@ -290,7 +290,7 @@ let LoadUI = (player, coverImage) => {
         changeFullScreen();
     });
 
-    $('#ACHtml5Player_btnBulletScreen').click(function(e) {
+    $('#ACHtml5Player_btnBulletScreen').click(function (e) {
         if (e.target != this) return;
         player.changeBulletScreenVisibility();
         setBtnBulletScreenIcon();
@@ -301,9 +301,45 @@ let LoadUI = (player, coverImage) => {
         setBtnLoopIcon();
     });
 
+    $('#ACHtml5Player_color_picker_panel').click((e) => {
+        if (!$(e.target).hasClass('color-span')) return;
+        let color = `#${$(e.target).data('color')}`;
+        $('#ACHtml5Player_color_picker_code').val(color);
+        $('#ACHtml5Player_color_picker_current').css('background-color', color);
+    });
+
+    $('#ACHtml5Player_color_picker_code').change((e) => {
+        let val = $(e.target).val();
+        if (val.search(/^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/) === -1) {
+            $(e.target).val(e.target.oldValue);
+            return;
+        }
+        val = val.toLocaleUpperCase();
+        if (val.length === 4) {
+            let r = val.substr(1,1), g = val.substr(2,1), b = val.substr(3,1);
+            val = `#${r}${r}${g}${g}${b}${b}`;
+        }
+        $(e.target).val(val);
+        $('#ACHtml5Player_color_picker_current').css('background-color', val);
+        e.target.oldValue = val;
+    });
+
+    $('#ACHtml5Player_color_picker_code').keypress((e) => {
+        if (e.which === 13) {
+            $(e.target).change();
+            return false;
+        }
+        return true;
+    });
+
+    $('#ACHtml5Player_color_picker_code').hover((e) => {
+        e.target.oldValue = $(e.target).val();
+    });
+
     $('#ACHtml5Player_bulletScreenSendForm').submit((e) => {
         let btn = $('#ACHtml5Player_btnBulletScreenSend');
-        if (btn.hasClass('disable') || btn.hasClass('countdown')) return false;
+        if (btn.hasClass('disable') || btn.hasClass('countdown') ||
+            $('#ACHtml5Player_bulletScreenSendForm input[name="text"]').val() === '') return false;
         let countdownNumber = 3;
         let countdown = () => {
             if (countdownNumber === 0) btn.removeClass('countdown');
